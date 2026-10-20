@@ -469,6 +469,9 @@ body.driving{overflow:hidden}
 #drive.dport #dwheel{bottom:calc(150px*var(--bs) + var(--sab))}
 #drive.dland.dsm #dmap{margin-left:calc(84px*var(--bs))}
 .dpanel{position:absolute;right:calc(10px + var(--sar));top:calc(58px + var(--sat));width:min(430px,calc(100% - 20px));max-height:calc(100% - 70px - var(--sat));overflow:auto;background:rgba(14,18,28,.95);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:12px 14px 14px;z-index:6;color:#fff;-webkit-overflow-scrolling:touch;touch-action:pan-y;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+#donlbtn{width:auto;padding:0 10px;font-size:15px;font-weight:700}#donlbtn.on{background:rgba(56,200,255,.28);border-color:rgba(56,200,255,.6)}#dmicbtn.on{background:rgba(95,227,154,.3)}
+#donl .ocode{display:flex;align-items:center;gap:10px;background:rgba(56,200,255,.1);border:1px solid rgba(56,200,255,.35);border-radius:14px;padding:10px 12px;margin:6px 0}#donl .ocode span{color:#aab2c2;font-size:13px}#donl .ocode b{font:800 26px/1 var(--pf);letter-spacing:3px;color:#7fe0ff;flex:1}#donl .ocode .btn{width:auto;margin:0;padding:8px 12px}
+#donl .ost{font-size:13px;margin:4px 2px}#donl .opl{display:flex;align-items:center;gap:8px;padding:9px 2px;border-bottom:1px solid rgba(255,255,255,.08)}#donl .opl b{font-weight:700}#donl .opl span{color:#aab2c2;font-size:13px;flex:1}#donl .opl .btn{width:auto;margin:0;padding:6px 10px;font-size:13px}#donl .irow .btn{flex:1}
 .dph{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}.dph b{font-size:17px}
 .dpanel h3{font-size:14px;margin:14px 0 6px;color:#c9d2e0}.dpanel .hint{color:#aab2c2}
 .dpanel .seg button{color:#e8ebf3}
@@ -585,7 +588,7 @@ body.driving{overflow:hidden}
 <div id="tut" class="hidden"><div id="tuthole"></div><div id="tutbox"></div></div>
 <div id="drive" class="hidden">
   <div id="dcan"></div>
-  <div class="dtop"><button class="dbtn" data-a="dexit" aria-label="Выйти в гараж">✕</button><div class="dinfo"><b id="dcity"></b><span id="dmis"></span><div class="dhpw"><i id="dhp"></i></div></div><div class="dright"><div id="dmoney"></div><div class="drow"><button class="dbtn" data-a="drad" aria-label="Музыка">🎵</button><button class="dbtn" data-a="dset" aria-label="Настройки">⚙️</button><button class="dbtn" data-a="dhorn" aria-label="Сигнал">📯</button><button class="dbtn" id="dcambtn" data-a="dcam">🎥</button></div><button class="dbtn hidden" id="dorb" data-a="dorb">⟲ Камера</button></div></div>
+  <div class="dtop"><button class="dbtn" data-a="dexit" aria-label="Выйти в гараж">✕</button><div class="dinfo"><b id="dcity"></b><span id="dmis"></span><div class="dhpw"><i id="dhp"></i></div></div><div class="dright"><div id="dmoney"></div><div class="drow"><button class="dbtn hidden" id="dmicbtn" data-a="dmic" aria-label="Микрофон">🔇</button><button class="dbtn" id="donlbtn" data-a="donl" aria-label="Онлайн">🌐</button><button class="dbtn" data-a="drad" aria-label="Музыка">🎵</button><button class="dbtn" data-a="dset" aria-label="Настройки">⚙️</button><button class="dbtn" data-a="dhorn" aria-label="Сигнал">📯</button><button class="dbtn" id="dcambtn" data-a="dcam">🎥</button></div><button class="dbtn hidden" id="dorb" data-a="dorb">⟲ Камера</button></div></div>
   <canvas id="dmap" data-a="dbig" title="Карта (E)" width="240" height="240"></canvas>
   <div id="dkeys" aria-hidden="true"><div class="t">Управление</div><div><kbd>W</kbd><kbd>↑</kbd> газ</div><div><kbd>S</kbd><kbd>↓</kbd> тормоз и назад</div><div><kbd>A</kbd><kbd>D</kbd><kbd>← →</kbd> руль</div><div><kbd>Пробел</kbd> тормоз</div><div><kbd>Shift</kbd> дрифт (ручник)</div><div><kbd>N</kbd> нитро</div><div><kbd>E</kbd> карта и маршрут</div><div><kbd>C</kbd> камера 1-е / 3-е лицо</div><div><kbd>H</kbd> сигнал</div><div><kbd>R</kbd> ремонт</div><div>Мышь — осмотр, колёсико — зум</div><div class="k"><kbd>K</kbd> скрыть / показать подсказки</div></div>
   <div id="dbig" class="hidden"><canvas id="dbigc" width="900" height="900"></canvas><div class="bh"><b id="dbigi"></b><button data-a="dwpclr">Сбросить точку</button><button class="p" data-a="dbigx">Закрыть (E)</button></div><div class="bt">Нажми на дорогу — маршрут построится сам · нажми на точку ещё раз, чтобы убрать</div></div>
@@ -598,6 +601,7 @@ body.driving{overflow:hidden}
   <div id="ddrift" class="hidden"></div>
   <button id="dflip" class="hidden" data-a="dflip">⟲ На колёса</button>
   <div id="dset" class="dpanel hidden"><div class="dph"><b>⚙️ Настройки</b><button class="dbtn" data-a="dsetx" aria-label="Закрыть">✕</button></div><div id="dsetb" class="f"></div></div>
+  <div id="donl" class="dpanel hidden"><div class="dph"><b>🌐 Онлайн</b><button class="dbtn" data-a="donlx" aria-label="Закрыть">✕</button></div><div id="donlb" class="f"></div></div>
   <div id="drad" class="dpanel hidden"><div class="dph"><b>🎵 Музыка</b><button class="dbtn" data-a="dradx" aria-label="Закрыть">✕</button></div><div id="dradb" class="radio"></div></div>
   <div id="dload">Загрузка…</div>
 </div>
@@ -2214,7 +2218,7 @@ function readInput(){const k=KEYS;let steer=(k.left||k.kl?1:0)-(k.right||k.kr?1:
   if(S.ctrl==='tilt'&&DR.tiltRaw!=null){const v=(DR.tiltRaw-(DR.tilt0||0))/22;steer=Math.max(-1,Math.min(1,-v));if(Math.abs(steer)<.06)steer=0}
   return{gas:!!(k.gas||k.kg),brk:!!(k.brake||k.kb),steer,drift:!!(k.drift||k.kd),nitro:!!(k.nitro||k.kn)}}
 const KMAP={ShiftLeft:'kd',ShiftRight:'kd',KeyN:'kn',ArrowUp:'kg',KeyW:'kg',ArrowDown:'kb',KeyS:'kb',Space:'kb',ArrowLeft:'kl',KeyA:'kl',ArrowRight:'kr',KeyD:'kr'};
-addEventListener('keydown',e=>{if(!DR||!DR.on)return;if(KMAP[e.code]){KEYS[KMAP[e.code]]=true;e.preventDefault()}if(e.code==='KeyE'&&!e.repeat){bigMap();e.preventDefault()}if(e.code==='Escape'&&DR.big)bigMap(false);if(e.code==='KeyK'&&!e.repeat)A.dkeys();if(DR.big)return;if(e.code==='KeyC')A.dcam();if(e.code==='KeyH')horn();if(e.code==='KeyR')A.drepair()});
+addEventListener('keydown',e=>{if(!DR||!DR.on)return;if(e.target&&(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'))return;if(KMAP[e.code]){KEYS[KMAP[e.code]]=true;e.preventDefault()}if(e.code==='KeyE'&&!e.repeat){bigMap();e.preventDefault()}if(e.code==='Escape'&&DR.big)bigMap(false);if(e.code==='KeyK'&&!e.repeat)A.dkeys();if(DR.big)return;if(e.code==='KeyC')A.dcam();if(e.code==='KeyH')horn();if(e.code==='KeyR')A.drepair()});
 addEventListener('keyup',e=>{if(KMAP[e.code])KEYS[KMAP[e.code]]=false});
 addEventListener('deviceorientation',e=>{if(!DR||!DR.on||e.gamma==null)return;const ang=DR.rot?90:(screen.orientation&&screen.orientation.angle)||window.orientation||0;DR.tiltRaw=ang===90?e.beta:ang===-90||ang===270?-e.beta:e.gamma});
 
@@ -2234,7 +2238,7 @@ function mapBg(n){n=n||240;const Wd=DR.Wd,c=document.createElement('canvas');c.w
   if(n!==240)return c;DR.mbg=c}
 function drawMap(){const c=$('dmap'),x=c.getContext('2d'),E=DR.ext,s=240/(E*2),X=v=>(v+E)*s,st=DR.st;x.clearRect(0,0,240,240);x.drawImage(DR.mbg,0,0);
   if(DR.mis){x.fillStyle='#ffd23f';x.beginPath();x.arc(X(DR.mis.x),X(DR.mis.z),7,0,7);x.fill()}
-  DR.Wd.traffic.forEach(t=>{const p=t.car.g.position;x.fillStyle=t.rival?'#ff5a4a':'#c9d2e0';x.fillRect(X(p.x)-2,X(p.z)-2,4,4)});drawRoute(x,X,4);
+  DR.Wd.traffic.forEach(t=>{const p=t.car.g.position;x.fillStyle=t.rival?'#ff5a4a':'#c9d2e0';x.fillRect(X(p.x)-2,X(p.z)-2,4,4)});drawRoute(x,X,4);netMap(x,X,4);
   x.save();x.translate(X(st.x),X(st.z));x.rotate(-st.h);x.fillStyle='#38e07b';x.beginPath();x.moveTo(9,0);x.lineTo(-6,-6);x.lineTo(-3,0);x.lineTo(-6,6);x.closePath();x.fill();x.restore()}
 const tfmt=ms=>{const t=Math.max(0,ms)/1000,m=Math.floor(t/60),s=t-m*60;return m+':'+(s<10?'0':'')+s.toFixed(2)};
 function hud(){const st=DR.st,kmh=Math.round(Math.abs(st.v)*3.6),gear=st.v<-.3?'R':Math.abs(st.v)<.3?'N':String(Math.min(6,1+Math.floor(Math.max(0,st.v)/(DR.cdef.vmax/3.6)*5.6)));
@@ -2309,7 +2313,7 @@ function fitR(){if(!R3)return;const el=R3.domElement.parentElement;if(!el)return
   if(DR&&DR.on&&el.id==='dcan'){const pr=resPR(w,h,DR.pr);if(Math.abs(R3.getPixelRatio()-pr)>.001)R3.setPixelRatio(pr)}
   R3.setSize(w,h,false);if(DR&&DR.cam){DR.cam.aspect=w/h;DR.cam.updateProjectionMatrix()}if(GP&&GP.cam&&el.id==='gcan'){GP.cam.aspect=w/h;GP.cam.updateProjectionMatrix()}}
 addEventListener('resize',()=>{if(DR&&DR.on)dOrient();else if(GP)fitR()});
-function stopDrive(){if(!DR)return;if(DR.big)bigMap(false);DR.on=false;engineStop();radioStop();for(const k in KEYS)KEYS[k]=false;$('drive').classList.add('hidden');$('dset').classList.add('hidden');$('drad').classList.add('hidden');document.body.classList.remove('driving');unLand();
+function stopDrive(){if(!DR)return;if(DR.big)bigMap(false);netCarsClear();$('donl').classList.add('hidden');DR.on=false;engineStop();radioStop();for(const k in KEYS)KEYS[k]=false;$('drive').classList.add('hidden');$('dset').classList.add('hidden');$('drad').classList.add('hidden');document.body.classList.remove('driving');unLand();
   const dv=$('drive');dv.style.width=dv.style.height=dv.style.transform='';
   S.dmg=S.dmg||{};S.dmg[S.car]=Math.round(DR.st.dmg);saveNow();go('garage');setTimeout(()=>{try{music()}catch(e){}},300)}
 function setCam(m){S.cam=m;const car=DR.car,cam=DR.cam;DR.orb={y:0,p:0,z:1};
@@ -2393,7 +2397,7 @@ function step(dt){const st=DR.st,c=DR.cdef,Wd=DR.Wd,car=DR.car,inp=readInput(),d
   const k1=Math.floor(S.km);if(k1>k0&&(k1===10||k1===50||k1===100||k1%500===0)){dMsg('🏆 Достижение «Пробег '+nf(k1)+' км» — забери награду в меню',3200);tone([523,659,784,1046],.16,'triangle',.09)}
   if(S.kmAcc>=10000){S.kmAcc-=10000;S.coins+=500;dMsg('🛣️ +500 ₽ за 10 км!',2500);tone([660,880,1100],.15,'triangle',.08)}
   if(DR.mis){if(DR.mk){DR.mk.children[1].scale.setScalar(1+Math.sin(performance.now()/250)*.12)}if(Math.hypot(DR.mis.x-st.x,DR.mis.z-st.z)<7){const r=DR.mis.rew;S.coins+=r;S.deliv=(S.deliv||0)+1;dMsg('📦 Доставлено! +'+fmt(r),2400);tone([523,659,784,1046],.16,'triangle',.09);save();newMission()}}
-  camStep(dt,st,car);navStep(dt);Wd.sky.position.set(st.x,0,st.z);if(Wd.sky.material.uniforms)Wd.sky.material.uniforms.t.value+=dt;
+  camStep(dt,st,car);navStep(dt);netStep(dt);Wd.sky.position.set(st.x,0,st.z);if(Wd.sky.material.uniforms)Wd.sky.material.uniforms.t.value+=dt;
   // тень от солнца следует за машиной
   if(Wd.sun.castShadow){const s=Wd.sun,E=s.shadow.camera.right,ts=E*2/s.shadow.mapSize.x,fx=Math.round((st.x+ch*E*.35)/ts)*ts,fz=Math.round((st.z-sh*E*.35)/ts)*ts,sd=Wd.sunDir||SUN;s.target.position.set(fx,0,fz);s.position.set(fx+sd[0]*260,Math.max(40,sd[1]*260),fz+sd[2]*260);s.target.updateMatrixWorld()}
   else if(Wd.sunDir){const sd=Wd.sunDir;Wd.sun.position.set(sd[0]*260,sd[1]*260,sd[2]*260)}
@@ -2486,7 +2490,7 @@ function navInit(){const T=THREE,sc=DR.Wd.sc;sc.children.filter(o=>o.name==='nav
   const geo=new T.ExtrudeGeometry(sh,{depth:.24,bevelEnabled:false});geo.rotateX(-Math.PI/2);geo.translate(0,-.12,0);
   const g=new T.Group();g.name='navArrow';const m=new T.Mesh(geo,new T.MeshBasicMaterial({color:0xb44bff,transparent:true,opacity:.88}));g.add(m);
   const e=new T.LineSegments(new T.EdgesGeometry(geo),new T.LineBasicMaterial({color:0xf3e6ff}));g.add(e);g.traverse(o=>o.userData.noCast=1);g.visible=false;sc.add(g);
-  DR.nav=g;DR.wp=null;DR.route=null;DR.navT=0}
+  DR.nav=g;DR.wp=null;DR.route=null;DR.navT=0;netCarsClear();netBadge()}
 function navStep(dt){const st=DR.st,g=navGoal(),a=DR.nav;if(!a)return;
   if(DR.wp&&Math.hypot(DR.wp.x-st.x,DR.wp.z-st.z)<10){DR.wp=null;DR.route=null;dMsg('📍 Вы на месте!',2000);tone([523,784,1046],.14,'triangle',.08)}
   DR.navT-=dt;if(g&&(DR.navT<=0||DR.navG!==g||!DR.route)){DR.navT=.4;navRoute()}else if(!g)DR.route=null;
@@ -2503,7 +2507,7 @@ function drawRoute(x,X,w){const r=DR.route,st=DR.st;if(r&&r.length>1){x.save();x
 function bigDraw(){const c=$('dbigc'),x=c.getContext('2d'),n=c.width,E=DR.ext,s=n/(E*2),X=v=>(v+E)*s,st=DR.st;if(!DR.mbgL)DR.mbgL=mapBg(n);x.clearRect(0,0,n,n);x.drawImage(DR.mbgL,0,0);
   if(DR.mis){x.fillStyle='#ffd23f';x.strokeStyle='#15171d';x.lineWidth=3;x.beginPath();x.arc(X(DR.mis.x),X(DR.mis.z),11,0,7);x.fill();x.stroke();x.font='bold 16px sans-serif';x.fillText('📦',X(DR.mis.x)-9,X(DR.mis.z)-16)}
   DR.Wd.traffic.forEach(t=>{const p=t.car.g.position;x.fillStyle='#c9d2e0';x.fillRect(X(p.x)-3,X(p.z)-3,6,6)});
-  drawRoute(x,X,7);
+  drawRoute(x,X,7);netMap(x,X,8);
   x.save();x.translate(X(st.x),X(st.z));x.rotate(-st.h);x.fillStyle='#38e07b';x.strokeStyle='#0b2a18';x.lineWidth=2;x.beginPath();x.moveTo(18,0);x.lineTo(-12,-12);x.lineTo(-6,0);x.lineTo(-12,12);x.closePath();x.fill();x.stroke();x.restore();
   const info=$('dbigi');if(DR.route&&DR.route.length>1){const L=routeLen(DR.route)+Math.hypot(DR.route[0].x-st.x,DR.route[0].z-st.z);info.textContent=(DR.wp?'📍 Маршрут до точки: ':'📦 Маршрут до груза: ')+(L>=1000?(L/1000).toFixed(1).replace('.',',')+' км':Math.round(L)+' м')}
   else info.textContent='Нажми на карту — поставь точку, маршрут построится сам'}
@@ -2520,6 +2524,133 @@ function bigPick(e){if(!DR||!DR.big)return;e.preventDefault();const c=$('dbigc')
 A.dbig=()=>bigMap();A.dbigx=()=>bigMap(false);A.dwpclr=()=>{if(!DR)return;DR.wp=null;navRoute();if(DR.big)bigDraw()};
 A.dkeys=()=>{S.kh=!S.kh;keysHint();save()};
 function keysHint(){const e=$('dkeys');if(e)e.classList.toggle('mini',!!S.kh)}
+
+/* ---------- онлайн: комнаты по коду, совместная езда, голосовой чат ----------
+   Машины передаются через общедоступный MQTT-брокер (работает в любой сети),
+   голос — напрямую между игроками по WebRTC. Своего сервера не нужно. */
+const MQB=['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt','wss://test.mosquitto.org:8081/mqtt'];
+const NETP='nmrg7k',ICE=[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']},{urls:'stun:stun.cloudflare.com:3478'}];
+const NET={ws:null,on:false,code:'',id:Math.random().toString(36).slice(2,10),peers:{},buf:null,mic:null,micOn:false,spk:true,st:'off',sendT:0,hbT:0,pingT:0,bi:0,follow:false};
+const TEn=new TextEncoder(),TDe=new TextDecoder();
+const mqLen=n=>{const a=[];do{let b=n%128;n=Math.floor(n/128);if(n>0)b|=128;a.push(b)}while(n>0);return a};
+const mqStr=s=>{const b=TEn.encode(s);return[b.length>>8,b.length&255,...b]};
+function mqSend(h,parts){const ws=NET.ws;if(!ws||ws.readyState!==1)return;let n=0;for(const p of parts)n+=p.length;const hd=[h,...mqLen(n)],out=new Uint8Array(hd.length+n);out.set(hd);let o=hd.length;for(const p of parts){out.set(p,o);o+=p.length}ws.send(out)}
+function mqPub(sub,obj){if(NET.st!=='on')return;mqSend(0x30,[new Uint8Array(mqStr(NETP+'/'+NET.code+'/'+sub)),TEn.encode(JSON.stringify(obj))])}
+function mqFeed(ws,d){let b=d;if(NET.buf&&NET.buf.length){b=new Uint8Array(NET.buf.length+d.length);b.set(NET.buf);b.set(d,NET.buf.length)}NET.buf=null;let p=0;
+  while(p<b.length){const h=b[p];let m=1,len=0,q=p+1,c;do{if(q>=b.length){NET.buf=b.slice(p);return}c=b[q++];len+=(c&127)*m;m*=128}while(c&128);
+    if(q+len>b.length){NET.buf=b.slice(p);return}const body=b.subarray(q,q+len);p=q+len;const t=h>>4;
+    if(t===2){if(body[1]===0)mqReady(ws);else{try{ws.close()}catch(e){}}}
+    else if(t===3){const tl=(body[0]<<8)|body[1],topic=TDe.decode(body.subarray(2,2+tl));let o=2+tl;if((h>>1)&3)o+=2;try{netMsg(topic,JSON.parse(TDe.decode(body.subarray(o))))}catch(e){}}}}
+function netConnect(i){i=i||0;if(!NET.on)return;if(i>=MQB.length){NET.st='err';netUI();setTimeout(()=>{if(NET.on&&!NET.ws)netConnect(0)},5000);return}
+  NET.st='conn';NET.bi=i;netUI();let ws;try{ws=new WebSocket(MQB[i],'mqtt')}catch(e){netConnect(i+1);return}
+  ws.binaryType='arraybuffer';NET.ws=ws;NET.buf=null;ws.ok=false;const to=setTimeout(()=>{if(!ws.ok)try{ws.close()}catch(e){}},7000);
+  ws.onopen=()=>{const cid=NETP+NET.id+Math.random().toString(36).slice(2,6);mqSend(0x10,[new Uint8Array([...mqStr('MQTT'),4,2,0,60,...mqStr(cid)])])};
+  ws.onmessage=e=>{if(NET.ws===ws)mqFeed(ws,new Uint8Array(e.data))};
+  ws.onclose=()=>{clearTimeout(to);if(NET.ws!==ws)return;NET.ws=null;if(!NET.on)return;if(!ws.ok)netConnect(i+1);else{NET.st='conn';netUI();setTimeout(()=>{if(NET.on&&!NET.ws)netConnect(NET.bi)},1500)}};
+  ws.onerror=()=>{}}
+function mqReady(ws){ws.ok=true;NET.st='on';mqSend(0x82,[new Uint8Array([0,1,...mqStr(NETP+'/'+NET.code+'/#'),0])]);NET.sendT=0;NET.hbT=0;mqPub('s',netState());netUI()}
+/* состояние, которое видят остальные */
+function netState(){const o={i:NET.id,n:S.nick||'Игрок',m:null};if(DR&&DR.on&&DR.car){const st=DR.st,g=DR.car.g,p=curPlate();
+  Object.assign(o,{m:DR.Wd.M.id,c:S.car,k:(S.carCol||{})[S.car]||carById(S.car).color,o:carOpt(S.car),p:{c:p.c,ty:p.ty,l:p.l,d:p.d,reg:p.reg,x:p.x,rar:p.rar},
+    x:+g.position.x.toFixed(2),y:+g.position.y.toFixed(2),z:+g.position.z.toFixed(2),h:+st.h.toFixed(3),vh:+st.vh.toFixed(3),v:+st.v.toFixed(2),s:+st.steer.toFixed(2),r:+(st.roll||0).toFixed(3),pt:+(st.pitch||0).toFixed(3),f:S.cam==='1'?1:0,mic:NET.micOn?1:0})}
+  else o.mic=NET.micOn?1:0;return o}
+function netMsg(topic,d){if(!d||!d.i||d.i===NET.id)return;const sub=topic.slice(topic.lastIndexOf('/')+1);
+  if(sub==='b'){netDrop(d.i);netUI();return}
+  let P=NET.peers[d.i];if(sub==='w'){if(d.to!==NET.id)return;if(!P)P=NET.peers[d.i]={id:d.i,t:performance.now(),n:''};rtcSignal(P,d);return}
+  if(sub!=='s')return;const now=performance.now();
+  if(!P||!P.n){const nw=!P;P=P||(NET.peers[d.i]={id:d.i,t:now});if(nw||!P.hi){P.hi=1;if(DR&&DR.on)dMsg('👋 '+esc(d.n)+' в комнате',1800);else toast('👋 '+esc(d.n)+' в комнате')}}
+  P.n=d.n;P.pt=P.t;P.t=now;P.s=d;
+  if(NET.follow&&d.m){NET.follow=false;if(DR&&DR.on&&DR.Wd.M.id!==d.m&&MAPS.some(m=>m.id===d.m)){S.map=d.m;save();dMsg('🗺️ Переходим на карту друга: '+mapById(d.m).n,2200);setTimeout(()=>{if(DR&&DR.on){netCarsClear();startDrive()}},400)}}
+  rtcEnsure(P);if(!$('donl').classList.contains('hidden'))netUI(true);netBadge()}
+const esc=s=>String(s==null?'':s).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+function netDrop(id){const P=NET.peers[id];if(!P)return;netCarRm(P);if(P.pc)try{P.pc.close()}catch(e){}if(P.au){try{P.au.pause();P.au.srcObject=null}catch(e){}P.au.remove()}delete NET.peers[id];netBadge()}
+/* машины друзей в 3D */
+function netCarRm(P){if(P.car){try{P.car.g.parent&&P.car.g.parent.remove(P.car.g);P.lab&&P.lab.parent&&P.lab.parent.remove(P.lab);P.sh&&P.sh.parent&&P.sh.parent.remove(P.sh)}catch(e){}}P.car=null;P.lab=null;P.sh=null;P.key=''}
+function netCarsClear(){for(const id in NET.peers)netCarRm(NET.peers[id])}
+function nickTex(n){const c=document.createElement('canvas');c.width=256;c.height=64;const x=c.getContext('2d');x.font='700 30px system-ui,sans-serif';const w=Math.min(240,x.measureText(n).width+28);
+  x.fillStyle='rgba(12,16,28,.78)';x.beginPath();x.roundRect?x.roundRect(128-w/2,8,w,46,23):x.rect(128-w/2,8,w,46);x.fill();x.fillStyle='#7fe0ff';x.textAlign='center';x.textBaseline='middle';x.fillText(n,128,32,228);const t=new THREE.CanvasTexture(c);return t}
+function netCarMake(P,s,Wd){const car=buildCar(carById(s.c),s.k||'#888',s.p||{c:'ru',ty:'civil',l:'ААА',d:'001',reg:'77',rar:0},false,s.o||{});Wd.sc.add(car.g);P.car=car;P.key=netKey(s);
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:nickTex(String(s.n||'Игрок').slice(0,18)),transparent:true,depthWrite:false}));sp.scale.set(4,1,1);sp.userData.noCast=1;Wd.sc.add(sp);P.lab=sp;P.labN=s.n;
+  const sh=new THREE.Mesh(new THREE.PlaneGeometry(car.L*1.15,car.W*1.4),new THREE.MeshBasicMaterial({map:texBlob(),transparent:true,depthWrite:false,opacity:.55}));sh.rotation.x=-Math.PI/2;sh.userData.noCast=1;Wd.sc.add(sh);P.sh=sh;
+  P.x=s.x;P.y=s.y;P.z=s.z;P.h=s.h}
+const netKey=s=>s.c+'|'+s.k+'|'+JSON.stringify(s.p)+'|'+JSON.stringify(s.o);
+function netStep(dt){if(!NET.on)return;const now=performance.now(),Wd=DR.Wd,st=DR.st;
+  NET.sendT-=dt;if(NET.sendT<=0){NET.sendT=.1;mqPub('s',netState())}
+  NET.pingT-=dt;if(NET.pingT<=0){NET.pingT=25;mqSend(0xC0,[])}
+  for(const id in NET.peers){const P=NET.peers[id],s=P.s;if(now-P.t>8000){netDrop(id);netUI();continue}
+    if(!s||s.m!==Wd.M.id||s.x==null){if(P.car)netCarRm(P);continue}
+    if(!P.car||P.key!==netKey(s))netCarRm(P),netCarMake(P,s,Wd);
+    if(P.labN!==s.n){P.lab.material.map=nickTex(String(s.n||'Игрок').slice(0,18));P.labN=s.n}
+    const age=Math.min(.35,(now-P.t)/1000),tx=s.x+Math.cos(s.vh)*s.v*age,tz=s.z-Math.sin(s.vh)*s.v*age,k=1-Math.exp(-dt*12),car=P.car;
+    if(Math.hypot(tx-P.x,tz-P.z)>25){P.x=tx;P.z=tz;P.y=s.y;P.h=s.h}else{P.x+=(tx-P.x)*k;P.z+=(tz-P.z)*k;P.y+=(s.y-P.y)*k;P.h+=angD(s.h,P.h)*k}
+    car.g.position.set(P.x,P.y,P.z);car.g.rotation.set(s.r||0,P.h,0,'YXZ');car.tg.rotation.z=s.pt||0;
+    const md=.62/(1+Math.abs(s.v)/12);car.wheels.forEach(w=>{w.ws.rotation.z-=s.v*dt/car.pr.wr;if(w.front)w.wg.rotation.y=(s.s||0)*md});if(car.sw)car.sw.rotation.z=(s.s||0)*2.4;
+    const nw=DR.nw||0;if(car.beam){car.beam.visible=nw>.02;car.beam.material.opacity=nw*.55}
+    P.lab.position.set(P.x,P.y+Math.max(2.6,(car.pr.hy||1.2)+1.7),P.z);P.sh.position.set(P.x,groundH(Wd,P.x,P.z).h+.03,P.z);P.sh.rotation.z=P.h;
+    // толкаемся друг о друга (только у себя — у друга сработает его копия)
+    const dx=st.x-P.x,dz=st.z-P.z,d=Math.hypot(dx,dz),R=(car.L+DR.car.L)*.32;
+    if(d<R&&d>.01&&Math.abs(st.y-(P.y-0))<2.5){st.x=P.x+dx/d*R;st.z=P.z+dz/d*R;const fx=Math.cos(st.vh),fz=-Math.sin(st.vh);if((fx*-dx+fz*-dz)/d>.3&&Math.abs(st.v)>3){const imp=Math.abs(st.v);st.v*=.45;DR.shake=Math.max(DR.shake,Math.min(.35,imp*.02));if(imp>8)tone([140,90],.12,'square',.05)}}
+    if(P.au)P.au.volume=NET.spk?Math.max(.18,Math.min(1,1-d/260)):0}}
+/* голос: WebRTC, сигналы идут через тот же брокер */
+function rtcEnsure(P){if(!window.RTCPeerConnection||NET.id>P.id)return;const cs=P.pc&&P.pc.connectionState,stuck=P.pc&&P.pc.signalingState==='have-local-offer'&&performance.now()-P.pcT>6000;if(P.pc&&cs!=='failed'&&cs!=='closed'&&!stuck)return;if(P.pcT&&performance.now()-P.pcT<8000)return;rtcMake(P,true)}
+function rtcMake(P,offer){if(P.pc)try{P.pc.close()}catch(e){}const pc=new RTCPeerConnection({iceServers:ICE});P.pc=pc;P.pcT=performance.now();P.ic=[];
+  pc.onicecandidate=e=>{if(e.candidate)mqPub('w',{i:NET.id,to:P.id,t:'c',d:e.candidate})};
+  pc.ontrack=e=>{let a=P.au;if(!a){a=document.createElement('audio');a.autoplay=true;a.setAttribute('playsinline','');a.style.display='none';document.body.appendChild(a);P.au=a}a.srcObject=e.streams&&e.streams[0]||new MediaStream([e.track]);a.play().catch(()=>{})};
+  pc.onconnectionstatechange=()=>{if(!$('donl').classList.contains('hidden'))netUI(true)};
+  if(offer){const tr=pc.addTransceiver('audio',{direction:'sendrecv'});P.tr=tr;if(NET.mic)tr.sender.replaceTrack(NET.mic.getAudioTracks()[0]).catch(()=>{});
+    pc.createOffer().then(o=>pc.setLocalDescription(o)).then(()=>mqPub('w',{i:NET.id,to:P.id,t:'o',d:pc.localDescription})).catch(()=>{})}
+  return pc}
+async function rtcSignal(P,m){try{
+  if(m.t==='o'){const pc=rtcMake(P,false);await pc.setRemoteDescription(m.d);const tr=pc.getTransceivers()[0];if(tr){tr.direction='sendrecv';P.tr=tr;if(NET.mic)await tr.sender.replaceTrack(NET.mic.getAudioTracks()[0])}
+    await pc.setLocalDescription(await pc.createAnswer());mqPub('w',{i:NET.id,to:P.id,t:'a',d:pc.localDescription});for(const c of P.ic.splice(0))pc.addIceCandidate(c).catch(()=>{})}
+  else if(m.t==='a'){if(P.pc&&P.pc.signalingState==='have-local-offer'){await P.pc.setRemoteDescription(m.d);for(const c of P.ic.splice(0))P.pc.addIceCandidate(c).catch(()=>{})}}
+  else if(m.t==='c'){if(P.pc&&P.pc.remoteDescription)await P.pc.addIceCandidate(m.d);else(P.ic=P.ic||[]).push(m.d)}}catch(e){}}
+function audioWake(){for(const id in NET.peers){const a=NET.peers[id].au;if(a&&a.paused)a.play().catch(()=>{})}}
+document.addEventListener('pointerdown',()=>{if(NET.on)audioWake()},{passive:true});
+async function netMic(){
+  if(NET.micOn){NET.micOn=false;if(NET.mic)NET.mic.getTracks().forEach(t=>t.enabled=false);netUI();netBadge();return}
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){toast('Микрофон недоступен: открой игру по https');return}
+  try{if(!NET.mic){NET.mic=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});const tk=NET.mic.getAudioTracks()[0];for(const id in NET.peers){const P=NET.peers[id];if(P.tr)P.tr.sender.replaceTrack(tk).catch(()=>{})}}
+    NET.mic.getTracks().forEach(t=>t.enabled=true);NET.micOn=true;audioWake()}catch(e){toast('Нет доступа к микрофону — разреши его в браузере')}netUI();netBadge()}
+/* вход и выход */
+const CODEC='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+function netJoin(code,create){code=String(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);if(code.length<4){toast('Код комнаты — минимум 4 символа');return}
+  const nk=$('onick');if(nk&&nk.value.trim()){S.nick=nk.value.trim().slice(0,18);save()}if(!S.nick){S.nick='Игрок'+(100+Math.floor(Math.random()*900));save()}
+  if(NET.on)netLeave(true);NET.on=true;NET.code=code;NET.follow=!create;S.room=code;save();netConnect(0);audioWake();netUI();netBadge()}
+function netLeave(quiet){if(!NET.on)return;mqPub('b',{i:NET.id});const ws=NET.ws;NET.on=false;NET.ws=null;NET.st='off';setTimeout(()=>{try{ws&&ws.close()}catch(e){}},150);
+  for(const id in NET.peers)netDrop(id);if(NET.mic){NET.mic.getTracks().forEach(t=>t.stop());NET.mic=null}NET.micOn=false;if(!quiet){S.room='';save();toast('Ты вышел из комнаты')}netUI();netBadge()}
+addEventListener('pagehide',()=>{if(NET.on)mqPub('b',{i:NET.id})});
+/* интерфейс */
+function netBadge(){const b=$('donlbtn'),m=$('dmicbtn');if(!b)return;const n=Object.keys(NET.peers).length;b.textContent=NET.on?'🌐 '+(n+1):'🌐';b.classList.toggle('on',NET.on);
+  m.classList.toggle('hidden',!NET.on);m.textContent=NET.micOn?'🎤':'🔇';m.classList.toggle('on',NET.micOn)}
+function netUI(soft){const b=$('donlb');if(!b||$('donl').classList.contains('hidden'))return;
+  if(!NET.on){b.innerHTML='<label for="onick">Твой ник</label><input class="inp" id="onick" maxlength="18" autocomplete="off" value="'+esc(S.nick||'')+'" placeholder="Например, Артур">'
+    +'<button class="btn" data-a="onew" style="margin-top:12px">Создать комнату</button>'
+    +'<label for="ocode" style="margin-top:14px">Или войди по коду друга</label><div class="irow"><input class="inp" id="ocode" maxlength="8" autocomplete="off" placeholder="Код комнаты" style="text-transform:uppercase"><button class="btn" data-a="ojoin">Войти</button></div>'
+    +'<div class="hint" style="margin-top:12px">Друзья вводят тот же код и катаются с тобой на одной карте. Голосовой чат — кнопка 🎤. Игроки соединяются через общедоступный сервер, поэтому иногда связь может пропадать.</div>';return}
+  if(soft&&b.querySelector('.olist')){b.querySelector('.olist').innerHTML=netList();b.querySelector('.ost').innerHTML=netSt();return}
+  b.innerHTML='<div class="ocode"><span>Комната</span><b>'+esc(NET.code)+'</b><button class="btn gray" data-a="ocopy">Скопировать</button></div><div class="ost">'+netSt()+'</div>'
+    +'<h3>Игроки</h3><div class="olist">'+netList()+'</div>'
+    +'<div class="irow" style="margin-top:12px"><button class="btn '+(NET.micOn?'':'gray')+'" data-a="omic">'+(NET.micOn?'🎤 Микрофон включён':'🔇 Включить микрофон')+'</button><button class="btn gray" data-a="ospk">'+(NET.spk?'🔈 Голоса: вкл':'🔇 Голоса: выкл')+'</button></div>'
+    +'<button class="btn red" data-a="oleave" style="margin-top:10px">Выйти из комнаты</button>'}
+function netSt(){return NET.st==='on'?'<span style="color:#5fe39a">● Онлайн</span>':NET.st==='err'?'<span style="color:#ef6a5a">● Нет связи с сервером, пробую ещё…</span>':'<span style="color:#f2b45a">● Подключение…</span>'}
+function netList(){const me='<div class="opl"><b>'+esc(S.nick||'Игрок')+' (ты)</b><span>'+(DR&&DR.on?mapById(DR.Wd.M.id).e+' '+mapById(DR.Wd.M.id).n:'в гараже')+(NET.micOn?' · 🎤':'')+'</span></div>';
+  return me+Object.values(NET.peers).map(P=>{const s=P.s||{},cs=P.pc&&P.pc.connectionState,vc=cs==='connected'?' · 🔊':cs==='failed'?' · голос не прошёл':'',map=s.m?mapById(s.m):null,here=map&&DR&&DR.on&&DR.Wd.M.id===s.m;
+    return '<div class="opl"><b>'+esc(P.n)+'</b><span>'+(map?map.e+' '+map.n:'в гараже')+(s.mic?' · 🎤':'')+vc+'</span>'+(map&&!here&&DR&&DR.on?'<button class="btn gray" data-a="ogo" data-v="'+esc(s.m)+'">К нему</button>':'')+'</div>'}).join('')+(Object.keys(NET.peers).length?'':'<div class="hint">Пока никого. Отправь другу код комнаты.</div>')}
+A.donl=()=>{const p=$('donl');$('dset').classList.add('hidden');$('drad').classList.add('hidden');if(p.classList.toggle('hidden'))return;netUI()};
+A.donlx=()=>$('donl').classList.add('hidden');
+A.onew=()=>{let c='';for(let i=0;i<5;i++)c+=CODEC[Math.floor(Math.random()*CODEC.length)];netJoin(c,true)};
+A.ojoin=()=>netJoin(($('ocode')||{}).value,false);
+A.oleave=()=>netLeave();A.omic=()=>netMic();A.dmic=()=>netMic();A.ospk=()=>{NET.spk=!NET.spk;netUI()};
+A.ocopy=()=>{const t=NET.code;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Код '+t+' скопирован')).catch(()=>toast('Код комнаты: '+t))};
+A.ogo=v=>{if(!DR||!DR.on||!MAPS.some(m=>m.id===v))return;S.map=v;save();netCarsClear();$('donl').classList.add('hidden');startDrive()};
+function netMap(x,X,r){if(!NET.on||!DR)return;for(const id in NET.peers){const s=NET.peers[id].s;if(!s||s.m!==DR.Wd.M.id||s.x==null)continue;x.fillStyle='#38c8ff';x.strokeStyle='#05202c';x.lineWidth=r>3?2:1;x.beginPath();x.arc(X(NET.peers[id].x??s.x),X(NET.peers[id].z??s.z),r,0,7);x.fill();x.stroke();
+  if(r>3){x.font='bold 14px system-ui,sans-serif';x.fillStyle='#bdeeff';x.fillText(String(s.n||'').slice(0,14),X(NET.peers[id].x??s.x)+r+3,X(NET.peers[id].z??s.z)+5)}}}
+/* в гараже продолжаем отмечаться в комнате */
+setInterval(()=>{if(NET.on&&!(DR&&DR.on))mqPub('s',netState());if(NET.on&&!(DR&&DR.on)){const now=performance.now();for(const id in NET.peers)if(now-NET.peers[id].t>8000)netDrop(id);NET.pingT-=2;if(NET.pingT<=0){NET.pingT=25;mqSend(0xC0,[])}}},2000);
+
+{const _ds=A.dset,_dr=A.drad;A.dset=v=>{$('donl').classList.add('hidden');_ds(v)};A.drad=v=>{$('donl').classList.add('hidden');_dr(v)}}
+if(S.nick==null)S.nick='';
 
 function lapCheck(prev,cur){const tk=DR.Wd.trk,n=tk.n,L=DR.lap,q=Math.floor(cur/(n/4));if(q===L.cp+1&&q<4)L.cp=q;
   if(prev>n*.9&&cur<n*.1){if(L.cp>=3){const tm=performance.now()-L.t0;S.laps=(S.laps||0)+1;let msg='🏁 Круг '+(L.n+1)+': '+tfmt(tm);if(!S.bestLap||tm<S.bestLap){S.bestLap=tm;msg+=' — рекорд!'}S.coins+=300;dMsg(msg+' · +300 ₽',3000);tone([523,784,1046],.18,'triangle',.09);L.n++;save()}L.t0=performance.now();L.cp=0}}
