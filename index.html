@@ -1301,7 +1301,7 @@ let R3=null,POST=null,PQ=null,ENV=null,ENVK='';const MC={},ENVS={};
 function loadThree(){if(window.THREE)return true;try{const s=document.createElement('script');s.textContent=$('three-src').textContent;document.head.appendChild(s)}catch(e){}return !!window.THREE}
 function getR(){const aa=!!QP[QK()].aa;if(R3&&R3.aa===aa)return R3;let par=null;
   if(R3){par=R3.domElement.parentElement;postFree();if(GP)gStop();try{R3.dispose();R3.forceContextLoss()}catch(e){}R3=null}
-  try{const c=document.createElement('canvas');R3=new THREE.WebGLRenderer({canvas:c,antialias:aa,powerPreference:'high-performance'});R3.aa=aa;R3.setClearColor(0x0b0e15);if(par)par.appendChild(c)}catch(e){R3=null}return R3}
+  try{const c=document.createElement('canvas');R3=new THREE.WebGLRenderer({canvas:c,antialias:aa,powerPreference:'high-performance'});R3.aa=aa;tuneForDevice();R3.setClearColor(0x0b0e15);if(par)par.appendChild(c)}catch(e){R3=null}return R3}
 const mc=(k,f)=>MC[k]||(MC[k]=f());
 function cvs(w,h,f){const c=document.createElement('canvas');c.width=w;c.height=h;f(c.getContext('2d'),w,h);return c}
 function ctex(c,rx,ry){const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;if(rx)t.repeat.set(rx,ry||1);if(R3)t.anisotropy=Math.min(QP[QK()].aniso,R3.capabilities.getMaxAnisotropy());return t}
@@ -1349,7 +1349,7 @@ function fsq(mat,tg){if(!PQ){const T=THREE,s=new T.Scene(),m=new T.Mesh(new T.Pl
 function renderFrame(sc,cam){const P=postGet(Q());if(!P){R3.setRenderTarget(null);R3.render(sc,cam);return}
   const m=P.mats;R3.setRenderTarget(P.rt);R3.render(sc,cam);
   if(P.bl){m.br.uniforms.tD.value=P.rt.texture;m.br.uniforms.rp.value.set(1/P.w,1/P.h);fsq(m.br,P.a);
-    for(const s of[1,2]){m.bl.uniforms.tD.value=P.a.texture;m.bl.uniforms.dir.value.set(s/P.qw,0);fsq(m.bl,P.b);m.bl.uniforms.tD.value=P.b.texture;m.bl.uniforms.dir.value.set(0,s/P.qh);fsq(m.bl,P.a)}}
+    for(const s of(Q().bit===1?[1.6]:[1,2])){m.bl.uniforms.tD.value=P.a.texture;m.bl.uniforms.dir.value.set(s/P.qw,0);fsq(m.bl,P.b);m.bl.uniforms.tD.value=P.b.texture;m.bl.uniforms.dir.value.set(0,s/P.qh);fsq(m.bl,P.a)}}
   const u=m.comp.uniforms;u.tD.value=P.rt.texture;u.tB.value=P.bl?P.a.texture:P.rt.texture;u.rp.value.set(1/P.w,1/P.h);fsq(m.comp,null)}
 
 /* ---------- окружение для отражений (панорама неба и города) ---------- */
@@ -1374,6 +1374,15 @@ function patchPaint(m,scr,fres){if(!scr&&!fres)return;const key='pp'+(scr?1:0)+(
     if(fres){sh.uniforms.envK=ENVU;f=f.replace('#include <common>','#include <common>\nuniform float envK;');const ch=THREE.ShaderChunk.envmap_fragment.replace(/specularStrength \* reflectivity/g,'specularStrength * reflectivity * fresF').replace('#ifdef USE_ENVMAP','#ifdef USE_ENVMAP\n\tfloat fresF=(.22+.78*pow(1.-clamp(dot(normal,normalize(vViewPosition)),0.,1.),3.))*envK;'+(scr?'fresF*=(1.-.85*scrK);':''));f=f.replace('#include <envmap_fragment>',ch)}
     sh.vertexShader=v;sh.fragmentShader=f}}
 function chromeM(){const q=QP[QK()],k='chrome'+QK()+(q.env?ENVK:'');return mc(k,()=>{const m=new THREE.MeshPhongMaterial({color:0xc9ced6,shininess:120,specular:0xffffff});if(q.env&&ENV){m.envMap=ENV;m.combine=THREE.MixOperation;m.reflectivity=.72;patchPaint(m,false,true)}return m})}
+
+/* ---------- подстройка под телефон: слабым видеочипам (Adreno 6xx младше 640, Mali G5x и т.п.) — облегчённое «высокое» ---------- */
+let GPUT=null;
+function gpuTier(){try{const gl=R3.getContext(),e=gl.getExtension('WEBGL_debug_renderer_info'),r=String((e?gl.getParameter(e.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER))||'');GPUT_NAME=r;
+  const m=r.match(/Adreno[^0-9]*(\d{3})/i);if(m){const n=+m[1];return n<640?'weak':n<730?'mid':'strong'}if(/Mali-(G5\d|G6\d|G7[1-6]|T\d)|PowerVR|Mali-4/i.test(r))return 'weak';if(/Apple|Mali-G7[7-9]|Mali-G[7-9]\d\d|Immortalis|Xclipse/i.test(r))return 'strong';return 'mid'}catch(e){return 'mid'}}
+var GPUT_NAME='';
+function tuneForDevice(){if(GPUT)return;const touch=matchMedia('(pointer:coarse)').matches;GPUT=touch?gpuTier():'desk';if(!touch)return;
+  Object.assign(QP.high,{pr:1.3,far:380,npc:40,sev:3,bit:1});Object.assign(QP.ultra,{pr:1.7,far:480,npc:52,sev:2,bit:1});Object.assign(QP.mid,{pr:1.1,npc:34});
+  if(GPUT==='weak'){Object.assign(QP.high,{bcast:0,pr:1,far:320,npc:28,shadow:512,sev:4,bloom:0,aniso:4});Object.assign(QP.ultra,{pr:1.2,far:380,npc:36,shadow:1024,sev:3,bloom:1,aniso:8});Object.assign(QP.mid,{pr:.95,far:300,npc:26});Object.assign(QP.low,{pr:.8,npc:20});Object.assign(QP.vlow,{npc:14})}}
 
 
 /* ---------- номер для 3D: рисуем на canvas ---------- */
@@ -1771,6 +1780,9 @@ function buildWorld(M){
   const Wd={M,sc,sky,sun,objs:[],rects:[],circs:[],traffic:[],far,kind:M.kind,fall:[],clock:0,q};
   if(M.kind==='city')buildCity(Wd,M);else if(M.kind==='track')buildTrack(Wd,M);else buildStunt(Wd,M);
   if(q.shadow)sc.traverse(o=>{if(o.isMesh){if(!o.userData.noCast&&!(o.material&&o.material.transparent))o.castShadow=true;o.receiveShadow=true}});
+  // статичный мир не пересчитывает матрицы каждый кадр (экономия процессора)
+  const dyn=new Set(Wd.traffic.map(t=>t.car.g));dyn.add(sky);dyn.add(sun);dyn.add(sun.target);sc.updateMatrixWorld(true);
+  const freeze=o=>{if(dyn.has(o))return;o.matrixAutoUpdate=false;for(const ch of o.children)freeze(ch)};sc.children.forEach(freeze);
   return Wd}
 
 /* ---------- город ---------- */
@@ -1836,7 +1848,7 @@ function buildCity(Wd,M){
   {for(let i=-2;i<NB+2;i++)for(let j=-2;j<NB+2;j++){if(i>=0&&j>=0&&i<NB&&j<NB)continue;const K=getK('o'+(i<0?0:i>=NB?2:1)+(j<0?0:j>=NB?2:1),Math.min(det,1));const bx0=-HALF+i*PER+RD/2,bz0=-HALF+j*PER+RD/2;quadXZ(SB2,bx0,bz0,bx0+BLK,bz0+BLK,CURB,sideC,BLK/2.2,BLK/2.2);
       const n=det>=2?2:1,S2=BLK-2*SW,lw=(S2-3*(n-1))/n;for(let a=0;a<n;a++)for(let b=0;b<n;b++){const x0=bx0+SW+a*(lw+3),z0=bz0+SW+b*(lw+3),x1=x0+lw,z1=z0+lw,tall=rg()<Math.max(.12,M.tallP*.8)&&lw>10,h=tall?RR(M.tall[0],M.tall[1]):RR(M.bh[0],M.bh[1]),style=pickStyle(tall,h),gl=tall||style==='box'&&rg()<M.glass;
         genBld(K,M,rg,x0,z0,x1,z1,h,{c:col(gl?PK([0xd5dee6,0xc4d2dc,0xe1e7ec]):PK(M.cols)),style,face:['s','n','e','w'],gl,brick:false})}}
-    for(const k in CH){const K=CH[k];if(K.BW.p.length)sc.add(new T.Mesh(geoB(K.BW),matW));if(K.BG.p.length)sc.add(new T.Mesh(geoB(K.BG),matG));if(K.BB.p.length)sc.add(new T.Mesh(geoB(K.BB),matB))}}
+    for(const k in CH){const K=CH[k];for(const[B,m]of[[K.BW,matW],[K.BG,matG],[K.BB,matB]])if(B.p.length){const ms=new T.Mesh(geoB(B),m);ms.userData.bld=1;if(q.bcast===0||k[0]==='o')ms.userData.noCast=1;sc.add(ms)}}}
   if(SB2.p.length){const m2=new T.Mesh(geoB(SB2),swM.material);m2.userData.noCast=1;sc.add(m2)}
   backdrop(Wd,M);
   if(SP.length)sc.add(new T.Mesh(mergeC(SP),mc('vcL',()=>new T.MeshLambertMaterial({vertexColors:true}))));
@@ -1862,7 +1874,7 @@ function buildCity(Wd,M){
   Wd.missions=true}
 
 /* инстансы, разбитые на куски по площади: рисуется только то, что попадает в камеру */
-function instChunks(sc,geo,mat,items,C){const T=THREE;let x0=1e9,x1=-1e9,z0=1e9,z1=-1e9;items.forEach(it=>{x0=Math.min(x0,it.x);x1=Math.max(x1,it.x);z0=Math.min(z0,it.z);z1=Math.max(z1,it.z)});
+function instChunks(sc,geo,mat,items,C){const T=THREE;if(GPUT==='weak')C=1;let x0=1e9,x1=-1e9,z0=1e9,z1=-1e9;items.forEach(it=>{x0=Math.min(x0,it.x);x1=Math.max(x1,it.x);z0=Math.min(z0,it.z);z1=Math.max(z1,it.z)});
   const cw=(x1-x0)/C+1e-3,ch=(z1-z0)/C+1e-3,G=new Map(),ref=new Array(items.length);items.forEach((it,i)=>{const k=Math.min(C-1,Math.floor((it.x-x0)/cw))*C+Math.min(C-1,Math.floor((it.z-z0)/ch));if(!G.has(k))G.set(k,[]);G.get(k).push(i)});
   const out=[];for(const[k,ids]of G){let a=1e9,b=-1e9,c=1e9,d=-1e9;ids.forEach(i=>{const it=items[i];a=Math.min(a,it.x);b=Math.max(b,it.x);c=Math.min(c,it.z);d=Math.max(d,it.z)});
     const g=geo.clone();g.boundingSphere=new T.Sphere(new T.Vector3((a+b)/2,6,(c+d)/2),Math.hypot(b-a,d-c)/2+(items[ids[0]].r||16));const im=new T.InstancedMesh(g,mat,ids.length);im.frustumCulled=true;
@@ -1941,7 +1953,7 @@ function updNPC(t,dt,Wd,st){if(t.phys){t.car.g.visible=true;npcPhys(t,dt,Wd);ret
   if(!t.turn){t.s+=t.v*dt;if(t.s>=t.s1)npcTurn(t)}else{const T=t.turn;T.u+=t.v*dt/T.len;if(T.u>=1){t.a+=h[0];t.b+=h[1];t.h=T.h2i;t.lane=T.L2;t.s=T.e+(T.u-1)*T.len;t.turn=null;npcPlan(t)}}
   t.px=px;t.pz=pz;const g=t.car.g,fd=Math.abs(px-st.x)+Math.abs(pz-st.z);g.visible=fd<Wd.far*1.15;if(!g.visible)return;g.position.set(px,0,pz);g.rotation.y=Math.atan2(-dz,dx);
   // вдали — упрощённая машина: только кузов и стёкла (колёса, фары, номера скрыты)
-  const near=fd<75;if(near!==t.near){t.near=near;for(const o of t.car.lod)o.visible=near}
+  const near=fd<58;if(near!==t.near){t.near=near;for(const o of t.car.lod)o.visible=near}
   if(near){const sa=t.turn?(t.next==='r'?-.4:t.next==='l'?.3:0):0;t.car.wheels.forEach(w=>{w.ws.rotation.z-=t.v*dt/t.car.pr.wr;if(w.front)w.wg.rotation.y+=(sa-w.wg.rotation.y)*Math.min(1,dt*6)})}
   if(brk!==t.brk){t.brk=brk;t.car.tlM.color.setHex(brk?0xff2a2a:0x7a0c10)}
   if(t.car.flash&&g.visible){const f=t.car.flash,ph=Math.floor(Wd.clock*5)%2;f[0].color.setHex(ph?0xff2020:0x440000);f[1].color.setHex(ph?(f[2]==='fire'?0x440000:0x000044):(f[2]==='fire'?0xff2020:0x2a5cff))}}
@@ -2270,11 +2282,13 @@ function bindOrbit(){const el=$('dcan'),P=new Map();let pd=0;
 /* ---------- игровой цикл ---------- */
 const angD=(a,b)=>{let d=a-b;while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d+=Math.PI*2;return d};
 function loop(t,id){if(!DR||!DR.on||id!==LOOPID)return;requestAnimationFrame(tt=>loop(tt,id));const q=Q();if(q.skip){DR.skip=!DR.skip;if(DR.skip)return}let dt=(t-DR.last)/1000;DR.last=t;if(!(dt>0))return;dt=Math.min(dt,.066);
-  step(dt);if(R3.shadowMap.enabled){R3.shadowMap.autoUpdate=false;DR.sf=(DR.sf||0)+1;R3.shadowMap.needsUpdate=DR.sf%2===0}renderFrame(DR.Wd.sc,DR.cam);
+  step(dt);if(R3.shadowMap.enabled){R3.shadowMap.autoUpdate=false;DR.sf=(DR.sf||0)+1;R3.shadowMap.needsUpdate=DR.sf%(Q().sev||2)===0}renderFrame(DR.Wd.sc,DR.cam);
   DR.fpsN++;if(t-DR.fpsT>1500){const fps=DR.fpsN*1000/(t-DR.fpsT);DR.fpsN=0;DR.fpsT=t;const tgt=q.skip?27:44;
     if(!S.res||S.res==='auto'){if(fps<tgt&&DR.pr>.55){DR.pr=Math.max(.55,DR.pr-.15);fitR()}else if(fps>(q.skip?29:57)&&DR.pr<DR.prMax){DR.pr=Math.min(DR.prMax,DR.pr+.1);fitR()}}
     // авто-качество: если всё равно тормозит — отключаем тени, потом постобработку
-    if(S.gfx==='auto'&&fps<32){if(++DR.slow>=3){DR.slow=0;const b=DR.qd||Object.assign({},QP[QK()]);if(b.shadow){b.shadow=0;DR.Wd.sun.castShadow=false;R3.shadowMap.enabled=false}else if(b.post){b.post=0;b.bloom=0}else if(b.post===0&&b.det)b.det=b.det;DR.qd=b}}else DR.slow=0}}
+    if(fps<32&&(S.gfx==='auto'||DR.pr<=.6||(S.res&&S.res!=='auto'))){if(++DR.slow>=3){DR.slow=0;const b=DR.qd||Object.assign({},QP[QK()]);
+      // мягкая разгрузка без смены уровня: реже тени → без свечения → (только в «Авто») без теней и постобработки
+      if(b.shadow&&(b.sev||2)<6)b.sev=(b.sev||2)+2;else if(b.bloom)b.bloom=0;else if(S.gfx==='auto'&&b.shadow){b.shadow=0;DR.Wd.sun.castShadow=false;R3.shadowMap.enabled=false}else if(S.gfx==='auto'&&b.post){b.post=0}DR.qd=b}}else DR.slow=0}}
 function step(dt){const st=DR.st,c=DR.cdef,Wd=DR.Wd,car=DR.car,inp=readInput(),dead=st.dmg>=100;const ctl={gas:inp.gas,brk:inp.brk,steer:inp.steer};if(st.wreck||st.air){inp.gas=inp.brk=inp.drift=inp.nitro=false;inp.steer=0}if(st.wreck){st.v*=Math.exp(-dt*2.2);wreckStep(dt,st)}
   Wd.clock+=dt;DR.tlT+=dt;if(Wd.tl&&DR.tlT>.2){DR.tlT=0;updLights(Wd)}fallTick(Wd,dt);
   if(!S.todMode||S.todMode==='cycle')S.tod=((S.tod==null?40:S.tod)+dt)%(TOD.day+TOD.night);DR.todT+=dt;if(DR.todT>.12){DR.todT=0;DR.tod=curTod();DR.nw=applyTOD(Wd,DR.tod)}
