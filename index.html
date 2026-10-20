@@ -616,7 +616,7 @@ const regMult=p=>p.c==='by'?(p.reg==='7'?2:1):p.c==='ae'?(p.reg==='DUBAI'?6:p.re
 const regText=p=>p.c==='ru'?'регион '+p.reg+(regName(p.reg)?' · '+regName(p.reg):''):p.c==='by'?'регион '+p.reg:p.c==='ae'?'эмират '+p.reg:p.c==='us'?'штат '+(US_ST[p.reg]||p.reg):p.c==='fr'?'департамент '+p.reg:'';
 const regName=r=>GR.msk.includes(r)?GRN.msk:GR.spb.includes(r)?GRN.spb:GR.mo.includes(r)?GRN.mo:'';
 
-const def={coins:50000,usd:0,inv:[],luck:50,minPrice:20,cost:100,pin:'1234',auto:false,ceil:0,low:false,al:0,cap:50,safeCap:10,xp:0,lvl:0,gen:0,best:0,cnt:[0,0,0,0,0],tyc:{},seen:[],soldSum:0,ach:{},tasks:null,tday:'',ad:'',
+const def={coins:50000,usd:0,inv:[],luck:50,minPrice:20,cost:100,pin:'',pinH:'',auto:false,ceil:0,low:false,al:0,cap:50,safeCap:10,xp:0,lvl:0,gen:0,best:0,cnt:[0,0,0,0,0],tyc:{},seen:[],soldSum:0,ach:{},tasks:null,tday:'',ad:'',
   country:'ru',types:{civil:true,taxi:false,police:false,mil:false},group:'all',sort:'date',asc:false,fil:{c:'all',ty:'all',r:[]},
   free:false,pmult:1,theme:'dark',gfx:'auto',snd:true,sndV:70,mus:false,musV:40,vib:true,voice:true,showSkip:true,cars:{sv_kombi:1},car:'sv_kombi',carCol:{},dmg:{},map:'msk',ctrl:'pedals',cam:'3',plateId:null,gsel:null,km:0,kmAcc:0,driveT:0,playT:0,deliv:0,laps:0,jumps:0,bestLap:0,bestJump:0,tutDone:false,skipEpic:false,skipLeg:false,res:'auto',land:true,btnS:100,btnO:100,todMode:'cycle',tod:40,radV:60,radOn:null,radT:'b1'};
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==='object')return Object.assign(JSON.parse(JSON.stringify(def)),s,{types:Object.assign({},def.types,s.types),fil:Object.assign({},def.fil,s.fil)})}catch(e){}return JSON.parse(JSON.stringify(def))}
@@ -1091,7 +1091,7 @@ function applyTheme(){setTimeout(()=>{rcache();fxSize()},0);document.documentEle
   const m=document.querySelector('meta[name=theme-color]');if(m)m.content=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()}
 function oddsTbl(l){const w=wts(l),s=w.reduce((a,b)=>a+b),e=$('odds');if(e)e.innerHTML=w.map((x,i)=>'<tr><td style="color:'+RV(i)+'">'+RN[i]+'</td><td>'+(x/s*100).toFixed(2).replace('.',',')+'%</td></tr>').join('')}
 function admHtml(){
-  if(!admOK)return '<div class="f"><label for="pin" style="margin-top:0">PIN администратора</label><input type="password" id="pin" inputmode="numeric" autocomplete="off" placeholder="••••"><button class="btn" data-a="enter">Войти</button><div class="hint" id="pinerr" style="margin-top:8px">По умолчанию: 1234</div></div>';
+  if(!admOK)return '<div class="f"><label for="pin" style="margin-top:0">Пароль администратора</label><input type="password" id="pin" autocomplete="off" placeholder="Пароль"><button class="btn" data-a="enter">Войти</button><div class="hint" id="pinerr" style="margin-top:8px"></div></div>';
   const qb=(a,v,t)=>'<button class="qb" data-a="'+a+'" data-v="'+v+'">'+t+'</button>';
   return '<div class="f adm"><div class="ah"><h3>Шансы</h3><button class="ghost" data-a="admout">Выйти</button></div>'
   +'<label for="luck">Удача: <b id="luckv">'+S.luck+'</b></label><input type="range" id="luck" min="0" max="100" value="'+S.luck+'"><div class="hint">0 — почти одни обычные, 50 — стандартные шансы, 100 — редкие выпадают намного чаще.</div><table id="odds" style="margin-top:8px"></table>'
@@ -1115,11 +1115,23 @@ function admHtml(){
   +'<button class="btn gray" data-a="alltasks">Выполнить задания дня</button>'
   +'<button class="btn gray" data-a="newtasks">Обновить задания</button>'
   +'<button class="btn gray" data-a="clearcol" id="clearcol">Очистить коллекцию (кроме сейфа)</button></div>'
-  +'<div class="f adm"><h3>Безопасность</h3><label for="newpin">Новый PIN</label><div class="irow"><input type="password" id="newpin" inputmode="numeric" autocomplete="off" placeholder="Минимум 4 цифры"><button class="btn" data-a="setpin">Сменить</button></div></div>'}
+  +'<div class="f adm"><h3>Безопасность</h3><label for="newpin">Новый пароль</label><div class="irow"><input type="password" id="newpin" autocomplete="new-password" placeholder="Минимум 6 символов"><button class="btn" data-a="setpin">Сменить</button></div></div>'}
 function admWire(){if(!admOK)return;oddsTbl(S.luck);
   $('luck').addEventListener('input',e=>{$('luckv').textContent=e.target.value;oddsTbl(+e.target.value)});
   $('luck').addEventListener('change',e=>{S.luck=+e.target.value;save();toast('Удача: '+S.luck)});
   $('pmult').addEventListener('input',e=>{$('pmv').textContent='×'+e.target.value})}
+/* пароль админки хранится только как SHA-256 */
+const ADMH='68aa070167d841ce572e4c72e26c2516a413b5e95c2b4e9b1ebafe74b26380ff';
+function sha256js(str){const b=new TextEncoder().encode(str),K=[],H=[];let n=2,c=0;const fr=x=>(x-Math.floor(x))*4294967296|0;
+  while(c<64){let p=true;for(let d=2;d*d<=n;d++)if(n%d===0){p=false;break}if(p){if(c<8)H[c]=fr(Math.pow(n,1/2));K[c++]=fr(Math.pow(n,1/3))}n++}
+  const l=b.length,L=((l+9+63)>>6)<<6,m=new Uint8Array(L);m.set(b);m[l]=0x80;const dv=new DataView(m.buffer);dv.setUint32(L-4,l*8);dv.setUint32(L-8,Math.floor(l/536870912));
+  const r=(x,k)=>x>>>k|x<<(32-k),w=new Array(64);
+  for(let o=0;o<L;o+=64){for(let i=0;i<16;i++)w[i]=dv.getUint32(o+i*4);for(let i=16;i<64;i++){const a=w[i-15],q=w[i-2];w[i]=(w[i-16]+(r(a,7)^r(a,18)^a>>>3)+w[i-7]+(r(q,17)^r(q,19)^q>>>10))|0}
+    let[a,bb,cc,d,e,f,g,h]=H;for(let i=0;i<64;i++){const t1=(h+(r(e,6)^r(e,11)^r(e,25))+(e&f^~e&g)+K[i]+w[i])|0,t2=((r(a,2)^r(a,13)^r(a,22))+(a&bb^a&cc^bb&cc))|0;h=g;g=f;f=e;e=(d+t1)|0;d=cc;cc=bb;bb=a;a=(t1+t2)|0}
+    H[0]=H[0]+a|0;H[1]=H[1]+bb|0;H[2]=H[2]+cc|0;H[3]=H[3]+d|0;H[4]=H[4]+e|0;H[5]=H[5]+f|0;H[6]=H[6]+g|0;H[7]=H[7]+h|0}
+  return H.map(x=>(x>>>0).toString(16).padStart(8,'0')).join('')}
+async function sha256(str){try{if(crypto&&crypto.subtle){const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return[...new Uint8Array(d)].map(x=>x.toString(16).padStart(2,'0')).join('')}}catch(e){}return sha256js(str)}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target&&e.target.id==='pin')A.enter();if(e.key==='Enter'&&e.target&&e.target.id==='newpin')A.setpin()});
 function admRe(){$('admbox').innerHTML=admHtml();admWire()}
 
 /* ---------- действия ---------- */
@@ -1156,7 +1168,7 @@ const A={
   catinfo(v){const r=+v;$('mc').innerHTML='<div class="mb"><h3 style="color:'+RV(r)+'">'+RN[r]+'</h3><p class="hint" style="text-align:center;font-size:14px">'+RINFO[r]+'</p><button class="btn" data-a="mdclose">Понятно</button></div>';$('md').classList.remove('hidden')},
   country(v){S.country=v;save();renderSet();top_()},
   theme(v){S.theme=v;save();applyTheme();renderTheme()},
-  enter(){if($('pin').value===S.pin){admOK=true;admRe();toast('Вход в админку')}else{$('pinerr').textContent='Неверный PIN';SFX.err()}},
+  async enter(){const h=await sha256($('pin').value);if(h===(S.pinH||ADMH)){admOK=true;admRe();toast('Вход в админку')}else{$('pinerr').textContent='Неверный пароль';SFX.err()}},
   admout(){admOK=false;admRe()},
   force(v){if(!admOK)return;forceR=+v;go('home');tap()},
   giveq(v){S.coins+=+v;save();admRe();toast('Выдано '+fmt(+v))},
@@ -1170,12 +1182,12 @@ const A={
   newtasks(){S.tasks=null;S.tday='';ensureTasks();toast('Задания обновлены')},
   clearcol(){const b=$('clearcol');if(!b.dataset.ok){b.dataset.ok=1;b.textContent='Нажми ещё раз для очистки';setTimeout(()=>{if(b.isConnected){delete b.dataset.ok;b.textContent='Очистить коллекцию (кроме сейфа)'}},3000);return}
     S.inv=S.inv.filter(p=>p.safe);save();admRe();toast('Коллекция очищена')},
-  setpin(){const v=$('newpin').value.trim();if(!/^\d{4,}$/.test(v)){toast('PIN — минимум 4 цифры');return}S.pin=v;save();$('newpin').value='';toast('PIN изменён')},
+  async setpin(){const v=$('newpin').value;if(v.length<6){toast('Пароль — минимум 6 символов');return}S.pinH=await sha256(v);S.pin='';save();$('newpin').value='';toast('Пароль изменён')},
   admsave(){S.luck=+$('luck').value;S.minPrice=Math.max(0,+$('minp').value||0);S.cost=Math.max(0,Math.floor(+$('cost').value||0));S.pmult=Math.max(.1,+$('pmult').value||1);save();admRe();top_();toast('Сохранено')},
   give(){const n=+$('give').value||0;if(n>0){S.coins+=n;save();admRe();toast('Выдано '+fmt(n))}},
   givu(){const n=+$('givu').value||0;if(n>0){S.usd+=n;save();admRe();toast('Выдано '+n+' $')}},
   reset(){if(!rst){rst=true;$('reset').textContent='Нажми ещё раз для сброса';setTimeout(()=>{rst=false;const b=$('reset');if(b)b.textContent='Сбросить прогресс'},3000);return}
-    rst=false;const keep={theme:S.theme,snd:S.snd,sndV:S.sndV,mus:S.mus,musV:S.musV,vib:S.vib,gfx:S.gfx,res:S.res,land:S.land,btnS:S.btnS,btnO:S.btnO,todMode:S.todMode,radV:S.radV,radOn:S.radOn,pin:S.pin,luck:S.luck,cost:S.cost,minPrice:S.minPrice,free:S.free,pmult:S.pmult,cap:S.cap,safeCap:S.safeCap};
+    rst=false;const keep={theme:S.theme,snd:S.snd,sndV:S.sndV,mus:S.mus,musV:S.musV,vib:S.vib,gfx:S.gfx,res:S.res,land:S.land,btnS:S.btnS,btnO:S.btnO,todMode:S.todMode,radV:S.radV,radOn:S.radOn,pin:S.pin,pinH:S.pinH,luck:S.luck,cost:S.cost,minPrice:S.minPrice,free:S.free,pmult:S.pmult,cap:S.cap,safeCap:S.safeCap};
     S=Object.assign(JSON.parse(JSON.stringify(def)),keep);cur=null;sel.clear();save();toast('Прогресс сброшен');go('home')}
 };
 function refresh(){if(view==='col'||view==='safe')renderCol();if(view==='garage')renderGarage();top_()}
