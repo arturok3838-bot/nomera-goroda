@@ -403,7 +403,19 @@ body.driving{overflow:hidden}
 .dright{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 #dmoney{background:rgba(10,14,24,.55);border-radius:12px;padding:6px 10px;font-weight:700;font-size:14px;text-align:right}#dmoney small{display:block;font-weight:400;font-size:10.5px;color:#c9d2e0}
 .drow{display:flex;gap:6px}
-#dmap{position:absolute;right:10px;top:calc(124px + var(--sat));width:104px;height:104px;border-radius:50%;border:2px solid rgba(255,255,255,.35);background:#141820;pointer-events:none}
+#dmap{position:absolute;right:10px;top:calc(124px + var(--sat));width:104px;height:104px;border-radius:50%;border:2px solid rgba(255,255,255,.35);background:#141820;pointer-events:auto;cursor:pointer}
+#dkeys{position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;font:600 13px/1.55 system-ui,sans-serif;color:rgba(255,255,255,.66);text-shadow:0 1px 2px rgba(0,0,0,.9),0 0 6px rgba(0,0,0,.5);z-index:3;max-width:250px}
+#dkeys kbd{display:inline-block;min-width:20px;padding:0 5px;margin-right:2px;border:1px solid rgba(255,255,255,.4);border-radius:5px;background:rgba(0,0,0,.18);font:700 11px/18px system-ui,sans-serif;text-align:center;color:rgba(255,255,255,.8)}
+#dkeys .t{opacity:.8;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+#dkeys.mini>div:not(.k){display:none}#dkeys .k{opacity:.7;margin-top:4px;font-size:11px}
+@media (pointer:coarse){#dkeys{display:none!important}}
+#dbig{position:absolute;inset:0;z-index:30;background:rgba(6,8,14,.72);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;backdrop-filter:blur(3px)}
+#dbigc{border-radius:14px;border:2px solid rgba(180,75,255,.55);box-shadow:0 10px 40px rgba(0,0,0,.6);cursor:crosshair;touch-action:none;background:#141820}
+#dbig .bh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;font:600 14px system-ui,sans-serif;color:#eee}
+#dbig .bh b{color:#d9b3ff;font-weight:700}
+#dbig .bh button{border:0;border-radius:10px;padding:8px 14px;font:700 13px system-ui,sans-serif;background:#2a2f3c;color:#fff;cursor:pointer}
+#dbig .bh button.p{background:#8a2be2}
+#dbig .bt{font:500 12px system-ui,sans-serif;color:rgba(255,255,255,.55)}
 #darr{position:absolute;left:50%;top:calc(92px + var(--sat));margin-left:-26px;width:52px;height:52px;pointer-events:none;transition:transform .1s linear}
 #darr svg{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.55))}
 #drep{position:absolute;left:10px;top:calc(124px + var(--sat));background:linear-gradient(#e6563f,#c63b28);color:#fff;border-radius:14px;padding:8px 12px;font-size:20px;font-weight:700;display:flex;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(0,0,0,.4)}
@@ -561,7 +573,9 @@ body.driving{overflow:hidden}
 <div id="drive" class="hidden">
   <div id="dcan"></div>
   <div class="dtop"><button class="dbtn" data-a="dexit" aria-label="Выйти в гараж">✕</button><div class="dinfo"><b id="dcity"></b><span id="dmis"></span><div class="dhpw"><i id="dhp"></i></div></div><div class="dright"><div id="dmoney"></div><div class="drow"><button class="dbtn" data-a="drad" aria-label="Музыка">🎵</button><button class="dbtn" data-a="dset" aria-label="Настройки">⚙️</button><button class="dbtn" data-a="dhorn" aria-label="Сигнал">📯</button><button class="dbtn" id="dcambtn" data-a="dcam">🎥</button></div><button class="dbtn hidden" id="dorb" data-a="dorb">⟲ Камера</button></div></div>
-  <canvas id="dmap" width="240" height="240"></canvas>
+  <canvas id="dmap" data-a="dbig" title="Карта (E)" width="240" height="240"></canvas>
+  <div id="dkeys" aria-hidden="true"><div class="t">Управление</div><div><kbd>W</kbd><kbd>↑</kbd> газ</div><div><kbd>S</kbd><kbd>↓</kbd> тормоз и назад</div><div><kbd>A</kbd><kbd>D</kbd><kbd>← →</kbd> руль</div><div><kbd>Пробел</kbd> тормоз</div><div><kbd>Shift</kbd> дрифт (ручник)</div><div><kbd>N</kbd> нитро</div><div><kbd>E</kbd> карта и маршрут</div><div><kbd>C</kbd> камера 1-е / 3-е лицо</div><div><kbd>H</kbd> сигнал</div><div><kbd>R</kbd> ремонт</div><div>Мышь — осмотр, колёсико — зум</div><div class="k"><kbd>K</kbd> скрыть / показать подсказки</div></div>
+  <div id="dbig" class="hidden"><canvas id="dbigc" width="900" height="900"></canvas><div class="bh"><b id="dbigi"></b><button data-a="dwpclr">Сбросить точку</button><button class="p" data-a="dbigx">Закрыть (E)</button></div><div class="bt">Нажми на дорогу — маршрут построится сам · нажми на точку ещё раз, чтобы убрать</div></div>
   <div id="darr" class="hidden"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 44V8M24 6 11.5 18.5M24 6l12.5 12.5" stroke="#15171d" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M24 44V8M24 6 11.5 18.5M24 6l12.5 12.5" stroke="#ffd23f" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
   <button id="drep" class="hidden" data-a="drepair"></button>
   <div id="dspd"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="gk" cx="60" cy="60" r="53"/><circle class="gt" cx="60" cy="60" r="44"/><circle class="gf" id="dspa" cx="60" cy="60" r="44"/></svg><b>0</b><small>км/ч</small><em>N</em></div>
@@ -1005,8 +1019,9 @@ const HELP=[
  ['💸','Как заработать','Продавай номера (по одному или «Быстрой продажей»), выполняй ежедневные задания, забирай награды за достижения. Автопродажа (за $) сама продаёт ненужные номера. За поездки: +500 ₽ за каждые 10 км, доставки, круги на трассе и дальние прыжки.'],
  ['🚗','Гараж и машины','Меню → «Гараж». Там 18 машин разных марок: у каждой скорость, разгон, управление и прочность — чем лучше, тем дороже. Первая машина бесплатная. Купленной машине можно сменить цвет, а во вкладке «Номер» — повесить любой номер из коллекции.'],
  ['🗺️','Карты','5 городов (Москва, Дубай, Лос-Анджелес, Париж, Барселона) со своими домами, светофорами и машинами, которые останавливаются на красный, с доставками и трамплинами в парках, гоночная трасса с кругами на время и соперниками и каскадёрский полигон с трамплинами и мега-рампой. Топливо бесконечное.'],
- ['🎮','Управление','В гараже → «Управление»: <b>Руль + педали</b> (◀ ▶ слева, газ и тормоз справа), <b>Стрелки</b> (▲▼◀▶ справа) или <b>Наклон телефона</b>. Тормоз на месте включает задний ход. Кнопка 🎥 переключает вид: от 3-го лица камера свободная — веди пальцем по экрану, чтобы осмотреть машину со всех сторон, двумя пальцами — приближение, ⟲ — вернуть камеру. От 1-го лица — чистый вид дороги, руль и спидометр на экране. Поездка идёт горизонтально (можно выключить в ⚙️). Размер и прозрачность кнопок — в ⚙️ или в гараже. На компьютере — стрелки/WASD, пробел, C, H, колёсико мыши.'],
- ['🌀','Дрифт, нитро, тюнинг','Держи кнопку <b>ДРИФТ</b> (ручник, на компьютере — Shift) в повороте — машину понесёт в занос, за красивый дрифт дают рубли. В гараже во вкладке <b>🔧 Тюнинг</b> прокачивай двигатель, шины, тормоза и нитро (кнопка N₂O, на компьютере — E), клей винилы и выбирай их цвет. Машины на дорогах можно толкать и сбивать: перевёрнутая машина встаёт на колёса через 10 секунд. Твоя машина тоже может кувыркаться: если заехать на трамплин под углом или в заносе, в полёте её закрутит. В воздухе газ опускает нос, тормоз поднимает, руль крутит машину. Упал на бок или на крышу — через 10 секунд машина встанет сама, или нажми «⟲ На колёса».'],
+ ['🎮','Управление','В гараже → «Управление»: <b>Руль + педали</b> (◀ ▶ слева, газ и тормоз справа), <b>Стрелки</b> (▲▼◀▶ справа) или <b>Наклон телефона</b>. Тормоз на месте включает задний ход. Кнопка 🎥 переключает вид: от 3-го лица камера свободная — веди пальцем по экрану, чтобы осмотреть машину со всех сторон, двумя пальцами — приближение, ⟲ — вернуть камеру. От 1-го лица — чистый вид дороги, руль и спидометр на экране. Поездка идёт горизонтально (можно выключить в ⚙️). Размер и прозрачность кнопок — в ⚙️ или в гараже. На компьютере — стрелки/WASD, пробел, Shift, N, C, H, R, E и колёсико мыши; подсказки по клавишам видны слева (K — скрыть).'],
+ ['🗺️','Карта и маршрут','Нажми на мини-карту (на компьютере — клавиша <b>E</b>), откроется большая карта. Нажми на любую дорогу — поставится точка и сразу построится кратчайший маршрут фиолетовой линией. Над машиной появится фиолетовая стрелка: она показывает, куда ехать. Без точки стрелка ведёт к грузу доставки. Нажми на точку ещё раз или «Сбросить точку», чтобы убрать её.'],
+ ['🌀','Дрифт, нитро, тюнинг','Держи кнопку <b>ДРИФТ</b> (ручник, на компьютере — Shift) в повороте — машину понесёт в занос, за красивый дрифт дают рубли. В гараже во вкладке <b>🔧 Тюнинг</b> прокачивай двигатель, шины, тормоза и нитро (кнопка N₂O, на компьютере — N), клей винилы и выбирай их цвет. Машины на дорогах можно толкать и сбивать: перевёрнутая машина встаёт на колёса через 10 секунд. Твоя машина тоже может кувыркаться: если заехать на трамплин под углом или в заносе, в полёте её закрутит. В воздухе газ опускает нос, тормоз поднимает, руль крутит машину. Упал на бок или на крышу — через 10 секунд машина встанет сама, или нажми «⟲ На колёса».'],
  ['🌗','День и ночь, графика','День длится 5 минут, ночь — 2 минуты: закат, звёзды, горящие окна, фонари и фары. В ⚙️ можно выбрать «всегда день» или «всегда ночь», качество графики от «очень низкого» до «очень высокого» (тени, отражения, сглаживание, свечение) и разрешение до Full HD и 4K.'],
  ['🎵','Музыка','Кнопка 🎵 в поездке: 5 встроенных треков (синтвейв, электро, фанк, лоу-фай, фонк) или добавь свои mp3 с телефона — они сохранятся в игре. Хочешь свой плеер — просто выключи музыку здесь.'],
  ['🔧','Повреждения и ремонт','Машины царапаются и мнутся при ударах, теряют бамперы, номера, зеркала, пороги, фары и спойлеры, а сильно битые дымят и едут медленнее. Деревья падают, если врезаться в них на 120 км/ч и быстрее, а фонари и светофоры — и на меньшей скорости. При 100% машина не едет. Кнопка 🔧 в поездке или в гараже чинит машину за рубли.'],
@@ -2162,8 +2177,8 @@ function bindCtl(){const box=$('dctl');box.innerHTML=ctlHtml();
 function readInput(){const k=KEYS;let steer=(k.left||k.kl?1:0)-(k.right||k.kr?1:0);
   if(S.ctrl==='tilt'&&DR.tiltRaw!=null){const v=(DR.tiltRaw-(DR.tilt0||0))/22;steer=Math.max(-1,Math.min(1,-v));if(Math.abs(steer)<.06)steer=0}
   return{gas:!!(k.gas||k.kg),brk:!!(k.brake||k.kb),steer,drift:!!(k.drift||k.kd),nitro:!!(k.nitro||k.kn)}}
-const KMAP={ShiftLeft:'kd',ShiftRight:'kd',KeyN:'kn',KeyE:'kn',ArrowUp:'kg',KeyW:'kg',ArrowDown:'kb',KeyS:'kb',Space:'kb',ArrowLeft:'kl',KeyA:'kl',ArrowRight:'kr',KeyD:'kr'};
-addEventListener('keydown',e=>{if(!DR||!DR.on)return;if(KMAP[e.code]){KEYS[KMAP[e.code]]=true;e.preventDefault()}if(e.code==='KeyC')A.dcam();if(e.code==='KeyH')horn();if(e.code==='KeyR')A.drepair()});
+const KMAP={ShiftLeft:'kd',ShiftRight:'kd',KeyN:'kn',ArrowUp:'kg',KeyW:'kg',ArrowDown:'kb',KeyS:'kb',Space:'kb',ArrowLeft:'kl',KeyA:'kl',ArrowRight:'kr',KeyD:'kr'};
+addEventListener('keydown',e=>{if(!DR||!DR.on)return;if(KMAP[e.code]){KEYS[KMAP[e.code]]=true;e.preventDefault()}if(e.code==='KeyE'&&!e.repeat){bigMap();e.preventDefault()}if(e.code==='Escape'&&DR.big)bigMap(false);if(e.code==='KeyK'&&!e.repeat)A.dkeys();if(DR.big)return;if(e.code==='KeyC')A.dcam();if(e.code==='KeyH')horn();if(e.code==='KeyR')A.drepair()});
 addEventListener('keyup',e=>{if(KMAP[e.code])KEYS[KMAP[e.code]]=false});
 addEventListener('deviceorientation',e=>{if(!DR||!DR.on||e.gamma==null)return;const ang=DR.rot?90:(screen.orientation&&screen.orientation.angle)||window.orientation||0;DR.tiltRaw=ang===90?e.beta:ang===-90||ang===270?-e.beta:e.gamma});
 
@@ -2174,16 +2189,16 @@ function engineStop(){if(DR&&DR.eng){try{DR.eng.g.gain.value=0;DR.eng.o.stop();D
 function horn(){tone([392,494],.35,'square',.06,0)}
 /* ---------- HUD ---------- */
 function dMsg(t,ms){const e=$('dmsg');e.innerHTML=t;e.classList.add('on');clearTimeout(dMsg.t);dMsg.t=setTimeout(()=>e.classList.remove('on'),ms||1800)}
-function mapBg(){const Wd=DR.Wd,c=document.createElement('canvas');c.width=c.height=240;const x=c.getContext('2d'),E=DR.ext,s=240/(E*2),X=v=>(v+E)*s;
-  x.fillStyle='rgba(20,24,32,.92)';x.fillRect(0,0,240,240);
+function mapBg(n){n=n||240;const Wd=DR.Wd,c=document.createElement('canvas');c.width=c.height=n;const x=c.getContext('2d'),E=DR.ext,s=n/(E*2),X=v=>(v+E)*s;
+  x.fillStyle='rgba(20,24,32,.92)';x.fillRect(0,0,n,n);
   if(Wd.kind==='city'){x.strokeStyle='#8b93a4';x.lineWidth=RD*s;for(let k=0;k<=NB;k++){const c0=X(-HALF+k*PER);x.beginPath();x.moveTo(c0,X(-HALF));x.lineTo(c0,X(HALF));x.stroke();x.beginPath();x.moveTo(X(-HALF),c0);x.lineTo(X(HALF),c0);x.stroke()}
     x.fillStyle='#5b6372';Wd.blocks.forEach(b=>b.rects.forEach(r=>x.fillRect(X(r[0]),X(r[1]),(r[2]-r[0])*s,(r[3]-r[1])*s)))}
   else if(Wd.kind==='track'){const t=Wd.trk;x.strokeStyle='#9aa3b5';x.lineWidth=t.TW*s;x.lineJoin='round';x.beginPath();t.P.forEach((p,i)=>i?x.lineTo(X(p.x),X(p.z)):x.moveTo(X(p.x),X(p.z)));x.closePath();x.stroke();x.fillStyle='#fff';x.fillRect(X(t.P[0].x)-3,X(t.P[0].z)-3,6,6)}
   else{x.fillStyle='#f2b705';Wd.objs.forEach(o=>{x.save();x.translate(X(o.x),X(o.z));x.rotate(-o.a||0);x.fillRect(-o.len/2*s,-o.w/2*s,o.len*s,o.w*s);x.restore()})}
-  DR.mbg=c}
+  if(n!==240)return c;DR.mbg=c}
 function drawMap(){const c=$('dmap'),x=c.getContext('2d'),E=DR.ext,s=240/(E*2),X=v=>(v+E)*s,st=DR.st;x.clearRect(0,0,240,240);x.drawImage(DR.mbg,0,0);
   if(DR.mis){x.fillStyle='#ffd23f';x.beginPath();x.arc(X(DR.mis.x),X(DR.mis.z),7,0,7);x.fill()}
-  DR.Wd.traffic.forEach(t=>{const p=t.car.g.position;x.fillStyle=t.rival?'#ff5a4a':'#c9d2e0';x.fillRect(X(p.x)-2,X(p.z)-2,4,4)});
+  DR.Wd.traffic.forEach(t=>{const p=t.car.g.position;x.fillStyle=t.rival?'#ff5a4a':'#c9d2e0';x.fillRect(X(p.x)-2,X(p.z)-2,4,4)});drawRoute(x,X,4);
   x.save();x.translate(X(st.x),X(st.z));x.rotate(-st.h);x.fillStyle='#38e07b';x.beginPath();x.moveTo(9,0);x.lineTo(-6,-6);x.lineTo(-3,0);x.lineTo(-6,6);x.closePath();x.fill();x.restore()}
 const tfmt=ms=>{const t=Math.max(0,ms)/1000,m=Math.floor(t/60),s=t-m*60;return m+':'+(s<10?'0':'')+s.toFixed(2)};
 function hud(){const st=DR.st,kmh=Math.round(Math.abs(st.v)*3.6),gear=st.v<-.3?'R':Math.abs(st.v)<.3?'N':String(Math.min(6,1+Math.floor(Math.max(0,st.v)/(DR.cdef.vmax/3.6)*5.6)));
@@ -2197,8 +2212,9 @@ function hud(){const st=DR.st,kmh=Math.round(Math.abs(st.v)*3.6),gear=st.v<-.3?'
   if(DR.Wd.kind==='track'){const t=DR.lap;mi.innerHTML='Круг '+(t.n+1)+' · '+tfmt(performance.now()-t.t0)+(S.bestLap?'<small>Рекорд '+tfmt(S.bestLap)+'</small>':'')}
   else if(DR.Wd.kind==='stunt'){mi.innerHTML='Прыжок: '+(st.air?'в воздухе…':'—')+(S.bestJump?'<small>Рекорд '+S.bestJump.toFixed(1).replace('.',',')+' м</small>':'')}
   else if(DR.mis){const d=Math.hypot(DR.mis.x-st.x,DR.mis.z-st.z);mi.innerHTML='📦 Доставка: '+Math.round(d)+' м<small>+'+fmt(DR.mis.rew)+'</small>';
-    const ang=Math.atan2(-(DR.mis.z-st.z),DR.mis.x-st.x)-st.h;$('darr').style.transform='rotate('+(-ang)+'rad)';$('darr').classList.remove('hidden')}
-  if(DR.Wd.kind!=='city')$('darr').classList.add('hidden');drawMap()}
+}
+  if(DR.wp){const d=Math.hypot(DR.wp.x-st.x,DR.wp.z-st.z);mi.innerHTML='📍 До точки: '+(d>=1000?(d/1000).toFixed(1).replace('.',',')+' км':Math.round(d)+' м')+'<small>E — карта</small>'}
+  $('darr').classList.add('hidden');drawMap();if(DR.big)bigDraw()}
 
 /* ---------- горизонтальный экран ---------- */
 function dOrient(){const dv=$('drive');if(!dv||dv.classList.contains('hidden'))return;const W=innerWidth,H=innerHeight,port=H>W,rot=port&&S.land!==false;
@@ -2250,14 +2266,14 @@ function startDrive(){if(!S.cars||!S.cars[S.car]){toast('Сначала купи
     const sm=new THREE.SpriteMaterial({map:texSmoke(),transparent:true,depthWrite:false,color:0x777777});for(let i=0;i<16;i++){const s=new THREE.Sprite(sm.clone());s.visible=false;Wd.sc.add(s);DR.smoke.push({s,t:9})}
     const spm=new THREE.SpriteMaterial({map:texSmoke(),color:0xffb040,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false});for(let i=0;i<28;i++){const s=new THREE.Sprite(spm);s.scale.setScalar(.22);s.visible=false;Wd.sc.add(s);DR.sp.push({s,t:9,life:0,v:new THREE.Vector3()})}
     $('dcan').innerHTML='';$('dcan').appendChild(R3.domElement);fitR();
-    mapBg();bindCtl();bindOrbit();setCam(S.cam||'3');engineStart();if(Wd.missions)newMission();
+    mapBg();navInit();keysHint();bindCtl();bindOrbit();setCam(S.cam||'3');engineStart();if(Wd.missions)newMission();
     DR.tod=curTod();DR.nw=applyTOD(Wd,DR.tod);radioAuto();
     $('dload').classList.add('hidden');const lid=++LOOPID;requestAnimationFrame(t=>loop(t,lid));dMsg((Wd.kind==='track'?'🏁 Проезжай круги на время!':Wd.kind==='stunt'?'🛹 Разгоняйся и прыгай с трамплинов!':'📦 Довези груз до жёлтой метки')+'<small>'+(DR.fhd?'Full HD на телефоне: без теней, ровные 30 кадров':'Проведи пальцем по экрану — осмотр машины')+'</small>',2800)},40)}
 function fitR(){if(!R3)return;const el=R3.domElement.parentElement;if(!el)return;const w=el.clientWidth||innerWidth,h=el.clientHeight||innerHeight;
   if(DR&&DR.on&&el.id==='dcan'){const pr=resPR(w,h,DR.pr);if(Math.abs(R3.getPixelRatio()-pr)>.001)R3.setPixelRatio(pr)}
   R3.setSize(w,h,false);if(DR&&DR.cam){DR.cam.aspect=w/h;DR.cam.updateProjectionMatrix()}if(GP&&GP.cam&&el.id==='gcan'){GP.cam.aspect=w/h;GP.cam.updateProjectionMatrix()}}
 addEventListener('resize',()=>{if(DR&&DR.on)dOrient();else if(GP)fitR()});
-function stopDrive(){if(!DR)return;DR.on=false;engineStop();radioStop();for(const k in KEYS)KEYS[k]=false;$('drive').classList.add('hidden');$('dset').classList.add('hidden');$('drad').classList.add('hidden');document.body.classList.remove('driving');unLand();
+function stopDrive(){if(!DR)return;if(DR.big)bigMap(false);DR.on=false;engineStop();radioStop();for(const k in KEYS)KEYS[k]=false;$('drive').classList.add('hidden');$('dset').classList.add('hidden');$('drad').classList.add('hidden');document.body.classList.remove('driving');unLand();
   const dv=$('drive');dv.style.width=dv.style.height=dv.style.transform='';
   S.dmg=S.dmg||{};S.dmg[S.car]=Math.round(DR.st.dmg);saveNow();go('garage');setTimeout(()=>{try{music()}catch(e){}},300)}
 function setCam(m){S.cam=m;const car=DR.car,cam=DR.cam;DR.orb={y:0,p:0,z:1};
@@ -2282,7 +2298,7 @@ function bindOrbit(){const el=$('dcan'),P=new Map();let pd=0;
 
 /* ---------- игровой цикл ---------- */
 const angD=(a,b)=>{let d=a-b;while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d+=Math.PI*2;return d};
-function loop(t,id){if(!DR||!DR.on||id!==LOOPID)return;requestAnimationFrame(tt=>loop(tt,id));const q=Q();if(q.skip){DR.skip=!DR.skip;if(DR.skip)return}if(DR.cap){if(t-(DR.lr||0)<DR.cap)return;DR.lr=t}let dt=(t-DR.last)/1000;DR.last=t;if(!(dt>0))return;dt=Math.min(dt,.066);
+function loop(t,id){if(!DR||!DR.on||id!==LOOPID)return;requestAnimationFrame(tt=>loop(tt,id));if(DR.big){DR.last=t;return}const q=Q();if(q.skip){DR.skip=!DR.skip;if(DR.skip)return}if(DR.cap){if(t-(DR.lr||0)<DR.cap)return;DR.lr=t}let dt=(t-DR.last)/1000;DR.last=t;if(!(dt>0))return;dt=Math.min(dt,.066);
   step(dt);if(R3.shadowMap.enabled){R3.shadowMap.autoUpdate=false;DR.sf=(DR.sf||0)+1;R3.shadowMap.needsUpdate=DR.sf%(Q().sev||2)===0}renderFrame(DR.Wd.sc,DR.cam);
   DR.fpsN++;if(t-DR.fpsT>1500){const fps=DR.fpsN*1000/(t-DR.fpsT);DR.fpsN=0;DR.fpsT=t;const tgt=q.skip?27:44;
     if(!S.res||S.res==='auto'){if(fps<tgt&&DR.pr>.55){DR.pr=Math.max(.55,DR.pr-.15);fitR()}else if(fps>(q.skip?29:57)&&DR.pr<DR.prMax){DR.pr=Math.min(DR.prMax,DR.pr+.1);fitR()}}
@@ -2341,7 +2357,7 @@ function step(dt){const st=DR.st,c=DR.cdef,Wd=DR.Wd,car=DR.car,inp=readInput(),d
   const k1=Math.floor(S.km);if(k1>k0&&(k1===10||k1===50||k1===100||k1%500===0)){dMsg('🏆 Достижение «Пробег '+nf(k1)+' км» — забери награду в меню',3200);tone([523,659,784,1046],.16,'triangle',.09)}
   if(S.kmAcc>=10000){S.kmAcc-=10000;S.coins+=500;dMsg('🛣️ +500 ₽ за 10 км!',2500);tone([660,880,1100],.15,'triangle',.08)}
   if(DR.mis){if(DR.mk){DR.mk.children[1].scale.setScalar(1+Math.sin(performance.now()/250)*.12)}if(Math.hypot(DR.mis.x-st.x,DR.mis.z-st.z)<7){const r=DR.mis.rew;S.coins+=r;S.deliv=(S.deliv||0)+1;dMsg('📦 Доставлено! +'+fmt(r),2400);tone([523,659,784,1046],.16,'triangle',.09);save();newMission()}}
-  camStep(dt,st,car);Wd.sky.position.set(st.x,0,st.z);if(Wd.sky.material.uniforms)Wd.sky.material.uniforms.t.value+=dt;
+  camStep(dt,st,car);navStep(dt);Wd.sky.position.set(st.x,0,st.z);if(Wd.sky.material.uniforms)Wd.sky.material.uniforms.t.value+=dt;
   // тень от солнца следует за машиной
   if(Wd.sun.castShadow){const s=Wd.sun,E=s.shadow.camera.right,ts=E*2/s.shadow.mapSize.x,fx=Math.round((st.x+ch*E*.35)/ts)*ts,fz=Math.round((st.z-sh*E*.35)/ts)*ts,sd=Wd.sunDir||SUN;s.target.position.set(fx,0,fz);s.position.set(fx+sd[0]*260,Math.max(40,sd[1]*260),fz+sd[2]*260);s.target.updateMatrixWorld()}
   else if(Wd.sunDir){const sd=Wd.sunDir;Wd.sun.position.set(sd[0]*260,sd[1]*260,sd[2]*260)}
@@ -2403,6 +2419,71 @@ function wreckStep(dt,st){const w=st.wreck;w.t+=dt;
 function flipBack(){const st=DR&&DR.st;if(!st||!st.wreck||st.wreck.rec!=null)return;st.wreck.rec=0;st.wreck.r0=st.roll;st.wreck.p0=st.pitch;st.v=0;tone([330,440],.12,'triangle',.06)}
 
 function disposeWorld(W){try{W.sc.traverse(o=>{if(o.geometry&&!o.isSprite)o.geometry.dispose()})}catch(e){}}
+
+/* ---------- навигация: точка на карте (E), кратчайший маршрут по дорогам, стрелка над машиной ---------- */
+const NAVC='#b44bff';
+function roadSnap(x,z){const cl=(v,a,b)=>Math.max(a,Math.min(b,v)),kx=cl(Math.round((x+HALF)/PER),0,NB),kz=cl(Math.round((z+HALF)/PER),0,NB),rx=ixC(kx),rz=ixC(kz);
+  if(Math.abs(x-rx)<=Math.abs(z-rz)){const zc=cl(z,-HALF,HALF),j=cl(Math.floor((zc+HALF)/PER),0,NB-1);return{x:rx,z:zc,A:[kx,j],B:[kx,j+1]}}
+  const xc=cl(x,-HALF,HALF),i=cl(Math.floor((xc+HALF)/PER),0,NB-1);return{x:xc,z:rz,A:[i,kz],B:[i+1,kz]}}
+function dirTo(fx,fz,tx,tz){const dx=tx-fx,dz=tz-fz;if(Math.abs(dx)<.01&&Math.abs(dz)<.01)return -1;return Math.abs(dx)>=Math.abs(dz)?(dx>0?0:2):(dz>0?1:3)}
+/* Дейкстра по перекрёсткам с учётом направления: повороты чуть дороже, чтобы маршрут был без лишних зигзагов */
+function cityRoute(sx,sz,ex,ez){const S=roadSnap(sx,sz),E=roadSnap(ex,ez),N1=NB+1,TURN=25,UT=80;
+  const same=(S.A+'')===(E.A+'')&&(S.B+'')===(E.B+'');if(same)return[{x:S.x,z:S.z},{x:E.x,z:E.z}];
+  const NS=N1*N1*4,D=new Float64Array(NS).fill(1e18),PV=new Int32Array(NS).fill(-1),done=new Uint8Array(NS),id=(i,j,d)=>(i*N1+j)*4+d;
+  for(const n of[S.A,S.B]){const d0=Math.hypot(ixC(n[0])-S.x,ixC(n[1])-S.z),dd=dirTo(S.x,S.z,ixC(n[0]),ixC(n[1]));for(let d=0;d<4;d++)if(dd<0||d===dd){const k=id(n[0],n[1],d);if(d0<D[k])D[k]=d0}}
+  for(;;){let b=-1,bv=1e17;for(let k=0;k<NS;k++)if(!done[k]&&D[k]<bv){bv=D[k];b=k}if(b<0)break;done[b]=1;
+    const d=b&3,n=b>>2,i=Math.floor(n/N1),j=n%N1;
+    for(let nd=0;nd<4;nd++){const ni=i+HD4[nd][0],nj=j+HD4[nd][1];if(ni<0||nj<0||ni>NB||nj>NB)continue;const c=bv+PER+(nd===d?0:nd===(d+2)%4?UT:TURN),k=id(ni,nj,nd);if(c<D[k]){D[k]=c;PV[k]=b}}}
+  let best=1e18,bk=-1;for(const n of[E.A,E.B]){const fd=dirTo(ixC(n[0]),ixC(n[1]),E.x,E.z),last=Math.hypot(ixC(n[0])-E.x,ixC(n[1])-E.z);
+    for(let d=0;d<4;d++){const k=id(n[0],n[1],d);if(D[k]>=1e17)continue;const c=D[k]+last+(fd<0||fd===d?0:fd===(d+2)%4?UT:TURN);if(c<best){best=c;bk=k}}}
+  const pts=[{x:E.x,z:E.z}];for(let k=bk;k>=0;k=PV[k]){const n=k>>2,p={x:ixC(Math.floor(n/N1)),z:ixC(n%N1)};const l=pts[pts.length-1];if(Math.hypot(l.x-p.x,l.z-p.z)>.01)pts.push(p)}
+  const l=pts[pts.length-1];if(Math.hypot(l.x-S.x,l.z-S.z)>.01)pts.push({x:S.x,z:S.z});return pts.reverse()}
+function navGoal(){if(DR.wp)return DR.wp;if(DR.mis&&DR.Wd.kind==='city')return DR.mis;return null}
+function navRoute(){const g=navGoal(),st=DR.st;if(!g){DR.route=null;return}
+  DR.route=DR.Wd.kind==='city'?cityRoute(st.x,st.z,g.x,g.z):[{x:st.x,z:st.z},{x:g.x,z:g.z}];DR.navG=g}
+function routeLen(r){let L=0;for(let i=1;i<r.length;i++)L+=Math.hypot(r[i].x-r[i-1].x,r[i].z-r[i-1].z);return L}
+/* точка на маршруте в ~20 м впереди — туда и смотрит стрелка */
+function navAhead(){const r=DR.route,st=DR.st;if(!r||r.length<2)return null;let left=20,px=st.x,pz=st.z;
+  for(let i=1;i<r.length;i++){const q=r[i],l=Math.hypot(q.x-px,q.z-pz);if(l>=left){const k=left/l;return{x:px+(q.x-px)*k,z:pz+(q.z-pz)*k}}left-=l;px=q.x;pz=q.z}return r[r.length-1]}
+function navInit(){const T=THREE,sc=DR.Wd.sc;sc.children.filter(o=>o.name==='navArrow').forEach(o=>sc.remove(o));
+  const sh=new T.Shape();sh.moveTo(1.35,0);sh.lineTo(-.65,1);sh.lineTo(-.25,0);sh.lineTo(-.65,-1);sh.closePath();
+  const geo=new T.ExtrudeGeometry(sh,{depth:.24,bevelEnabled:false});geo.rotateX(-Math.PI/2);geo.translate(0,-.12,0);
+  const g=new T.Group();g.name='navArrow';const m=new T.Mesh(geo,new T.MeshBasicMaterial({color:0xb44bff,transparent:true,opacity:.88}));g.add(m);
+  const e=new T.LineSegments(new T.EdgesGeometry(geo),new T.LineBasicMaterial({color:0xf3e6ff}));g.add(e);g.traverse(o=>o.userData.noCast=1);g.visible=false;sc.add(g);
+  DR.nav=g;DR.wp=null;DR.route=null;DR.navT=0}
+function navStep(dt){const st=DR.st,g=navGoal(),a=DR.nav;if(!a)return;
+  if(DR.wp&&Math.hypot(DR.wp.x-st.x,DR.wp.z-st.z)<10){DR.wp=null;DR.route=null;dMsg('📍 Вы на месте!',2000);tone([523,784,1046],.14,'triangle',.08)}
+  DR.navT-=dt;if(g&&(DR.navT<=0||DR.navG!==g||!DR.route)){DR.navT=.4;navRoute()}else if(!g)DR.route=null;
+  const t=navGoal()&&navAhead();if(!t){a.visible=false;return}
+  const fp=S.cam==='1',bob=Math.sin(performance.now()/300)*.12,ch=Math.cos(st.h),sh=Math.sin(st.h),car=DR.car;
+  if(fp){a.position.set(st.x+ch*7,st.y+2.3+bob*.5,st.z-sh*7);a.scale.setScalar(.5)}else{a.position.set(st.x,st.y+Math.max(2.5,((car.pr&&car.pr.hy)||1.2)+1.9)+bob,st.z);a.scale.setScalar(.78)}
+  /* стрелка лежит в плоскости, наклонённой к камере, — видно куда она указывает с любого ракурса */
+  const V=THREE.Vector3,cp=DR.cam.getWorldPosition(new V()),hx=cp.x-a.position.x,hz=cp.z-a.position.z,hl=Math.hypot(hx,hz)||1,n=new V(hx/hl*.8,.6,hz/hl*.8).normalize(),d=new V(t.x-a.position.x,0,t.z-a.position.z).normalize();
+  d.addScaledVector(n,-d.dot(n));if(d.lengthSq()<1e-4)d.set(0,1,0);d.normalize();const z=new V().crossVectors(d,n);a.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(d,n,z));a.visible=true}
+/* маршрут на мини-карте и большой карте */
+function drawRoute(x,X,w){const r=DR.route,st=DR.st;if(r&&r.length>1){x.save();x.lineJoin=x.lineCap='round';x.strokeStyle='rgba(20,8,40,.7)';x.lineWidth=w+3;x.beginPath();x.moveTo(X(st.x),X(st.z));for(let i=1;i<r.length;i++)x.lineTo(X(r[i].x),X(r[i].z));x.stroke();
+  x.strokeStyle=NAVC;x.lineWidth=w;x.stroke();x.restore()}
+  if(DR.wp){const px=X(DR.wp.x),pz=X(DR.wp.z),R=w*1.6+2;x.fillStyle=NAVC;x.strokeStyle='#fff';x.lineWidth=Math.max(1.5,w/3);x.beginPath();x.arc(px,pz-R*1.2,R,Math.PI*.82,Math.PI*.18);x.lineTo(px,pz);x.closePath();x.fill();x.stroke();x.fillStyle='#fff';x.beginPath();x.arc(px,pz-R*1.2,R*.38,0,7);x.fill()}}
+function bigDraw(){const c=$('dbigc'),x=c.getContext('2d'),n=c.width,E=DR.ext,s=n/(E*2),X=v=>(v+E)*s,st=DR.st;if(!DR.mbgL)DR.mbgL=mapBg(n);x.clearRect(0,0,n,n);x.drawImage(DR.mbgL,0,0);
+  if(DR.mis){x.fillStyle='#ffd23f';x.strokeStyle='#15171d';x.lineWidth=3;x.beginPath();x.arc(X(DR.mis.x),X(DR.mis.z),11,0,7);x.fill();x.stroke();x.font='bold 16px sans-serif';x.fillText('📦',X(DR.mis.x)-9,X(DR.mis.z)-16)}
+  DR.Wd.traffic.forEach(t=>{const p=t.car.g.position;x.fillStyle='#c9d2e0';x.fillRect(X(p.x)-3,X(p.z)-3,6,6)});
+  drawRoute(x,X,7);
+  x.save();x.translate(X(st.x),X(st.z));x.rotate(-st.h);x.fillStyle='#38e07b';x.strokeStyle='#0b2a18';x.lineWidth=2;x.beginPath();x.moveTo(18,0);x.lineTo(-12,-12);x.lineTo(-6,0);x.lineTo(-12,12);x.closePath();x.fill();x.stroke();x.restore();
+  const info=$('dbigi');if(DR.route&&DR.route.length>1){const L=routeLen(DR.route)+Math.hypot(DR.route[0].x-st.x,DR.route[0].z-st.z);info.textContent=(DR.wp?'📍 Маршрут до точки: ':'📦 Маршрут до груза: ')+(L>=1000?(L/1000).toFixed(1).replace('.',',')+' км':Math.round(L)+' м')}
+  else info.textContent='Нажми на карту — поставь точку, маршрут построится сам'}
+function bigMap(open){if(!DR||!DR.on)return;const b=$('dbig');open=open==null?b.classList.contains('hidden'):open;
+  if(open){for(const k in KEYS)KEYS[k]=false;if(DR.eng)try{DR.eng.g.gain.value=0}catch(e){}navRoute();const dv=$('drive'),w=dv.clientWidth||innerWidth,h=dv.clientHeight||innerHeight,sz=Math.floor(Math.min(w*.9,h-96,900));
+    const c=$('dbigc');c.style.width=c.style.height=sz+'px';b.classList.remove('hidden');DR.big=true;bigDraw()}
+  else{b.classList.add('hidden');DR.big=false;DR.last=performance.now()}}
+function bigPick(e){if(!DR||!DR.big)return;e.preventDefault();const c=$('dbigc'),r=c.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let sx=e.clientX-cx,sy=e.clientY-cy;
+  if(DR.rot){const t=sx;sx=sy;sy=-t}const W=c.offsetWidth,E=DR.ext,wx=(sx/W+.5)*E*2-E,wz=(sy/W+.5)*E*2-E;
+  if(e.button===2||(DR.wp&&Math.hypot(DR.wp.x-wx,DR.wp.z-wz)<E*2*16/W)){DR.wp=null}
+  else{let p={x:Math.max(-E,Math.min(E,wx)),z:Math.max(-E,Math.min(E,wz))};if(DR.Wd.kind==='city'){const q=roadSnap(p.x,p.z);p={x:q.x,z:q.z}}DR.wp=p;tone([660,880],.08,'triangle',.06)}
+  navRoute();bigDraw()}
+(function(){const c=$('dbigc');if(c){c.addEventListener('pointerdown',bigPick);c.addEventListener('contextmenu',e=>e.preventDefault())}})();
+A.dbig=()=>bigMap();A.dbigx=()=>bigMap(false);A.dwpclr=()=>{if(!DR)return;DR.wp=null;navRoute();if(DR.big)bigDraw()};
+A.dkeys=()=>{S.kh=!S.kh;keysHint();save()};
+function keysHint(){const e=$('dkeys');if(e)e.classList.toggle('mini',!!S.kh)}
 
 function lapCheck(prev,cur){const tk=DR.Wd.trk,n=tk.n,L=DR.lap,q=Math.floor(cur/(n/4));if(q===L.cp+1&&q<4)L.cp=q;
   if(prev>n*.9&&cur<n*.1){if(L.cp>=3){const tm=performance.now()-L.t0;S.laps=(S.laps||0)+1;let msg='🏁 Круг '+(L.n+1)+': '+tfmt(tm);if(!S.bestLap||tm<S.bestLap){S.bestLap=tm;msg+=' — рекорд!'}S.coins+=300;dMsg(msg+' · +300 ₽',3000);tone([523,784,1046],.18,'triangle',.09);L.n++;save()}L.t0=performance.now();L.cp=0}}
