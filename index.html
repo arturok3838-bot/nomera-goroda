@@ -614,7 +614,8 @@ const save=()=>{if(!saveT)saveT=setTimeout(saveNow,400)};
 let autoG=(()=>{const c=navigator.hardwareConcurrency||4,m=navigator.deviceMemory||4,touch=matchMedia('(pointer:coarse)').matches;if(c<=4||m<=3)return touch?'low':'mid';if(touch)return c>=8&&m>=8?'high':'mid';return 'high'})();
 /* 5 уровней качества: vlow, low, mid, high, ultra; для 2D-эффектов сводим к трём */
 const GQ=()=>S.gfx==='auto'?autoG:S.gfx;
-const G=()=>{const q=GQ();return q==='ultra'?'high':q==='vlow'?'low':q};
+/* 2D-анимации номеров не зависят от 3D-качества: выключаются только на «очень низком» */
+const G=()=>{const q=GQ();return q==='ultra'?'high':q==='vlow'?'low':q==='low'?'mid':q};
 const FX=()=>G()!=='low';
 const fmt=n=>Math.round(n).toLocaleString('ru-RU')+' ₽';
 const nf=n=>Math.round(n).toLocaleString('ru-RU');
