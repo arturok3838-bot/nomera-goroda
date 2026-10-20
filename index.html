@@ -2240,9 +2240,10 @@ function startDrive(){if(!S.cars||!S.cars[S.car]){toast('Сначала купи
     const M=mapById(S.map),oldW=DR&&DR.Wd;let Wd;try{Wd=(oldW&&oldW.M.id===M.id&&oldW.gq===QK())?oldW:buildWorld(M);if(oldW&&oldW!==Wd)disposeWorld(oldW)}catch(e){console.error(e);dv.classList.add('hidden');document.body.classList.remove('driving');toast('Ошибка загрузки карты');return}Wd.gq=QK();envTex(M);
     if(DR&&DR.car){Wd.sc.remove(DR.car.g);Wd.sc.remove(DR.car.shadow);if(DR.cam){DR.cam.removeFromParent()}(DR.smoke||[]).forEach(q=>Wd.sc.remove(q.s));(DR.sp||[]).forEach(q=>Wd.sc.remove(q.s));if(DR.mk)Wd.sc.remove(DR.mk)}DR&&DR.debris&&DR.debris.forEach(d=>Wd.sc.remove(d.m));
     const q=QP[QK()],cam=new THREE.PerspectiveCamera(62,1,.08,1600);Wd.sc.add(cam);
-    R3.shadowMap.enabled=!!q.shadow;R3.shadowMap.type=q.shadow>1024?THREE.PCFSoftShadowMap:THREE.PCFShadowMap;R3.shadowMap.needsUpdate=true;
+    R3.shadowMap.enabled=!!q.shadow;Wd.sun.castShadow=!!q.shadow;R3.shadowMap.type=q.shadow>1024?THREE.PCFSoftShadowMap:THREE.PCFShadowMap;R3.shadowMap.needsUpdate=true;
     DR={on:true,Wd,cam,car:null,cdef:tuned(carById(S.car)),nos:0,nosCap:0,dsc:0,debris:[],smoke:[],sp:[],shake:0,last:performance.now(),fpsN:0,fpsT:performance.now(),slow:0,pr:Math.min(devicePixelRatio||1,q.pr),ext:Wd.kind==='city'?HALF+RD:Wd.kind==='track'?420:Wd.lim+10,trip:0,hudT:0,todT:0,tlT:0,lap:{n:0,t0:performance.now(),cp:0},tilt0:0,tiltRaw:null,orb:{y:0,p:0,z:1},qd:null};
-    DR.nosCap=DR.cdef.nit?2+DR.cdef.nit*1.5:0;DR.nos=DR.nosCap;DR.prMax=DR.pr;DR.rot=$('drive').classList.contains('drot');DR.car=makePlayerCar(Wd.sc);const sp=Wd.spawn||{x:-HALF,z:-HALF+PER*.5+3,h:0};
+    DR.nosCap=DR.cdef.nit?2+DR.cdef.nit*1.5:0;DR.nos=DR.nosCap;/* Full HD/2K/4K на слабом видеочипе: чёткая картинка без теней и свечения, ровные 30 кадров */if(GPUT==='weak'&&S.res&&S.res!=='auto'&&+S.res>=1080){DR.qd=Object.assign({},q,{shadow:0,bloom:0});R3.shadowMap.enabled=false;Wd.sun.castShadow=false;DR.cap=31;DR.fhd=1}
+    DR.prMax=DR.pr;DR.rot=$('drive').classList.contains('drot');DR.car=makePlayerCar(Wd.sc);const sp=Wd.spawn||{x:-HALF,z:-HALF+PER*.5+3,h:0};
     if(Wd.kind==='city'){sp.x=-HALF+PER*3.5;sp.z=-HALF+4*PER+5.2;sp.h=0}
     DR.st={x:sp.x,z:sp.z,h:sp.h,vh:sp.h,v:0,y:Wd.kind==='city'?0:0,vy:0,gvy:0,air:false,steer:0,dmg:(S.dmg||{})[S.car]||0,pitch:0,roll:0};
     if(Wd.trk)Wd.trk.idx=0;
@@ -2251,7 +2252,7 @@ function startDrive(){if(!S.cars||!S.cars[S.car]){toast('Сначала купи
     $('dcan').innerHTML='';$('dcan').appendChild(R3.domElement);fitR();
     mapBg();bindCtl();bindOrbit();setCam(S.cam||'3');engineStart();if(Wd.missions)newMission();
     DR.tod=curTod();DR.nw=applyTOD(Wd,DR.tod);radioAuto();
-    $('dload').classList.add('hidden');const lid=++LOOPID;requestAnimationFrame(t=>loop(t,lid));dMsg((Wd.kind==='track'?'🏁 Проезжай круги на время!':Wd.kind==='stunt'?'🛹 Разгоняйся и прыгай с трамплинов!':'📦 Довези груз до жёлтой метки')+'<small>Проведи пальцем по экрану — осмотр машины</small>',2800)},40)}
+    $('dload').classList.add('hidden');const lid=++LOOPID;requestAnimationFrame(t=>loop(t,lid));dMsg((Wd.kind==='track'?'🏁 Проезжай круги на время!':Wd.kind==='stunt'?'🛹 Разгоняйся и прыгай с трамплинов!':'📦 Довези груз до жёлтой метки')+'<small>'+(DR.fhd?'Full HD на телефоне: без теней, ровные 30 кадров':'Проведи пальцем по экрану — осмотр машины')+'</small>',2800)},40)}
 function fitR(){if(!R3)return;const el=R3.domElement.parentElement;if(!el)return;const w=el.clientWidth||innerWidth,h=el.clientHeight||innerHeight;
   if(DR&&DR.on&&el.id==='dcan'){const pr=resPR(w,h,DR.pr);if(Math.abs(R3.getPixelRatio()-pr)>.001)R3.setPixelRatio(pr)}
   R3.setSize(w,h,false);if(DR&&DR.cam){DR.cam.aspect=w/h;DR.cam.updateProjectionMatrix()}if(GP&&GP.cam&&el.id==='gcan'){GP.cam.aspect=w/h;GP.cam.updateProjectionMatrix()}}
@@ -2281,7 +2282,7 @@ function bindOrbit(){const el=$('dcan'),P=new Map();let pd=0;
 
 /* ---------- игровой цикл ---------- */
 const angD=(a,b)=>{let d=a-b;while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d+=Math.PI*2;return d};
-function loop(t,id){if(!DR||!DR.on||id!==LOOPID)return;requestAnimationFrame(tt=>loop(tt,id));const q=Q();if(q.skip){DR.skip=!DR.skip;if(DR.skip)return}let dt=(t-DR.last)/1000;DR.last=t;if(!(dt>0))return;dt=Math.min(dt,.066);
+function loop(t,id){if(!DR||!DR.on||id!==LOOPID)return;requestAnimationFrame(tt=>loop(tt,id));const q=Q();if(q.skip){DR.skip=!DR.skip;if(DR.skip)return}if(DR.cap){if(t-(DR.lr||0)<DR.cap)return;DR.lr=t}let dt=(t-DR.last)/1000;DR.last=t;if(!(dt>0))return;dt=Math.min(dt,.066);
   step(dt);if(R3.shadowMap.enabled){R3.shadowMap.autoUpdate=false;DR.sf=(DR.sf||0)+1;R3.shadowMap.needsUpdate=DR.sf%(Q().sev||2)===0}renderFrame(DR.Wd.sc,DR.cam);
   DR.fpsN++;if(t-DR.fpsT>1500){const fps=DR.fpsN*1000/(t-DR.fpsT);DR.fpsN=0;DR.fpsT=t;const tgt=q.skip?27:44;
     if(!S.res||S.res==='auto'){if(fps<tgt&&DR.pr>.55){DR.pr=Math.max(.55,DR.pr-.15);fitR()}else if(fps>(q.skip?29:57)&&DR.pr<DR.prMax){DR.pr=Math.min(DR.prMax,DR.pr+.1);fitR()}}
