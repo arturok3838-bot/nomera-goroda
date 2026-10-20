@@ -195,7 +195,7 @@ table{width:100%;border-collapse:collapse;font-size:14px}td{padding:6px 0;border
   background:conic-gradient(var(--acc) calc(var(--xp)*1%),rgba(255,255,255,.12) 0);position:relative}
 .av::before{content:"";position:absolute;inset:4px;border-radius:50%;background:linear-gradient(160deg,#2a3150,#141827)}
 .av span{position:relative;text-align:center}.av small{display:block;font:600 9px Roboto,Arial;opacity:.7;letter-spacing:.5px;margin-bottom:1px}
-.prof .pn{font-weight:500;font-size:15px}.prof .hint{color:rgba(238,241,248,.6)}
+.prof .pn{font-weight:500;font-size:15px}.prof .acb{font-size:12px;font-weight:600;margin-top:3px;color:#9fd8ff}.prof .hint{color:rgba(238,241,248,.6)}
 .prof .bl{margin-left:auto;text-align:right;position:relative;z-index:1}
 .prof .bl b{display:block;font-size:18px;font-weight:700;white-space:nowrap}.prof .bl span{color:#f0c55a;font-weight:700}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-bottom:14px}
@@ -644,7 +644,7 @@ const def={coins:50000,usd:0,inv:[],luck:50,minPrice:20,cost:100,pin:'',pinH:'',
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==='object')return Object.assign(JSON.parse(JSON.stringify(def)),s,{types:Object.assign({},def.types,s.types),fil:Object.assign({},def.fil,s.fil)})}catch(e){}return JSON.parse(JSON.stringify(def))}
 let S=load();while(S.cnt.length<6)S.cnt.push(0);if((S.ver||0)<5){S.gfx='auto';S.ver=5}
 let saveT=0;
-function saveNow(){clearTimeout(saveT);saveT=0;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function saveNow(){clearTimeout(saveT);saveT=0;S.mt=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}if(typeof cloudDirty==='function')cloudDirty()}
 const save=()=>{if(!saveT)saveT=setTimeout(saveNow,400)};
 /* авто-качество: на телефонах начинаем со среднего, высокое — только для мощных */
 let autoG=(()=>{const c=navigator.hardwareConcurrency||4,m=navigator.deviceMemory||4,touch=matchMedia('(pointer:coarse)').matches;if(c<=4||m<=3)return touch?'low':'mid';if(touch)return c>=8&&m>=8?'high':'mid';return 'high'})();
@@ -959,7 +959,7 @@ function renderMenu(){
     ['theme','','#b0508a','#3a1030',SVG.theme,'Тема',''],
     ['ach','','#b08a2a','#33240a',SVG.medal,'Достижения',aReady?bd(aReady+' награды','hot'):''],
     ['opt','','#5d6a86','#161b28',SVG.gear,'Настройки','']];
-  $('tiles').innerHTML='<div class="prof" style="grid-column:1/-1;--xp:'+S.xp+'"><div class="av"><span><small>УР.</small>'+S.lvl+'</span></div><div><div class="pn">Коллекционер номеров</div><div class="hint">'+S.xp+' / 100 XP · '+nf(S.gen)+' генераций</div></div><div class="bl"><b>'+fmt(S.coins)+'</b><span>'+S.usd+' $</span></div></div>'
+  $('tiles').innerHTML='<div class="prof" data-a="acct" style="grid-column:1/-1;cursor:pointer;--xp:'+S.xp+'"><div class="av"><span><small>УР.</small>'+S.lvl+'</span></div><div><div class="pn">'+(ACC?'👤 '+escH(ACC.login):'Коллекционер номеров')+'</div><div class="hint">'+S.xp+' / 100 XP · '+nf(S.gen)+' генераций</div><div class="acb">'+(ACC?'☁️ Прогресс в аккаунте':'Войти или создать аккаунт ›')+'</div></div><div class="bl"><b>'+fmt(S.coins)+'</b><span>'+S.usd+' $</span></div></div>'
     +T.map((t,i)=>'<button class="tile '+t[1]+'" style="--t1:'+t[2]+';--t2:'+t[3]+';animation-delay:'+(i*.035)+'s" data-a="go" data-v="'+t[0]+'">'+(t[6]||'')+'<div class="ill">'+t[4]+'</div><b>'+t[5]+'</b></button>').join('')
     +'<div class="soon"><h2>Скоро в игре</h2><div class="hint">Эти разделы ещё в разработке — они откроются в следующих обновлениях.</div></div>'
     +['Рейтинг игроков','Магазин','Кейсы','Альбом','Карта','Обмен'].map(n=>'<div class="tile off"><b>'+n+'</b></div>').join('')}
@@ -1108,7 +1108,7 @@ function renderOpt(){const tg=(k,t,h)=>'<div class="set"><div>'+t+(h?'<div class
   +'<div class="set"><div>Качество графики<div class="hint">'+(S.gfx==='auto'?'Авто: сейчас '+({ultra:'очень высокое',high:'высокое',mid:'среднее',low:'низкое',vlow:'очень низкое'})[autoG]:'Для слабых телефонов — низкое или очень низкое')+'</div></div><select data-c="gfx" aria-label="Графика"><option value="auto">Авто</option><option value="ultra">Очень высокое</option><option value="high">Высокое</option><option value="mid">Среднее</option><option value="low">Низкое</option><option value="vlow">Очень низкое</option></select></div>'
   +'<div class="set"><div>Разрешение 3D<div class="hint">Full HD и 4K — максимум чёткости, но тяжело для телефона</div></div><select data-c="res" aria-label="Разрешение"><option value="auto">Авто</option><option value="720">720p</option><option value="1080">Full HD 1080p</option><option value="1440">2K 1440p</option><option value="2160">4K 2160p</option></select></div>'
   +'<div class="set"><div>Во весь экран<div class="hint">Убирает панели браузера (если браузер разрешает)</div></div><button class="tg'+(document.fullscreenElement?' on':'')+'" data-a="fs">'+(document.fullscreenElement?'Вкл':'Выкл')+'</button></div>'
-  +'<div class="set" style="flex-wrap:wrap"><div>Сохранение прогресса<div class="hint">Игра сохраняется сама в этом браузере. Чтобы перенести прогресс на другой телефон или не потерять его, сохрани код или файл.</div></div><div class="svb"><button class="btn sm" data-a="svcopy">📋 Скопировать код</button><button class="btn sm" data-a="svpaste">📥 Ввести код</button><button class="btn sm" data-a="svfile">💾 Скачать файл</button><label class="btn sm">📂 Открыть файл<input type="file" accept=".nomera,.txt,application/json" data-c="svload" hidden></label></div></div>'
+  +'<div class="set" style="flex-wrap:wrap"><div>Сохранение прогресса<div class="hint">'+(ACC?'Ты вошёл как <b>'+escH(ACC.login)+'</b> — прогресс сохраняется в аккаунте сам.':'Проще всего — создать аккаунт: прогресс будет на сервере, и войти можно с любого телефона.')+' Код и файл — запасной способ.</div></div><div class="svb"><button class="btn sm" data-a="acct">👤 '+(ACC?'Аккаунт':'Войти / создать аккаунт')+'</button><button class="btn sm" data-a="svcopy">📋 Скопировать код</button><button class="btn sm" data-a="svpaste">📥 Ввести код</button><button class="btn sm" data-a="svfile">💾 Скачать файл</button><label class="btn sm">📂 Открыть файл<input type="file" accept=".nomera,.txt,application/json" data-c="svload" hidden></label></div></div>'
   +'<div class="slab">Админка</div><div id="admbox">'+admHtml()+'</div>'
   +'<div class="hint" style="margin:4px 2px 0">Голос диктора: LibriTTS (CC BY 4.0), синтез Piper.</div><div class="slab">Прочее</div><button class="btn red" data-a="reset" id="reset">Сбросить прогресс</button><div style="height:14px"></div>';
   $('v-opt').querySelector('[data-c=gfx]').value=S.gfx;$('v-opt').querySelector('[data-c=res]').value=S.res||'auto';admWire()}
@@ -1233,13 +1233,71 @@ document.addEventListener('input',e=>{const t=e.target;if(t.type==='range'&&t.da
 async function svEncode(){const j=JSON.stringify(S);try{if(window.CompressionStream){const b=await new Response(new Blob([j]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer();let bin='';const u=new Uint8Array(b);for(let i=0;i<u.length;i+=8192)bin+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return 'NG2:'+btoa(bin)}}catch(e){}return 'NG1:'+btoa(unescape(encodeURIComponent(j)))}
 async function svDecode(code){code=(code||'').trim();let j;if(code.startsWith('NG2:')){const bin=atob(code.slice(4)),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);j=await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('gzip'))).text()}else if(code.startsWith('NG1:'))j=decodeURIComponent(escape(atob(code.slice(4))));else if(code.startsWith('{'))j=code;else throw 0;
   const o=JSON.parse(j);if(!o||typeof o!=='object'||typeof o.coins!=='number'||!Array.isArray(o.inv))throw 0;return o}
-function svApply(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){toast('Не удалось сохранить в этом браузере');return}toast('✅ Прогресс загружен');setTimeout(()=>location.reload(),700)}
+function svApply(o){S=o;try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){toast('Не удалось сохранить в этом браузере');return}toast('✅ Прогресс загружен');setTimeout(()=>location.reload(),700)}
 Object.assign(A,{
   async svcopy(){saveNow();const c=await svEncode();try{await navigator.clipboard.writeText(c);toast('📋 Код скопирован — сохрани его в заметках')}catch(e){$('mc').innerHTML='<div class="mb"><h3>Код сохранения</h3><p class="hint">Выдели и скопируй код целиком:</p><textarea class="inp" style="height:140px;width:100%" readonly onclick="this.select()">'+c+'</textarea><button class="btn" data-a="mdclose" style="margin-top:10px">Готово</button></div>';$('md').classList.remove('hidden')}},
   svpaste(){$('mc').innerHTML='<div class="mb"><h3>Ввести код сохранения</h3><p class="hint">Вставь код из другого телефона. Текущий прогресс на этом устройстве заменится.</p><textarea id="svin" class="inp" style="height:140px;width:100%" placeholder="NG2:…"></textarea><button class="btn" data-a="svgo" style="margin-top:10px">Загрузить прогресс</button><button class="btn sec" data-a="mdclose" style="margin-top:8px">Отмена</button></div>';$('md').classList.remove('hidden')},
   async svgo(){try{svApply(await svDecode($('svin').value))}catch(e){toast('Код не подходит — проверь, что скопирован целиком')}},
   async svfile(){saveNow();const c=await svEncode(),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/plain'}));a.download='nomera-'+new Date().toISOString().slice(0,10)+'.nomera';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast('💾 Файл сохранения скачан')}});
 C.svload=async t=>{const f=t.files&&t.files[0];t.value='';if(!f)return;try{svApply(await svDecode(await f.text()))}catch(e){toast('Это не файл сохранения игры')}};
+
+/* ---------- аккаунт и облачное сохранение (сервер на Netlify, как у сайта АРТурок) ---------- */
+const GAPI='https://arturok-studio.netlify.app/game/api',AK='nomera_acct';
+let ACC=(()=>{try{const a=JSON.parse(localStorage.getItem(AK));return a&&a.token?a:null}catch(e){return null}})(),cloudT=0,cloudBusy=false,cloudDirtyF=false;
+const accStore=()=>{try{ACC?localStorage.setItem(AK,JSON.stringify(ACC)):localStorage.removeItem(AK)}catch(e){}};
+async function gapi(body,ka){const r=await fetch(GAPI,{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(body),cache:'no-store',keepalive:!!ka});
+  let j={};try{j=await r.json()}catch(e){}if(!r.ok){const e=new Error(j.error||('Сервер ответил '+r.status));e.code=j.code;e.status=r.status;throw e}return j}
+function accLost(e){if(e&&e.status===401){ACC=null;accStore();toast('Войди в аккаунт заново');refreshAcct()}}
+const stH=o=>{const j=JSON.stringify(Object.assign({},o,{mt:0}));let h=2166136261;for(let i=0;i<j.length;i++){h^=j.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0).toString(36)+j.length};
+function cloudDirty(){if(!ACC)return;cloudDirtyF=true;if(!cloudT)cloudT=setTimeout(()=>{cloudT=0;cloudPush()},15000)}
+async function cloudPush(force,ka){if(!ACC||cloudBusy)return false;clearTimeout(cloudT);cloudT=0;cloudBusy=true;cloudDirtyF=false;
+  try{const h=stH(S),r=await gapi({op:'save',token:ACC.token,save:JSON.stringify(S),base:ACC.at||0,force:!!force},ka);
+    if(r.stale){cloudBusy=false;await cloudPull(true);return false}ACC.at=r.at;ACC.h=h;ACC.sync=Date.now();accStore();refreshAcct();return true}
+  catch(e){accLost(e);if(ACC){cloudDirtyF=true;if(!cloudT)cloudT=setTimeout(()=>{cloudT=0;cloudPush()},e.status===429?3500:30000)}return false}finally{cloudBusy=false}}
+async function cloudPull(silent){if(!ACC)return;try{const r=await gapi({op:'load',token:ACC.token});if(!r.save)return;const o=JSON.parse(r.save);
+    if(!o||typeof o.coins!=='number'||!Array.isArray(o.inv))return;ACC.at=r.at;ACC.h=stH(o);ACC.sync=Date.now();accStore();clearTimeout(cloudT);cloudT=0;cloudDirtyF=false;S=o;try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){return}
+    toast(silent?'☁️ Загружен более новый прогресс из аккаунта':'✅ Прогресс загружен из аккаунта');setTimeout(()=>location.reload(),900)}catch(e){accLost(e);if(!silent)toast(e.message)}}
+/* при запуске: если в аккаунте прогресс новее (играли на другом телефоне) — берём его, иначе отправляем свой */
+async function cloudStart(){if(!ACC)return;try{const r=await gapi({op:'me',token:ACC.token});
+    if(r.at&&r.at!==ACC.at)await cloudPull(true);else if(stH(S)!==ACC.h)cloudPush()}catch(e){accLost(e)}}
+addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&ACC&&(cloudDirtyF||cloudT)&&stH(S)!==ACC.h){saveNow();cloudPush(false,JSON.stringify(S).length<60000)}});
+const fmtT=t=>{if(!t)return 'ещё не было';const d=new Date(t);return d.toLocaleDateString('ru-RU',{day:'numeric',month:'short'})+' '+d.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})};
+function acctHtml(){if(ACC)return '<div class="mb"><h3>👤 '+escH(ACC.login)+'</h3><div class="hint" style="text-align:center;margin:4px 0 14px">Прогресс сохраняется в аккаунте сам. Заходи с любого телефона или компьютера под этим логином — всё будет на месте.</div>'
+    +'<div class="ml"><span>Последнее сохранение</span><b>'+fmtT(ACC.at)+'</b></div>'
+    +'<button class="btn" data-a="accsync" style="margin-top:12px">☁️ Сохранить сейчас</button>'
+    +'<button class="btn gray" data-a="accpw">🔑 Сменить пароль</button>'
+    +'<button class="btn gray" data-a="accout">Выйти из аккаунта</button><button class="btn gray" data-a="mdclose" style="background:none">Закрыть</button></div>';
+  return '<div class="mb"><h3>Аккаунт</h3><div class="hint" style="text-align:center;margin:4px 0 12px">Создай аккаунт — прогресс будет храниться на сервере, и не придётся скачивать файлы или копировать коды. Войти можно с любого устройства.</div>'
+    +'<div class="f" style="border:0;padding:0;background:none"><label for="acl">Логин</label><input class="inp" id="acl" autocomplete="username" autocapitalize="off" spellcheck="false" maxlength="24" placeholder="латинские буквы и цифры">'
+    +'<label for="acp">Пароль</label><input class="inp" id="acp" type="password" autocomplete="current-password" maxlength="200" placeholder="не короче 6 символов"></div>'
+    +'<div class="hint" id="acerr" style="color:var(--red);min-height:18px;margin-top:8px"></div>'
+    +'<div class="mbt"><button data-a="accin">Войти</button><button data-a="accreg" style="background:var(--acc);color:var(--accInk)">Создать аккаунт</button></div>'
+    +'<button class="btn gray" data-a="mdclose" style="background:none;margin-top:6px">Закрыть</button></div>'}
+const escH=s=>String(s).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+function openAcct(){$('mc').innerHTML=acctHtml();$('md').classList.remove('hidden')}
+function refreshAcct(){if(!$('md').classList.contains('hidden')&&$('mc').querySelector('[data-a=accsync],[data-a=accin]'))$('mc').innerHTML=acctHtml();if(view==='menu')try{renderMenu()}catch(e){}}
+function accBusy(on){$('mc').querySelectorAll('.mbt button,.btn').forEach(b=>b.disabled=on)}
+function accErr(t){const e=$('acerr');if(e)e.textContent=t||''}
+async function accEnter(reg){const login=($('acl').value||'').trim().toLowerCase(),pw=$('acp').value||'';
+  if(!/^[a-z0-9][a-z0-9_.-]{2,23}$/.test(login)){accErr('Логин: 3–24 символа — латинские буквы, цифры, точка, дефис или подчёркивание');return}
+  if(pw.length<6){accErr('Пароль — не короче 6 символов');return}accErr('');accBusy(true);
+  try{const r=await gapi({op:reg?'register':'login',login,password:pw});ACC={login:r.login,token:r.token,at:r.at||0};accStore();if(!S.nick){S.nick=r.login;save()}
+    if(reg||!r.at){saveNow();await cloudPush(true);toast(reg?'🎉 Аккаунт создан, прогресс сохранён':'✅ Вход выполнен, прогресс сохранён в аккаунт');openAcct();if(view==='menu')renderMenu();return}
+    // в аккаунте уже есть прогресс — спрашиваем, какой оставить
+    $('mc').innerHTML='<div class="mb"><h3>В аккаунте есть прогресс</h3><div class="hint" style="text-align:center;margin:6px 0 14px">Сохранён: '+fmtT(r.at)+'. Какой прогресс оставить?</div>'
+      +'<button class="btn" data-a="accuse" data-v="cloud">☁️ Из аккаунта</button><button class="btn gray" data-a="accuse" data-v="local">📱 С этого устройства ('+fmt(S.coins)+', '+S.inv.length+' номеров)</button></div>'}
+  catch(e){accErr(e.message==='Failed to fetch'?'Нет связи с сервером. Проверь интернет':e.message);accBusy(false)}}
+Object.assign(A,{
+  acct(){openAcct()},
+  accin(){accEnter(false)},accreg(){accEnter(true)},
+  async accuse(v){if(v==='cloud'){A.mdclose();await cloudPull(false)}else{saveNow();await cloudPush(true);toast('✅ Прогресс с этого устройства сохранён в аккаунт');openAcct()}},
+  async accsync(){saveNow();if(await cloudPush())toast('☁️ Сохранено в аккаунт');else toast('Сохраню в аккаунт через пару секунд')},
+  accout(){ACC=null;accStore();toast('Ты вышел из аккаунта. Прогресс остался на этом устройстве');openAcct();if(view==='menu')renderMenu()},
+  accpw(){$('mc').innerHTML='<div class="mb"><h3>Смена пароля</h3><div class="f" style="border:0;padding:0;background:none"><label for="pwo">Текущий пароль</label><input class="inp" id="pwo" type="password" autocomplete="current-password"><label for="pwn">Новый пароль</label><input class="inp" id="pwn" type="password" autocomplete="new-password" placeholder="не короче 6 символов"></div><div class="hint" id="acerr" style="color:var(--red);min-height:18px;margin-top:8px"></div><div class="mbt"><button data-a="acct">Назад</button><button data-a="accpw2" style="background:var(--acc);color:var(--accInk)">Сменить</button></div></div>'},
+  async accpw2(){try{const r=await gapi({op:'password',token:ACC.token,old:$('pwo').value,new:$('pwn').value});ACC.token=r.token;accStore();toast('🔑 Пароль изменён');openAcct()}catch(e){accLost(e);accErr(e.message)}}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target&&(e.target.id==='acp'||e.target.id==='acl'))A.accin()});
+setTimeout(cloudStart,1200);
 
 let audioReady=false;
 document.addEventListener('pointerdown',()=>{if(!audioReady){audioReady=true;ac();loadClips();music()}},{capture:true});
