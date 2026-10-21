@@ -203,6 +203,7 @@ table{width:100%;border-collapse:collapse;font-size:14px}td{padding:6px 0;border
 .prof .pn{font-weight:500;font-size:15px}
 .updb{min-width:min(300px,calc(100vw - 32px));position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;border:0;border-radius:16px;padding:12px 18px;background:#2f6bff;color:#fff;font:700 15px system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.45);text-align:center}.updb small{display:block;font-weight:500;font-size:12px;opacity:.85;margin-top:2px}
 .verb{background:none;border:0;color:var(--mute);font-size:13px;padding:6px;text-decoration:underline;text-underline-offset:3px}
+.dlrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}.dlb{display:flex;align-items:center;gap:10px;padding:12px;border-radius:16px;background:var(--card);border:1px solid var(--line);color:var(--ink);text-decoration:none}.dlb span{font-size:26px}.dlb b{display:block;font-size:15px}.dlb small{display:block;color:var(--mute);font-size:12px}
 .instb{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 14px;border-radius:16px;border:1px solid rgba(127,224,255,.35);background:linear-gradient(135deg,rgba(47,107,255,.25),rgba(56,200,255,.12));color:var(--ink)}.instb span{font-size:28px}.instb b{display:block;font-size:15px}.instb small{display:block;color:var(--mute);font-size:12.5px;margin-top:2px}
 .ist{display:flex;gap:12px;align-items:flex-start;margin:10px 0}.ist i{flex:none;width:28px;height:28px;border-radius:50%;background:var(--acc);color:var(--accInk);display:grid;place-items:center;font-style:normal;font-weight:700}.ist div{padding-top:3px}.prof .acb{font-size:12px;font-weight:600;margin-top:3px;color:#9fd8ff}.prof .hint{color:rgba(238,241,248,.6)}
 .prof .bl{margin-left:auto;text-align:right;position:relative;z-index:1}
@@ -628,7 +629,7 @@ body.driving{overflow:hidden}
 
 <script>
 'use strict';
-const GAME_VER='1.1.13';
+const GAME_VER='1.1.14';
 const KEY='nomera_v3';
 const $=id=>document.getElementById(id);
 let RNG=Math.random;
@@ -763,7 +764,7 @@ let AC=null,mus=null;
 function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return null}}if(AC.state==='suspended')AC.resume();return AC}
 function tone(fr,dur,type,gain,step){if(!S.snd)return;const a=ac();if(!a)return;const v=gain*S.sndV/100;
   fr.forEach((f,i)=>{const o=a.createOscillator(),g=a.createGain(),t=a.currentTime+i*(step||.07);o.type=type||'triangle';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+dur+.05)})}
-const SFX={gen:r=>tone([[540],[523,659],[523,659,784],[523,659,784,1046],[523,659,784,1046,1318]][r],r>2?.5:.16,'triangle',.14),
+const SFX={gen:r=>tone([[540],[523,659],[523,659,784],[523,659,784,1046],[523,659,784,1046,1318],[523,659,784,1046,1318,1568]][Math.max(0,Math.min(5,r|0))],r>2?.5:.16,'triangle',.14),
   sell:()=>tone([880,1320],.14,'sine',.12,.05),err:()=>tone([180],.18,'square',.05),tick:()=>tone([300],.05,'sine',.06),
   sus:()=>tone([220,262,311,370,440,523],.18,'sawtooth',.03,.22)};
 function music(){const a=AC;if(!a)return;
@@ -1164,8 +1165,48 @@ function admHtml(){
   +'<button class="btn gray" data-a="alltasks">Выполнить задания дня</button>'
   +'<button class="btn gray" data-a="newtasks">Обновить задания</button>'
   +'<button class="btn gray" data-a="clearcol" id="clearcol">Очистить коллекцию (кроме сейфа)</button></div>'
-  +'<div class="f adm"><h3>Безопасность</h3><label for="newpin">Новый пароль</label><div class="irow"><input type="password" id="newpin" autocomplete="new-password" placeholder="Минимум 6 символов"><button class="btn" data-a="setpin">Сменить</button></div></div>'}
-function admWire(){if(!admOK)return;oddsTbl(S.luck);
+  +'<div id="cpBox">'+cpHtml()+'</div>'+'<div class="f adm"><h3>Безопасность</h3><label for="newpin">Новый пароль</label><div class="irow"><input type="password" id="newpin" autocomplete="new-password" placeholder="Минимум 6 символов"><button class="btn" data-a="setpin">Сменить</button></div></div>'}
+
+/* ---------- админка: свой номер (страна, тип, буквы, цифры, регион, редкость, износ, цена) ---------- */
+const CPF={ru:{civil:[3,3],taxi:[2,3],police:[1,4],mil:[2,4]},by:[2,4],ae:[1,5],us:[3,3],fr:[4,3],es:[3,4]};
+const CPLAT={A:'А',B:'В',E:'Е',K:'К',M:'М',H:'Н',O:'О',P:'Р',C:'С',T:'Т',Y:'У',X:'Х'};
+let CP={c:'ru',ty:'civil',l:'ААА',d:'777',reg:'77',x:'7',rar:-1,wr:-1,price:''};
+function cpFmt(){const f=CP.c==='ru'?CPF.ru[CP.ty]:CPF[CP.c];return{nL:f[0],nD:f[1]}}
+function cpRegHint(){const c=CP.c;return c==='ru'?'Код региона: 01–99 или трёхзначный (77, 177, 777…)':c==='by'?'Область: 1–7 (7 — Минск)':c==='ae'?'Эмират: '+[...new Set(AE_EM)].join(', '):c==='us'?'Штат: '+Object.keys(US_ST).join(', '):c==='fr'?'Департамент: две цифры, например 75':'У испанских номеров региона нет'}
+function cpMake(){const c=CP.c,ty=c==='ru'?CP.ty:'civil',{nL,nD}=cpFmt(),set=LSET[c]||LRU;
+  let l=String(CP.l||'').toUpperCase().replace(/\s/g,'');if(c==='ru')l=[...l].map(ch=>CPLAT[ch]||ch).join('');
+  const d=String(CP.d||'').replace(/\D/g,'');let reg=String(CP.reg||'').trim().toUpperCase();
+  const err=[];if(l.length!==nL)err.push('букв должно быть '+nL);else if([...l].some(ch=>!set.includes(ch)))err.push('допустимые буквы: '+set.split('').join(' '));
+  if(c==='ae'?(d.length<1||d.length>5||d[0]==='0'):d.length!==nD)err.push(c==='ae'?'цифр 1–5, без нуля в начале':'цифр должно быть '+nD);else if(c!=='ae'&&/^0+$/.test(d))err.push('номер не может быть из одних нулей');
+  if(c==='ru'&&!/^\d{2,3}$/.test(reg))err.push('регион — 2 или 3 цифры');if(c==='by'&&!/^[1-7]$/.test(reg))err.push('область 1–7');
+  if(c==='ae'){const em=[...new Set(AE_EM)];if(!em.includes(reg))reg=em[0]}if(c==='us'&&!US_ST[reg])err.push('штат: '+Object.keys(US_ST).join(', '));if(c==='fr'&&!/^\d{2}$/.test(reg))err.push('департамент — 2 цифры');if(c==='es')reg='';
+  const p={c,ty,l,d,reg};if(c==='us')p.x=/^[1-9]$/.test(CP.x)?CP.x:'1';
+  return{p,err}}
+function cpBuild(){const{p,err}=cpMake();if(err.length)return{err};analyze(p);if(CP.rar>=0)p.rar=CP.rar;
+  p.wr=CP.wr>=0?+((WR[CP.wr].lo+WR[CP.wr].hi)/2).toFixed(4):rollWear();RNG=seeded(hashStr(p.c+p.ty+p.l+p.d+p.reg));try{priceOf(p)}finally{RNG=Math.random}
+  const pr=Math.floor(+String(CP.price).replace(/\s/g,''));if(pr>0)p.price=Math.round(pr/(S.pmult||1));return{p}}
+function cpHtml(){const o=(v,t,sel)=>'<option value="'+v+'"'+(sel?' selected':'')+'>'+t+'</option>',{nL,nD}=cpFmt();
+  return '<div class="f adm"><h3>Свой номер</h3><div class="hint">Собери любой номер и положи его в коллекцию.</div>'
+  +'<div id="cpV" style="margin:12px 0 4px"></div><div class="hint" id="cpE" style="color:var(--red);min-height:16px"></div>'
+  +'<label for="cpC">Страна</label><select id="cpC" class="sel">'+Object.keys(CN).map(c=>o(c,CN[c],c===CP.c)).join('')+'</select>'
+  +(CP.c==='ru'?'<label for="cpT">Тип</label><select id="cpT" class="sel">'+Object.keys(TY).map(k=>o(k,TY[k].n,k===CP.ty)).join('')+'</select>':'')
+  +'<div class="irow" style="margin-top:8px"><div style="flex:1"><label for="cpL" style="margin-top:0">Буквы ('+nL+')</label><input id="cpL" class="inp" maxlength="'+nL+'" value="'+escH(CP.l)+'" autocomplete="off" style="text-transform:uppercase"></div>'
+  +'<div style="flex:1"><label for="cpD" style="margin-top:0">Цифры ('+(CP.c==='ae'?'1–5':nD)+')</label><input id="cpD" class="inp" inputmode="numeric" maxlength="'+(CP.c==='ae'?5:nD)+'" value="'+escH(CP.d)+'" autocomplete="off"></div></div>'
+  +(CP.c==='us'?'<label for="cpX">Первая цифра</label><input id="cpX" class="inp" inputmode="numeric" maxlength="1" value="'+escH(CP.x)+'">':'')
+  +(CP.c==='es'?'':'<label for="cpR">Регион</label><input id="cpR" class="inp" value="'+escH(CP.reg)+'" autocomplete="off" style="text-transform:uppercase"><div class="hint">'+cpRegHint()+'</div>')
+  +'<label for="cpRar">Редкость</label><select id="cpRar" class="sel">'+o(-1,'Авто — по комбинациям',CP.rar<0)+RN.map((n,i)=>o(i,n,CP.rar===i)).join('')+'</select>'
+  +'<label for="cpW">Износ</label><select id="cpW" class="sel">'+o(-1,'Случайный',CP.wr<0)+WR.map((t,i)=>o(i,t.n+(t.k!==1?' ×'+String(t.k).replace('.',','):''),CP.wr===i)).join('')+'</select>'
+  +'<label for="cpP">Цена, ₽ (пусто — посчитать самой игрой)</label><input id="cpP" class="inp" inputmode="numeric" value="'+escH(CP.price)+'" placeholder="авто">'
+  +'<button class="btn" data-a="cpadd" style="margin-top:12px">Добавить в коллекцию</button></div>'}
+function cpPreview(){const v=$('cpV');if(!v)return;const r=cpBuild();if(r.err){$('cpE').textContent='Исправь: '+r.err.join('; ');v.innerHTML='';return}$('cpE').textContent='';const p=r.p;
+  v.innerHTML='<div style="max-width:320px;margin:0 auto">'+plate(p)+'</div><div style="text-align:center;margin-top:8px"><b style="color:'+RV(p.rar)+'">'+RN[p.rar]+'</b> · '+fmt(sp(p))+(p.cb.length?'<div class="hint">'+p.cb.map(c=>c[0]).join(' · ')+'</div>':'')+'</div>'}
+function cpWire(){const on=(id,k,re)=>{const e=$(id);if(!e)return;e.addEventListener(e.tagName==='SELECT'?'change':'input',()=>{CP[k]=e.tagName==='SELECT'&&k!=='c'&&k!=='ty'?+e.value:e.value;if(re){cpReset();cpRe()}else cpPreview()})};
+  on('cpC','c',1);on('cpT','ty',1);on('cpL','l');on('cpD','d');on('cpX','x');on('cpR','reg');on('cpRar','rar');on('cpW','wr');on('cpP','price');cpPreview()}
+function cpReset(){const c=CP.c,{nL,nD}=cpFmt(),set=LSET[c]||LRU,a=set[0];CP.l=a.repeat(nL);CP.d=c==='ae'?'7':'7'.repeat(nD);CP.price='';CP.reg=c==='ru'?'77':c==='by'?'7':c==='ae'?'DUBAI':c==='us'?'CA':c==='fr'?'75':'';CP.x='7'}
+function cpRe(){const box=$('cpBox');if(box){box.innerHTML=cpHtml();cpWire()}}
+function cpAdd(){if(!admOK)return;const r=cpBuild();if(r.err){toast('Исправь: '+r.err[0]);return}const p=r.p;p.id=Date.now().toString(36)+Math.random().toString(36).slice(2,8);p.t=Date.now();p.safe=false;p.custom=1;
+  S.inv.unshift(p);if(sp(p)>S.best)S.best=sp(p);save();toast('✅ Номер добавлен в коллекцию: '+RN[p.rar]+' · '+fmt(sp(p)));SFX.gen&&SFX.gen(p.rar)}
+function admWire(){if(!admOK)return;oddsTbl(S.luck);cpWire();
   $('luck').addEventListener('input',e=>{$('luckv').textContent=e.target.value;oddsTbl(+e.target.value)});
   $('luck').addEventListener('change',e=>{S.luck=+e.target.value;save();toast('Удача: '+S.luck)});
   $('pmult').addEventListener('input',e=>{$('pmv').textContent='×'+e.target.value})}
@@ -1262,7 +1303,7 @@ Object.assign(A,{
   async svfile(){saveNow();const c=await svEncode(),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/plain'}));a.download='nomera-'+new Date().toISOString().slice(0,10)+'.nomera';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast('💾 Файл сохранения скачан')}});
 C.svload=async t=>{const f=t.files&&t.files[0];t.value='';if(!f)return;try{svApply(await svDecode(await f.text()))}catch(e){toast('Это не файл сохранения игры')}};
 
-const CHANGES={'1.1.13':['📲 Игру можно установить на телефон — работает без интернета','🔄 Установленная игра сама получает обновления','💬 Текстовый чат в онлайн-комнате','🏘️ Новая карта «Посёлок»: избы, кирпич, гаражи, неровные дороги','🌐 Онлайн: комнаты по коду, совместная езда и голосовой чат','👤 Аккаунты: прогресс сохраняется на сервере','🟥 Мифическая редкость и износ номеров','🗺️ Карта на E с маршрутом и стрелкой над машиной','📊 Счётчик FPS']};
+const CHANGES={'1.1.14':['🤖 Приложение для Android (APK) и 🍏 для iPhone (IPA) — кнопки в меню','🛠️ Админка: свой номер — страна, тип, буквы, цифры, регион, редкость, износ и цена','🔊 Звук выпадения мифического номера'],'1.1.13':['📲 Игру можно установить на телефон — работает без интернета','🔄 Установленная игра сама получает обновления','💬 Текстовый чат в онлайн-комнате','🏘️ Новая карта «Посёлок»: избы, кирпич, гаражи, неровные дороги','🌐 Онлайн: комнаты по коду, совместная езда и голосовой чат','👤 Аккаунты: прогресс сохраняется на сервере','🟥 Мифическая редкость и износ номеров','🗺️ Карта на E с маршрутом и стрелкой над машиной','📊 Счётчик FPS']};
 A.ver=()=>{$('mc').innerHTML='<div class="mb"><h3>Версия '+GAME_VER+'</h3><div class="hint" style="text-align:center;margin:4px 0 10px">Что нового</div>'+(CHANGES[GAME_VER]||[]).map(t=>'<div class="ml" style="justify-content:flex-start"><span>'+t+'</span></div>').join('')+'<button class="btn" data-a="mdclose" style="margin-top:12px">Отлично</button></div>';$('md').classList.remove('hidden')};
 try{const lv=localStorage.getItem('nomera_ver');if(lv&&lv!==GAME_VER)setTimeout(()=>{toast('🆕 Игра обновлена до версии '+GAME_VER);if(typeof A.ver==='function')A.ver()},1500);localStorage.setItem('nomera_ver',GAME_VER)}catch(e){}
 
@@ -1274,7 +1315,7 @@ if(!IN_APP&&'serviceWorker' in navigator&&(location.protocol==='https:'||locatio
 if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',e=>{if(!e.data||e.data.t!=='upd'||$('updb'))return;const b=document.createElement('button');b.id='updb';b.className='updb';b.innerHTML='🔄 Вышло обновление'+(e.data.v?' '+e.data.v:'')+'<small>Сейчас '+GAME_VER+' · нажми, чтобы обновить</small>';b.onclick=()=>{try{saveNow()}catch(x){}location.reload()};document.body.appendChild(b)});
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();instEvt=e;if(view==='menu')try{renderMenu()}catch(x){}});
 addEventListener('appinstalled',()=>{instEvt=null;toast('📲 Игра установлена — ищи иконку «Номера» на экране');if(view==='menu')try{renderMenu()}catch(x){}});
-function instBanner(){if(IN_APP||isStand()||location.protocol==='file:')return '';return '<button class="instb" data-a="install" style="grid-column:1/-1"><span>📲</span><div><b>Установить игру на телефон</b><small>Иконка на экране, весь экран и игра без интернета</small></div></button>'}
+function instBanner(){if(IN_APP)return '';const dl='<div class="dlrow" style="grid-column:1/-1"><a class="dlb" href="'+REL+'/download/nomera-goroda.apk" rel="noopener"><span>🤖</span><div><b>Скачать APK</b><small>для Android</small></div></a><a class="dlb" href="'+REL+'/download/nomera-goroda.ipa" rel="noopener"><span>🍏</span><div><b>Скачать IPA</b><small>для iPhone</small></div></a></div>';return (isStand()||location.protocol==='file:'?'':'<button class="instb" data-a="install" style="grid-column:1/-1"><span>📲</span><div><b>Установить игру на телефон</b><small>Иконка на экране, весь экран и игра без интернета</small></div></button>')+dl}
 Object.assign(A,{async install(){
   if(instEvt){instEvt.prompt();try{await instEvt.userChoice}catch(e){}instEvt=null;return}
   const step=(n,t)=>'<div class="ist"><i>'+n+'</i><div>'+t+'</div></div>';
@@ -1336,6 +1377,7 @@ async function accEnter(reg){const login=($('acl').value||'').trim().toLowerCase
       +'<button class="btn" data-a="accuse" data-v="cloud">☁️ Из аккаунта</button><button class="btn gray" data-a="accuse" data-v="local">📱 С этого устройства ('+fmt(S.coins)+', '+S.inv.length+' номеров)</button></div>'}
   catch(e){accErr(e.message==='Failed to fetch'?'Нет связи с сервером. Проверь интернет':e.message);accBusy(false)}}
 Object.assign(A,{
+  cpadd(){cpAdd()},
   acct(){openAcct()},
   accin(){accEnter(false)},accreg(){accEnter(true)},
   async accuse(v){if(v==='cloud'){A.mdclose();await cloudPull(false)}else{saveNow();await cloudPush(true);toast('✅ Прогресс с этого устройства сохранён в аккаунт');openAcct()}},
