@@ -23,12 +23,13 @@ async function page(req) {
     const hit = (await c.match('./index.html')) || (await c.match('./'));
     if (hit) {
       // сеть медленная — отдали сохранённую версию, а свежую докачаем в фоне
+      const old = hit.clone();
       fetch(req, { cache: 'no-cache' }).then(async (r) => {
         if (!r.ok) return;
-        const [nt, ot] = await Promise.all([r.clone().text(), hit.clone().text()]);
+        const [nt, ot] = await Promise.all([r.clone().text(), old.text()]);
         await c.put('./index.html', r);
         // версия на сайте новее той, что сейчас открыта, — предлагаем обновить
-        if (nt !== ot) (await self.clients.matchAll({ type: 'window' })).forEach((cl) => cl.postMessage({ t: 'upd' }));
+        if (nt !== ot) (await self.clients.matchAll({ type: 'window' })).forEach((cl) => cl.postMessage({ t: 'upd', v: (nt.match(/GAME_VER='([^']+)'/) || [])[1] || '' }));
       }).catch(() => {});
       return hit;
     }
