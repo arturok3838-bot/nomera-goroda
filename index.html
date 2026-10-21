@@ -491,6 +491,12 @@ body.driving{overflow:hidden}
 #dwant{position:absolute;left:50%;top:calc(64px + var(--sat));transform:translateX(-50%);text-align:center;pointer-events:none;z-index:4;text-shadow:0 2px 6px rgba(0,0,0,.7)}#dwant b{font-size:30px;letter-spacing:2px;color:#ffd23f;display:block;line-height:1}#dwant b i{font-style:normal;color:rgba(255,255,255,.25)}#dwant small{display:inline-block;margin-top:4px;background:rgba(10,14,24,.6);border-radius:10px;padding:3px 10px;font:600 12.5px system-ui,sans-serif;color:#fff}#dwant small.ar{background:#c62828}
 #dwant .pbar{display:flex;gap:4px;width:min(320px,70vw);margin:6px auto 0}#dwant .pbar span{position:relative;display:flex;align-items:center;flex:1;height:15px;border-radius:7px;background:rgba(10,14,24,.65);overflow:hidden;border:1px solid rgba(255,255,255,.25)}#dwant .pbar i{position:absolute;top:0;bottom:0;display:block;transition:width .2s}#dwant .bu i{right:0;background:linear-gradient(90deg,#ff6a5a,#d01616)}#dwant .ev i{left:0;background:linear-gradient(90deg,#2fd06f,#7dffb0)}#dwant .pbar em{position:relative;z-index:1;font:800 9.5px/1 system-ui,sans-serif;letter-spacing:1px;color:#fff;font-style:normal}#dwant .bu em{margin-left:auto;margin-right:6px}#dwant .ev em{margin-left:6px}
 #djoy{display:none;position:absolute;left:calc(22px + var(--sal,0px));bottom:calc(26px + var(--sab,0px));width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.08) 0 55%,rgba(255,255,255,.16) 56% 100%);border:2px solid rgba(255,255,255,.4);z-index:5;touch-action:none;box-shadow:0 4px 18px rgba(0,0,0,.35)}#djoy i{position:absolute;left:50%;top:50%;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;background:rgba(255,255,255,.85);box-shadow:0 2px 10px rgba(0,0,0,.4);pointer-events:none}#djoy span{position:absolute;left:0;right:0;top:-22px;text-align:center;font:700 11px system-ui,sans-serif;color:rgba(255,255,255,.75);pointer-events:none}#djoy.run{border-color:#ffd23f}#djoy.run i{background:#ffd23f}#drive.onfoot #djoy{display:block}#drive.onfoot #dctl{display:none}
+#dstat,#dweap,#dfire{display:none}#drive.gta #dstat{display:flex;flex-direction:column;gap:3px;position:absolute;right:12px;top:calc(232px + var(--sat));width:100px;pointer-events:none;z-index:4}#dstat i{display:block;position:relative;height:7px;border-radius:4px;background:rgba(10,14,24,.7);overflow:hidden;border:1px solid rgba(255,255,255,.25)}#dstat b,#dstat u{position:absolute;left:0;top:0;bottom:0;transition:width .25s}#dstat .hp b{background:linear-gradient(90deg,#e0442f,#ff6a55)}#dstat .hp u{background:rgba(160,200,255,.75);height:3px}#dstat .fd b{background:linear-gradient(90deg,#d98a1f,#f2b705)}#dstat .en b{background:linear-gradient(90deg,#2f9bff,#5fe3ff)}
+#drive.gta #dweap{display:flex;flex-direction:column;align-items:center;justify-content:center;position:absolute;right:122px;top:calc(124px + var(--sat));width:64px;height:64px;border-radius:14px;background:rgba(10,14,24,.72);border:2px solid rgba(255,255,255,.35);color:#fff;z-index:5;padding:0}#dweap b{font-size:28px;line-height:1}#dweap small{font:700 11px system-ui,sans-serif;color:#ffd23f}
+#drive.gta.onfoot #dfire{display:flex;align-items:center;justify-content:center;position:absolute;right:calc(26px + var(--sar,0px));bottom:calc(34px + var(--sab));width:104px;height:104px;border-radius:50%;font-size:46px;background:radial-gradient(circle,#ff5a4a,#b3121a);border:3px solid rgba(255,255,255,.7);box-shadow:0 6px 20px rgba(0,0,0,.45);z-index:5;touch-action:none}
+#dhurt{position:absolute;inset:0;pointer-events:none;opacity:0;z-index:3;box-shadow:inset 0 0 140px 30px rgba(220,0,0,.55)}#dhurt.on{animation:dhurt .45s ease}@keyframes dhurt{0%{opacity:1}100%{opacity:0}}
+#dwasted{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(40,0,0,.35);backdrop-filter:grayscale(1);-webkit-backdrop-filter:grayscale(1);z-index:20;pointer-events:none}#dwasted.on{display:flex}#dwasted b{font:italic 900 64px 'Roboto Condensed',Arial,sans-serif;color:#c8261c;-webkit-text-stroke:2px #000;text-shadow:0 4px 0 #000}#dwasted small{color:#fff;font:600 15px system-ui,sans-serif;margin-top:8px;text-shadow:0 2px 4px #000}
+#drive.dland.dsm.gta #dstat{top:calc(124px + var(--sat))}#drive.dland.dsm.gta #dweap{right:12px;top:calc(160px + var(--sat))}
 #dzone{position:absolute;right:calc(18px + var(--sar,0px));bottom:calc(190px + var(--sab));font:italic 900 34px/1 'Roboto Condensed',Arial,sans-serif;color:#fff;letter-spacing:.5px;text-shadow:0 3px 0 #000,0 0 18px rgba(0,0,0,.6);-webkit-text-stroke:1.5px #111;pointer-events:none;opacity:0;z-index:4;text-align:right;max-width:70vw}#dzone.on{animation:dzone 3.6s ease forwards}@keyframes dzone{0%{opacity:0;transform:translateX(30px)}10%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0}}
 #dpur{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;transition:opacity .4s}#dpur.on{opacity:1;animation:dpur .68s steps(1) infinite}@keyframes dpur{0%{box-shadow:inset 0 0 110px 18px rgba(255,30,40,.42)}50%{box-shadow:inset 0 0 110px 18px rgba(40,90,255,.42)}}
 #dwant .pst{display:flex;justify-content:center;gap:10px;margin-top:5px;font:700 12px/1 system-ui,sans-serif;color:#fff}#dwant .pst span{background:rgba(10,14,24,.6);padding:3px 7px;border-radius:6px}
@@ -630,7 +636,8 @@ body.driving{overflow:hidden}
   <div id="dcan"></div>
   <div class="dtop"><button class="dbtn" data-a="dexit" aria-label="Выйти в гараж">✕</button><div class="dinfo"><b id="dcity"></b><span id="dmis"></span><div class="dhpw"><i id="dhp"></i></div></div><div class="dright"><div class="dmrow"><div id="dfps">— FPS</div><div id="dmoney"></div></div><div class="drow"><button class="dbtn" id="dfoot" data-a="dfoot" aria-label="Выйти из машины">🚶</button><button class="dbtn" id="dchase" data-a="dchase" aria-label="Погоня">🚨</button><button class="dbtn" id="dsvcbtn" data-a="dsvcbtn" aria-label="Тюнинг-сервис">🔧</button><button class="dbtn hidden" id="dchatbtn" data-a="dchat" aria-label="Чат">💬</button><button class="dbtn hidden" id="dmicbtn" data-a="dmic" aria-label="Микрофон">🔇</button><button class="dbtn" id="donlbtn" data-a="donl" aria-label="Онлайн">🌐</button><button class="dbtn" data-a="drad" aria-label="Музыка">🎵</button><button class="dbtn" data-a="dset" aria-label="Настройки">⚙️</button><button class="dbtn" data-a="dhorn" aria-label="Сигнал">📯</button><button class="dbtn" id="dcambtn" data-a="dcam">🎥</button></div><button class="dbtn hidden" id="dorb" data-a="dorb">⟲ Камера</button></div></div>
   <canvas id="dmap" data-a="dbig" title="Карта (E)" width="240" height="240"></canvas>
-  <div id="dkeys" aria-hidden="true"><div class="t">Управление</div><div><kbd>W</kbd><kbd>↑</kbd> газ</div><div><kbd>S</kbd><kbd>↓</kbd> тормоз и назад</div><div><kbd>A</kbd><kbd>D</kbd><kbd>← →</kbd> руль</div><div><kbd>Пробел</kbd> тормоз</div><div><kbd>Shift</kbd> дрифт (ручник)</div><div><kbd>N</kbd> нитро</div><div><kbd>E</kbd> карта и маршрут</div><div><kbd>C</kbd> камера 1-е / 3-е лицо</div><div><kbd>H</kbd> сигнал</div><div><kbd>R</kbd> ремонт</div><div>Мышь — осмотр, колёсико — зум</div><div class="k"><kbd>K</kbd> скрыть / показать подсказки</div></div>
+  <div id="dstat"></div><button id="dweap" data-a="dweap" aria-label="Оружие"></button><button id="dfire" aria-label="Атака">👊</button><div id="dhurt"></div><div id="dwasted"></div>
+  <div id="dkeys" aria-hidden="true"><div class="t">Управление</div><div><kbd>W</kbd><kbd>↑</kbd> газ</div><div><kbd>S</kbd><kbd>↓</kbd> тормоз и назад</div><div><kbd>A</kbd><kbd>D</kbd><kbd>← →</kbd> руль</div><div><kbd>Пробел</kbd> тормоз</div><div><kbd>Shift</kbd> дрифт (ручник)</div><div><kbd>N</kbd> нитро</div><div><kbd>E</kbd> карта и маршрут</div><div><kbd>C</kbd> камера 1-е / 3-е лицо</div><div><kbd>H</kbd> сигнал</div><div><kbd>R</kbd> ремонт</div><div>Мышь — осмотр, колёсико — зум</div><div><kbd>F</kbd> выйти / сесть / угнать</div><div><kbd>Q</kbd> оружие · <kbd>Пробел</kbd> атака пешком</div><div class="k"><kbd>K</kbd> скрыть / показать подсказки</div></div>
   <div id="dbig" class="hidden"><canvas id="dbigc" width="900" height="900"></canvas><div class="bh"><b id="dbigi"></b><button data-a="dwpclr">Сбросить точку</button><button data-a="svcgo">🔧 В сервис</button><button class="p" data-a="dbigx">Закрыть (E)</button></div><div class="bt">Нажми на дорогу — маршрут построится сам · нажми на точку ещё раз, чтобы убрать</div></div>
   <div id="darr" class="hidden"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 44V8M24 6 11.5 18.5M24 6l12.5 12.5" stroke="#15171d" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M24 44V8M24 6 11.5 18.5M24 6l12.5 12.5" stroke="#ffd23f" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
   <button id="drep" class="hidden" data-a="drepair"></button>
@@ -655,7 +662,7 @@ body.driving{overflow:hidden}
 
 <script>
 'use strict';
-const GAME_VER='1.1.21';
+const GAME_VER='1.1.22';
 const KEY='nomera_v3';
 const $=id=>document.getElementById(id);
 let RNG=Math.random;
@@ -1334,7 +1341,7 @@ Object.assign(A,{
   async svfile(){saveNow();const c=await svEncode(),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/plain'}));a.download='nomera-'+new Date().toISOString().slice(0,10)+'.nomera';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast('💾 Файл сохранения скачан')}});
 C.svload=async t=>{const f=t.files&&t.files[0];t.value='';if(!f)return;try{svApply(await svDecode(await f.text()))}catch(e){toast('Это не файл сохранения игры')}};
 
-const CHANGES={'1.1.21':['🌆 Новая карта «Свободный мир: Лос-Анджелес» — самая большая в игре (2,6 × 2,6 км), без кварталов-сеток','🛣 Фривей-кольцо, бульвары Сансет и Уилшир, повёрнутый даунтаун, извилистый пригород, серпантины и Малхолланд-драйв в холмах','🏙 Районы: Даунтаун, Мидтаун, Пригород Вэлли, Пляж Санта-Моника с пирсом, Голливудские холмы с надписью и обсерваторией, Порт с кранами, Восточная пустыня — название района появляется при въезде','🚗 Трафик ездит по всей сети дорог и подтягивается к игроку, пешеходы гуляют по тротуарам, работают доставки, погоня, сервис и навигация'],'1.1.20':['🏔 На гору в Лос-Анджелесе можно заехать: выезд на севере, серпантин мимо надписи, смотровая площадка и +5 000 ₽ за первое восхождение','🔧 Сервис открывается легче (до 54 км/ч), кнопка 🔧 открывает его рядом или строит маршрут, меню не закрывает машину','🚶 Пешеходы гуляют по тротуарам, переходят улицы, разбегаются от машины','🚗 Машин на дорогах почти вдвое больше','🆕 5 новых машин: Stellar Coupe GT, Kaiser Touring, Hikari Urban, Hikari Rally R, Север Волна','✨ Машины детальнее: решётка с ламелями, ходовые огни, противотуманки, катафоты, антенна, светодиодная полоса'],'1.1.19':['⌨️ Клавиши на ПК больше не залипают (переключение окон, правый клик, ⌘ на Mac)','🏍 Мотоцикл как в GTA: наклон в поворотах, вилли (газ + Shift/ДРИФТ), стоппи, мотоциклист вылетает при аварии и встаёт','🚗 Машины NPC: поворотники, гудят, если мешаешь, после аварии уезжают в панике и проезжают на красный','🌴 Новый Лос-Анджелес: горы с надписью LOS ANGELES, пляж, океан с парусниками, пирс с колесом обозрения, вышки спасателей','🕹 Джойстик-кружок для ходьбы — отведи до края, чтобы бежать'],'1.1.18':['🚓 Полиция в стиле Most Wanted: чёрные машины с белыми дверями и надписью «ПОЛИЦИЯ», стробоскопы с ореолом и отсветом на асфальте','💥 Полицейские мнутся в точке удара: вмятины, царапины, отлетают бамперы и зеркала, двери распахиваются и отваливаются, идёт дым','🛡 Полиция стала прочнее — обычно нужно 2–4 тарана','🚨 Погоня начинается только по кнопке или от аварий с машинами — по нарастающей (без звёзд за скорость)','🎬 Замедление при выводе полицейского из строя, мигание экрана красным/синим, счётчик ущерба','🎨 Тёплая цветокоррекция как в Most Wanted и размытие на большой скорости (на высоком качестве)'],'1.1.17':['🚨 Погоня как в Need for Speed: 1–5 звёзд, полоски АРЕСТ / УХОД, награда за уход и штраф за арест','💥 Полицейских можно таранить — разбитые машины дают бонус, каждые 3 тарана +1 звезда','🚁 На 4–5 звёздах — вертолёт и сирены','🔧 Тюнинг-сервис на карте: металлик/матовая/хром краска, неоновая подсветка, рамка номера, обвес, спойлеры, диски, покрышки, спидометр и руль','🏍 Мотоциклы с наклоном в поворотах','🚶 Можно выйти из машины (F) и ходить — друзья в онлайне видят тебя пешком','🛡 Все машины в 9 раз прочнее','🌳 Деревьев стало меньше'],'1.1.16':['⭐ Новые уровни: 1 — 10 генераций, 2 — 30, 3 — 200, 4 — 1 000, 5 — 10 000, 6 — 15 000, 7 — 20 000, 8 — 25 000, 9 — 30 000, 10 — 50 000, дальше каждые 10 000','📊 В профиле видно, сколько генераций осталось до следующего уровня','⚡ На экранах 90/120 Гц игра не рисует лишние кадры — меньше нагрев','🚀 Шейдеры готовятся заранее — без рывков в начале поездки','🧱 На слабых видеочипах текстуры домов вдвое легче, дороги посёлка проще'],'1.1.15':['⚡ Android-приложение: максимальная частота экрана (90/120 Гц), ровная производительность без провалов при нагреве','🎮 Приложение отмечено как игра — работают игровые режимы телефона','🔋 В фоне игра полностью замирает и не тратит батарею','🧠 При нехватке памяти игра снижает разрешение, а не вылетает','🚀 Быстрый запуск без белой вспышки'],'1.1.14':['🤖 Приложение для Android (APK) и 🍏 для iPhone (IPA) — кнопки в меню','🛠️ Админка: свой номер — страна, тип, буквы, цифры, регион, редкость, износ и цена','🔊 Звук выпадения мифического номера'],'1.1.13':['📲 Игру можно установить на телефон — работает без интернета','🔄 Установленная игра сама получает обновления','💬 Текстовый чат в онлайн-комнате','🏘️ Новая карта «Посёлок»: избы, кирпич, гаражи, неровные дороги','🌐 Онлайн: комнаты по коду, совместная езда и голосовой чат','👤 Аккаунты: прогресс сохраняется на сервере','🟥 Мифическая редкость и износ номеров','🗺️ Карта на E с маршрутом и стрелкой над машиной','📊 Счётчик FPS']};
+const CHANGES={'1.1.22':['🎮 Режим GTA в «Свободном мире»: здоровье, голод и энергия под миникартой (энергия тратится на бег)','🔫 Оружие справа сверху как в San Andreas: кулаки, бита, пистолет, автомат — нажми, чтобы сменить (Q на ПК)','💥 Драки и стрельба: по прохожим, полиции и другим игрокам в онлайне; уличные банды дерутся и стреляют в ответ; «ПОТРАЧЕНО» и больница','🚗 Угон: подойди к машине и нажми F — водитель вылетит, а свою машину можно забрать там, где оставил','🛒 37 магазинов с вывесками: бургерные, пиццерии, кафе, супермаркеты, аптеки, оружейные, бары, одежда','🪩 Клубы с неоном и музыкой — можно потанцевать и восстановить энергию','🗺 Карта стала в 1,35 раза больше и плотнее: больше улиц и домов, вывески на зданиях'],'1.1.21':['🌆 Новая карта «Свободный мир: Лос-Анджелес» — самая большая в игре (2,6 × 2,6 км), без кварталов-сеток','🛣 Фривей-кольцо, бульвары Сансет и Уилшир, повёрнутый даунтаун, извилистый пригород, серпантины и Малхолланд-драйв в холмах','🏙 Районы: Даунтаун, Мидтаун, Пригород Вэлли, Пляж Санта-Моника с пирсом, Голливудские холмы с надписью и обсерваторией, Порт с кранами, Восточная пустыня — название района появляется при въезде','🚗 Трафик ездит по всей сети дорог и подтягивается к игроку, пешеходы гуляют по тротуарам, работают доставки, погоня, сервис и навигация'],'1.1.20':['🏔 На гору в Лос-Анджелесе можно заехать: выезд на севере, серпантин мимо надписи, смотровая площадка и +5 000 ₽ за первое восхождение','🔧 Сервис открывается легче (до 54 км/ч), кнопка 🔧 открывает его рядом или строит маршрут, меню не закрывает машину','🚶 Пешеходы гуляют по тротуарам, переходят улицы, разбегаются от машины','🚗 Машин на дорогах почти вдвое больше','🆕 5 новых машин: Stellar Coupe GT, Kaiser Touring, Hikari Urban, Hikari Rally R, Север Волна','✨ Машины детальнее: решётка с ламелями, ходовые огни, противотуманки, катафоты, антенна, светодиодная полоса'],'1.1.19':['⌨️ Клавиши на ПК больше не залипают (переключение окон, правый клик, ⌘ на Mac)','🏍 Мотоцикл как в GTA: наклон в поворотах, вилли (газ + Shift/ДРИФТ), стоппи, мотоциклист вылетает при аварии и встаёт','🚗 Машины NPC: поворотники, гудят, если мешаешь, после аварии уезжают в панике и проезжают на красный','🌴 Новый Лос-Анджелес: горы с надписью LOS ANGELES, пляж, океан с парусниками, пирс с колесом обозрения, вышки спасателей','🕹 Джойстик-кружок для ходьбы — отведи до края, чтобы бежать'],'1.1.18':['🚓 Полиция в стиле Most Wanted: чёрные машины с белыми дверями и надписью «ПОЛИЦИЯ», стробоскопы с ореолом и отсветом на асфальте','💥 Полицейские мнутся в точке удара: вмятины, царапины, отлетают бамперы и зеркала, двери распахиваются и отваливаются, идёт дым','🛡 Полиция стала прочнее — обычно нужно 2–4 тарана','🚨 Погоня начинается только по кнопке или от аварий с машинами — по нарастающей (без звёзд за скорость)','🎬 Замедление при выводе полицейского из строя, мигание экрана красным/синим, счётчик ущерба','🎨 Тёплая цветокоррекция как в Most Wanted и размытие на большой скорости (на высоком качестве)'],'1.1.17':['🚨 Погоня как в Need for Speed: 1–5 звёзд, полоски АРЕСТ / УХОД, награда за уход и штраф за арест','💥 Полицейских можно таранить — разбитые машины дают бонус, каждые 3 тарана +1 звезда','🚁 На 4–5 звёздах — вертолёт и сирены','🔧 Тюнинг-сервис на карте: металлик/матовая/хром краска, неоновая подсветка, рамка номера, обвес, спойлеры, диски, покрышки, спидометр и руль','🏍 Мотоциклы с наклоном в поворотах','🚶 Можно выйти из машины (F) и ходить — друзья в онлайне видят тебя пешком','🛡 Все машины в 9 раз прочнее','🌳 Деревьев стало меньше'],'1.1.16':['⭐ Новые уровни: 1 — 10 генераций, 2 — 30, 3 — 200, 4 — 1 000, 5 — 10 000, 6 — 15 000, 7 — 20 000, 8 — 25 000, 9 — 30 000, 10 — 50 000, дальше каждые 10 000','📊 В профиле видно, сколько генераций осталось до следующего уровня','⚡ На экранах 90/120 Гц игра не рисует лишние кадры — меньше нагрев','🚀 Шейдеры готовятся заранее — без рывков в начале поездки','🧱 На слабых видеочипах текстуры домов вдвое легче, дороги посёлка проще'],'1.1.15':['⚡ Android-приложение: максимальная частота экрана (90/120 Гц), ровная производительность без провалов при нагреве','🎮 Приложение отмечено как игра — работают игровые режимы телефона','🔋 В фоне игра полностью замирает и не тратит батарею','🧠 При нехватке памяти игра снижает разрешение, а не вылетает','🚀 Быстрый запуск без белой вспышки'],'1.1.14':['🤖 Приложение для Android (APK) и 🍏 для iPhone (IPA) — кнопки в меню','🛠️ Админка: свой номер — страна, тип, буквы, цифры, регион, редкость, износ и цена','🔊 Звук выпадения мифического номера'],'1.1.13':['📲 Игру можно установить на телефон — работает без интернета','🔄 Установленная игра сама получает обновления','💬 Текстовый чат в онлайн-комнате','🏘️ Новая карта «Посёлок»: избы, кирпич, гаражи, неровные дороги','🌐 Онлайн: комнаты по коду, совместная езда и голосовой чат','👤 Аккаунты: прогресс сохраняется на сервере','🟥 Мифическая редкость и износ номеров','🗺️ Карта на E с маршрутом и стрелкой над машиной','📊 Счётчик FPS']};
 A.ver=()=>{$('mc').innerHTML='<div class="mb"><h3>Версия '+GAME_VER+'</h3><div class="hint" style="text-align:center;margin:4px 0 10px">Что нового</div>'+(CHANGES[GAME_VER]||[]).map(t=>'<div class="ml" style="justify-content:flex-start"><span>'+t+'</span></div>').join('')+'<button class="btn" data-a="mdclose" style="margin-top:12px">Отлично</button></div>';$('md').classList.remove('hidden')};
 try{const lv=localStorage.getItem('nomera_ver');if(lv&&lv!==GAME_VER)setTimeout(()=>{toast('🆕 Игра обновлена до версии '+GAME_VER);if(typeof A.ver==='function')A.ver()},1500);localStorage.setItem('nomera_ver',GAME_VER)}catch(e){}
 
@@ -2542,7 +2549,7 @@ function buildStunt(Wd,M){const T=THREE,sc=Wd.sc,E=330;Wd.lim=E;
 let DR=null;const KEYS={};
 function curPlate(){const p=S.inv.find(z=>z.id===S.plateId);return p||{c:'ru',ty:'civil',l:'ТРН',d:'101',reg:'77',rar:0}}
 function repairCost(id){const c=carById(id),d=(S.dmg||{})[id]||0;return Math.round(d*(100+c.price*.00015)/10)*10}
-function makePlayerCar(sc){const T=THREE,c=carById(S.car),car=buildCar(c,(S.carCol||{})[c.id]||c.color,curPlate(),false,carOpt(c.id)),q=QP[QK()];sc.add(car.g);
+function makePlayerCar(sc){const T=THREE,c=DR&&DR.jack||carById(S.car),car=buildCar(c,(S.carCol||{})[c.id]||c.color,curPlate(),false,carOpt(c.id)),q=QP[QK()];sc.add(car.g);
   const sh=new T.Mesh(new T.PlaneGeometry(car.L*1.15,car.W*1.4),new T.MeshBasicMaterial({map:texBlob(),transparent:true,depthWrite:false,opacity:q.shadow?.55:1}));sh.rotation.x=-Math.PI/2;sh.userData.noCast=1;sc.add(sh);car.shadow=sh;
   if(q.shadow)car.g.traverse(o=>{if(o.isMesh){o.castShadow=o.geometry.attributes.position.count>150&&!(o.material&&o.material.isMeshBasicMaterial);o.receiveShadow=true}});
   // фары ночью: световое пятно на дороге + прожектор (на среднем качестве и выше)
@@ -2716,7 +2723,7 @@ function fitR(){if(!R3)return;const el=R3.domElement.parentElement;if(!el)return
 addEventListener('resize',()=>{if(DR&&DR.on)dOrient();else if(GP)fitR()});
 function stopDrive(){if(!DR)return;if(DR.big)bigMap(false);wantedClear(true);W.stars=0;W.mode=false;$('dchp').classList.add('hidden');if(DR.svcOpen)svcClose();if(DR.foot){try{DR.foot.P.g.parent&&DR.foot.P.g.parent.remove(DR.foot.P.g)}catch(e){}DR.foot=null}netCarsClear();$('donl').classList.add('hidden');DR.on=false;engineStop();radioStop();for(const k in KEYS)KEYS[k]=false;$('drive').classList.add('hidden');$('dset').classList.add('hidden');$('drad').classList.add('hidden');document.body.classList.remove('driving');unLand();
   const dv=$('drive');dv.style.width=dv.style.height=dv.style.transform='';
-  S.dmg=S.dmg||{};S.dmg[S.car]=Math.round(DR.st.dmg);saveNow();go('garage');setTimeout(()=>{try{music()}catch(e){}},300)}
+  S.dmg=S.dmg||{};S.dmg[S.car]=Math.round(DR.jack&&DR.own?DR.own.dmg:DR.st.dmg);saveNow();go('garage');setTimeout(()=>{try{music()}catch(e){}},300)}
 function setCam(m){S.cam=m;const car=DR.car,cam=DR.cam;DR.orb={y:0,p:0,z:1};
   if(m==='1'){car.body.add(cam);cam.position.set(car.L*.18,Math.max(1.15,car.pr.hy+.55),0);cam.rotation.set(-.04,-Math.PI/2,0,'YXZ');cam.fov=74;cam.near=.05;car.g.visible=false}
   else{DR.Wd.sc.attach(cam);car.g.visible=true;cam.near=.08;cam.fov=62}car.inter.visible=false;cam.updateProjectionMatrix();
@@ -2798,7 +2805,7 @@ function step(dt){const st=DR.st,c=DR.cdef,Wd=DR.Wd,car=DR.car,inp=DR.svcOpen||D
   const k1=Math.floor(S.km);if(k1>k0&&(k1===10||k1===50||k1===100||k1%500===0)){dMsg('🏆 Достижение «Пробег '+nf(k1)+' км» — забери награду в меню',3200);tone([523,659,784,1046],.16,'triangle',.09)}
   if(S.kmAcc>=10000){S.kmAcc-=10000;S.coins+=500;dMsg('🛣️ +500 ₽ за 10 км!',2500);tone([660,880,1100],.15,'triangle',.08)}
   if(DR.mis){if(DR.mk){DR.mk.children[1].scale.setScalar(1+Math.sin(performance.now()/250)*.12)}if(Math.hypot(DR.mis.x-st.x,DR.mis.z-st.z)<7){const r=DR.mis.rew;S.coins+=r;S.deliv=(S.deliv||0)+1;dMsg('📦 Доставлено! +'+fmt(r),2400);tone([523,659,784,1046],.16,'triangle',.09);save();newMission()}}
-  camStep(dt,st,car);navStep(dt);worldFx(dt);netStep(dt);wantedStep(dt);svcStep(dt);footStep(dt);Wd.sky.position.set(st.x,0,st.z);if(Wd.sky.material.uniforms)Wd.sky.material.uniforms.t.value+=dt;
+  camStep(dt,st,car);navStep(dt);worldFx(dt);gtaTick(dt);netStep(dt);wantedStep(dt);svcStep(dt);footStep(dt);Wd.sky.position.set(st.x,0,st.z);if(Wd.sky.material.uniforms)Wd.sky.material.uniforms.t.value+=dt;
   // тень от солнца следует за машиной
   if(Wd.sun.castShadow){const s=Wd.sun,E=s.shadow.camera.right,ts=E*2/s.shadow.mapSize.x,fx=Math.round((st.x+ch*E*.35)/ts)*ts,fz=Math.round((st.z-sh*E*.35)/ts)*ts,sd=Wd.sunDir||SUN;s.target.position.set(fx,0,fz);s.position.set(fx+sd[0]*260,Math.max(40,sd[1]*260),fz+sd[2]*260);s.target.updateMatrixWorld()}
   else if(Wd.sunDir){const sd=Wd.sunDir;Wd.sun.position.set(sd[0]*260,sd[1]*260,sd[2]*260)}
@@ -2895,7 +2902,7 @@ function navInit(){const T=THREE,sc=DR.Wd.sc;sc.children.filter(o=>o.name==='nav
   const geo=new T.ExtrudeGeometry(sh,{depth:.24,bevelEnabled:false});geo.rotateX(-Math.PI/2);geo.translate(0,-.12,0);
   const g=new T.Group();g.name='navArrow';const m=new T.Mesh(geo,new T.MeshBasicMaterial({color:0xb44bff,transparent:true,opacity:.88}));g.add(m);
   const e=new T.LineSegments(new T.EdgesGeometry(geo),new T.LineBasicMaterial({color:0xf3e6ff}));g.add(e);g.traverse(o=>o.userData.noCast=1);g.visible=false;sc.add(g);
-  DR.nav=g;DR.wp=null;DR.route=null;DR.navT=0;netCarsClear();netBadge();wantedInit();svcInit();hudSkin();DR.foot=null;footUI()}
+  DR.nav=g;DR.wp=null;DR.route=null;DR.navT=0;netCarsClear();netBadge();wantedInit();svcInit();hudSkin();DR.foot=null;footUI();DR.jack=null;DR.own=null;DR.shop=null;DR.shopIn=null;{const g=gtaS();g.dead=0;if(g.hp<=0)g.hp=100}gtaHud()}
 function navStep(dt){const st=DR.st,g=navGoal(),a=DR.nav;if(!a)return;
   if(DR.wp&&Math.hypot(DR.wp.x-st.x,DR.wp.z-st.z)<10){DR.wp=null;DR.route=null;dMsg('📍 Вы на месте!',2000);tone([523,784,1046],.14,'triangle',.08)}
   DR.navT-=dt;if(g&&(DR.navT<=0||DR.navG!==g||!DR.route)){DR.navT=.4;navRoute()}else if(!g)DR.route=null;
@@ -2964,6 +2971,7 @@ function netMsg(topic,d){if(!d||!d.i||d.i===NET.id)return;const sub=topic.slice(
   if(sub==='b'){netDrop(d.i);netUI();return}
   if(sub==='c'){if(typeof d.t==='string'&&d.t.trim()){const P0=NET.peers[d.i];chatAdd(String(d.n||'Игрок').slice(0,18),d.t.slice(0,140),false,P0)}return}
   let P=NET.peers[d.i];if(sub==='w'){if(d.to!==NET.id)return;if(!P)P=NET.peers[d.i]={id:d.i,t:performance.now(),n:''};rtcSignal(P,d);return}
+  if(sub==='h'){gtaNetHit(d);return}
   if(sub!=='s')return;const now=performance.now();
   if(!P||!P.n){const nw=!P;P=P||(NET.peers[d.i]={id:d.i,t:now});if(nw||!P.hi){P.hi=1;if(DR&&DR.on)dMsg('👋 '+esc(d.n)+' в комнате',1800);else toast('👋 '+esc(d.n)+' в комнате')}}
   P.n=d.n;P.pt=P.t;P.t=now;P.s=d;
@@ -3328,7 +3336,7 @@ function svcRender(){const id=S.car,m=modsOf(id),c=carById(id);
    +'<div class="svo">'+MODS[svcTab].o.map(o=>{const own=modOwn(id,svcTab,o[0]),cur=m[svcTab]===o[0],sw=/^#/.test(o[0])?'<i style="background:'+o[0]+'"></i>':'';
       return '<button data-a="svcb" data-v="'+svcTab+'|'+o[0]+'" class="'+(cur?'cur':'')+'">'+sw+'<b>'+o[1]+'</b><small>'+(cur?'✓ Установлено':own?'Куплено — поставить':fmt(o[2]))+'</small></button>'}).join('')+'</div>'
    +'<div class="hint" style="margin-top:8px">'+(svcTab==='spd'||svcTab==='whl'?'Спидометр и руль видны на экране во время поездки (руль — в виде от 1-го лица).':svcTab==='tire'?'Покрышки меняют сцепление: спортивные держат дорогу, дрифтовые легче срываются в занос.':'Всё, что купил, остаётся на этой машине — можно бесплатно переключать.')+'</div>'}
-function rebuildPlayerCar(){const Wd=DR.Wd,old=DR.car;try{Wd.sc.remove(old.g);Wd.sc.remove(old.shadow)}catch(e){}DR.car=makePlayerCar(Wd.sc);DR.cdef=tuned(carById(S.car));setCam(S.cam||'3');hudSkin()}
+function rebuildPlayerCar(){const Wd=DR.Wd,old=DR.car;try{Wd.sc.remove(old.g);Wd.sc.remove(old.shadow)}catch(e){}DR.car=makePlayerCar(Wd.sc);DR.cdef=tuned(DR.jack||carById(S.car));setCam(S.cam||'3');hudSkin()}
 A.svcx=()=>svcClose();A.svct=v=>{svcTab=v;svcRender()};
 A.svcb=v=>{const[k,val]=v.split('|'),id=S.car,o=MODS[k].o.find(x=>x[0]===val);if(!o)return;
   if(!modOwn(id,k,val)){if(S.coins<o[2]){toast('Не хватает '+fmt(o[2]-S.coins));return}S.coins-=o[2];(S.modOwn||(S.modOwn={}));(S.modOwn[id]||(S.modOwn[id]={}))[k+':'+val]=1;tone([660,880],.1,'triangle',.07)}
@@ -3353,13 +3361,13 @@ const FOOTC=[0x2f6bff,0xe0442f,0x2fd06f,0xffb627,0xa35cff,0x1b1c1f];
 function footColor(){const i=Math.abs([...(S.nick||'Игрок')].reduce((a,c)=>a*31+c.charCodeAt(0)|0,7))%FOOTC.length;return FOOTC[i]}
 function footExit(){if(!DR||!DR.on||DR.foot)return;const st=DR.st;if(Math.abs(st.v)>3){dMsg('Сначала остановись',1200);return}if(st.air||st.wreck)return;
   const P=buildPerson(footColor(),0x2b3245),ch=Math.cos(st.h),sh=Math.sin(st.h),side=DR.car.W/2+.8;let x=st.x-sh*side,z=st.z-ch*side;if(inBld(DR.Wd,x,z)){x=st.x+sh*side;z=st.z+ch*side}
-  DR.Wd.sc.add(P.g);DR.foot={P,x,z,y:st.y,h:st.h,v:0};if(DR.car.pr.moto){if(DR.car.rider)DR.car.rider.visible=false;st.kick=1}st.v=0;if(S.cam==='1')setCam('3');engineMute(true);footUI();dMsg('🚶 Ты вышел из машины<small>F или кнопка 🚗 — сесть обратно</small>',2000)}
+  DR.Wd.sc.add(P.g);DR.foot={P,x,z,y:st.y,h:st.h,v:0};if(gtaOn()){const g=gtaS();if(g.shirt)P.g.children.forEach(o=>{if(o.isMesh&&o.geometry.parameters&&o.geometry.parameters.width===.26&&o.geometry.parameters.height===.62)o.material.color.setHex(g.shirt)});setTimeout(gtaWeapModel,0)}if(DR.car.pr.moto){if(DR.car.rider)DR.car.rider.visible=false;st.kick=1}st.v=0;if(S.cam==='1')setCam('3');engineMute(true);footUI();dMsg('🚶 Ты вышел из машины<small>F или кнопка 🚗 — сесть обратно</small>',2000)}
 function footEnter(){const F=DR&&DR.foot;if(!F)return;const st=DR.st;if(Math.hypot(F.x-st.x,F.z-st.z)>4.5){dMsg('Подойди к машине',1200);return}if(F.rag)return;F.P.g.parent&&F.P.g.parent.remove(F.P.g);DR.foot=null;if(DR.car.rider)DR.car.rider.visible=true;st.fall=0;st.fallA=0;st.kick=0;engineMute(false);footUI()}
 function engineMute(m){if(DR&&DR.eng)try{DR.eng.g.gain.value=0}catch(e){}DR.engMute=m}
 function footUI(){DR&&(DR.fcy=null);const b=$('dfoot');if(!b)return;b.textContent=DR&&DR.foot?'🚗':'🚶';b.title=DR&&DR.foot?'Сесть в машину (F)':'Выйти из машины (F)';$('drive').classList.toggle('onfoot',!!(DR&&DR.foot))}
-function footStep(dt){const F=DR.foot;if(!F)return false;if(F.rag)return footRag(F,dt);const k=KEYS,Wd=DR.Wd;let fw=(k.gas||k.kg?1:0)-(k.brake||k.kb?1:0),tr=(k.left||k.kl?1:0)-(k.right||k.kr?1:0);
+function footStep(dt){const F=DR.foot;if(!F)return false;if(F.rag)return footRag(F,dt);const k=KEYS,Wd=DR.Wd;let fw=(k.gas||k.kg?1:0)-(k.brake||(k.kb&&!(KHELD.has('Space')&&!KHELD.has('KeyS')&&!KHELD.has('ArrowDown')))?1:0),tr=(k.left||k.kl?1:0)-(k.right||k.kr?1:0);
   if(S.ctrl==='tilt'&&DR.tiltRaw!=null){const v=(DR.tiltRaw-(DR.tilt0||0))/22;tr=Math.max(-1,Math.min(1,-v));if(Math.abs(tr)<.08)tr=0}
-  const run=!!(k.drift||k.kd||k.nitro||k.kn);let max=run?6.5:2.6;if(DR.joy&&DR.joy.m>.08){const J=DR.joy,want=(DR.fcy!=null?DR.fcy:F.h)-Math.atan2(J.x,J.y);F.h+=angD(want,F.h)*Math.min(1,dt*9);fw=1;tr=0;max=J.m>.86?6.5:2.6*Math.max(.4,J.m/.86)}F.h+=tr*dt*2.8;const tv=fw*max*(fw<0?.55:1);F.v+=(tv-F.v)*Math.min(1,dt*8);
+  const run=!!(k.drift||k.kd||k.nitro||k.kn)&&gtaCanRun();let max=run?6.5:2.6;if(DR.joy&&DR.joy.m>.08){const J=DR.joy,want=(DR.fcy!=null?DR.fcy:F.h)-Math.atan2(J.x,J.y);F.h+=angD(want,F.h)*Math.min(1,dt*9);fw=1;tr=0;max=J.m>.86&&gtaCanRun()?6.5:2.6*Math.max(.4,J.m/.86)}F.h+=tr*dt*2.8;const tv=fw*max*(fw<0?.55:1);F.v+=(tv-F.v)*Math.min(1,dt*8);
   let nx=F.x+Math.cos(F.h)*F.v*dt,nz=F.z-Math.sin(F.h)*F.v*dt;if(inBld(Wd,nx,nz)||wOut(Wd,nx,nz)){nx=F.x;nz=F.z;F.v*=.3}
   // нельзя пройти сквозь свою машину
   const st=DR.st,dx=nx-st.x,dz=nz-st.z,d=Math.hypot(dx,dz),r=DR.car.L*.45;if(d<r&&d>.01){nx=st.x+dx/d*r;nz=st.z+dz/d*r}
@@ -3571,7 +3579,7 @@ function pedsBuild(Wd,M,rg){if(M.kind!=='city'&&!Wd.ow)return;let n=PEDN[QK()]||
   const col=new T.Color();
   for(let k=0;k<n;k++){const i=Math.floor(rg()*NB),j=Math.floor(rg()*NB),p={i,j,s:rg()*pedPer(),dir:rg()<.5?1:-1,sp:1+rg()*.55,ph:rg()*6,mode:'walk',t:0,x:0,z:0,y:CURB,h:0,run:0};
     const sh=SH[k%SH.length],pa=PA[Math.floor(rg()*PA.length)];col.setHex(sh);P.body.setColorAt(k,col);P.arms.setColorAt(2*k,col);P.arms.setColorAt(2*k+1,col);col.setHex(pa);P.legs.setColorAt(2*k,col);P.legs.setColorAt(2*k+1,col);
-    col.setHex(SK[Math.floor(rg()*SK.length)]);P.head.setColorAt(k,col);col.setHex(HR[Math.floor(rg()*HR.length)]);P.hair.setColorAt(k,col);if(Wd.ow)owPedInit(p,Wd,{x:Wd.spawn.x,z:Wd.spawn.z,r:450});else pedPos(p);P.list.push(p)}
+    col.setHex(SK[Math.floor(rg()*SK.length)]);P.head.setColorAt(k,col);col.setHex(HR[Math.floor(rg()*HR.length)]);P.hair.setColorAt(k,col);p.hp=40;if(Wd.ow){p.gang=rg()<.1;p.gun=p.gang&&rg()<.3;if(p.gang){col.setHex(0x22252b);P.body.setColorAt(k,col);P.arms.setColorAt(2*k,col);P.arms.setColorAt(2*k+1,col)}owPedInit(p,Wd,{x:Wd.spawn.x,z:Wd.spawn.z,r:450})}else pedPos(p);P.list.push(p)}
   for(const m of[P.legs,P.arms,P.body,P.head,P.hair])m.instanceColor.needsUpdate=true;
   Wd.peds=P;Wd.pedX=[];Wd.fx=Wd.fx||[];Wd.fx.push(dt=>pedsStep(Wd,dt))}
 const PED_E=3.1,pedSide=()=>BLK-2*PED_E,pedPer=()=>4*pedSide();
@@ -3583,6 +3591,8 @@ function pedsStep(Wd,dt){const P=Wd.peds;if(!P||!DR||!DR.st)return;const st=DR.s
   const vx=Math.cos(st.vh)*st.v,vz=-Math.sin(st.vh)*st.v,spd=Math.abs(st.v);
   for(const p of P.list){p.t+=dt;
     if(p.mode==='down'){pedDown(p,dt,Wd);continue}
+    if(p.mode==='fight'){pedFight(p,dt,Wd);continue}
+    if(Wd.ow&&p.gang&&DR.foot&&!DR.foot.rag&&(p.x-DR.foot.x)**2+(p.z-DR.foot.z)**2<36&&Math.random()<dt*.12){p.mode='fight';dMsg('😠 Банда нарывается на драку!',1200)}
     // машина игрока рядом: разбегаются, а при наезде — отлетают
     const dx=p.x-st.x,dz=p.z-st.z,d2=dx*dx+dz*dz;
     if(!onFoot&&d2<60&&st.y<2.5){const d=Math.sqrt(d2)||.01,ahead=(dx*vx+dz*vz)/(d*Math.max(.1,spd));
@@ -3612,7 +3622,7 @@ function pedDown(p,dt,Wd){p.t+=0;p.vy-=9.8*1.3*dt;p.x+=p.vx*dt;p.z+=p.vz*dt;p.yy
   if(inBld(Wd,p.x,p.z)){p.vx*=-.3;p.vz*=-.3}
   if(p.yy<=gh){p.yy=gh;p.vy=p.vy<-2?-p.vy*.25:0;const f=Math.exp(-dt*4);p.vx*=f;p.vz*=f;p.wx*=Math.exp(-dt*6);p.wz*=Math.exp(-dt*6);p.gr+=dt;p.rx+=(0-p.rx)*Math.min(1,dt*5);p.rz+=(-Math.PI/2-p.rz)*Math.min(1,dt*5)}
   p.rx+=p.wx*dt;p.rz+=p.wz*dt;
-  if(p.gr>1.8){// встаёт и убегает по своему тротуару
+  if(p.gr>(p.ko?9:1.8)){p.ko=0;p.hp=40;// встаёт и убегает по своему тротуару
     if(p.cr&&p.mode==='down'&&p.cr.u<1&&p.cr.u>0){p.i=p.cr.i;p.j=p.cr.j;p.s=p.cr.s}p.fx=p.x;p.fz=p.z;p.mode='walk';p.run=4;p.back=1.2;p.rx=p.rz=0}}
 /* матрицы инстансов */
 const PM={m:null};
@@ -3630,14 +3640,14 @@ function pedDraw(P,Wd){const T=THREE;if(!PM.m){PM.m=new T.Matrix4();PM.b=new T.M
 /* ================= СВОБОДНЫЙ МИР: ЛОС-АНДЖЕЛЕС =================
    Не сетка кварталов: изогнутые дороги, которые сами находят пересечения и складываются в граф;
    фривей-кольцо, бульвары, повёрнутый даунтаун, извилистый пригород, серпантины в холмах, порт, пляж и пустыня. */
-const OWR=1300,OWHZ=-540;
+const OWK=1.35,OWR=1750,OWHZ=-730,OCX=-1180*1.35;
 const OWD={dt:'Даунтаун',mid:'Мидтаун',sub:'Пригород Вэлли',beach:'Пляж Санта-Моника',hills:'Голливудские холмы',port:'Порт',desert:'Восточная пустыня'};
-function owDistrict(x,z){if(x<-1000)return'beach';if(z<OWHZ-60)return'hills';if(Math.hypot(x-250,z+80)<290)return'dt';if(x>950)return'desert';if(x>380&&z>720)return'port';if(x<-430&&z>240)return'sub';return'mid'}
+function owDistrict(x,z){x/=OWK;z/=OWK;if(x<-1000)return'beach';if(z<-600)return'hills';if(Math.hypot(x-250,z+80)<290)return'dt';if(x>950)return'desert';if(x>380&&z>720)return'port';if(x<-430&&z>240)return'sub';return'mid'}
 const OWGC={dt:0xa9a69d,mid:0xb3ad9f,sub:0x76a056,beach:0xe6d2a0,hills:0xb39657,port:0x8f8d87,desert:0xd8c193};
 /* ---------- рельеф холмов ---------- */
-function owHillRaw(x,z){const u=(OWHZ-z)/760;if(u<=0)return 0;const rise=Math.pow(Math.min(1,u/.55),1.6);
+function owHillRaw(x,z){x/=OWK;z/=OWK;const u=(-540-z)/760;if(u<=0)return 0;const rise=Math.pow(Math.min(1,u/.55),1.6);
   const n=.62+.2*Math.sin(x*.0062+1.3)+.13*Math.sin(x*.017+z*.004)+.08*Math.sin(x*.041-z*.013)+.06*Math.sin(z*.03+x*.011);
-  const ridge=.8+.28*(1-Math.abs(Math.sin(x*.012+z*.006)));return Math.max(0,rise*n*ridge*230)}
+  const ridge=.8+.28*(1-Math.abs(Math.sin(x*.012+z*.006)));return Math.max(0,rise*n*ridge*250)}
 /* ---------- описание дорог ---------- */
 function owRoadsDef(){const R=[],add=(pts,w,k,nm,closed)=>R.push({ctl:pts,w,k,nm,closed:!!closed});
   add([[-700,-470],[-200,-530],[200,-520],[820,-300],[900,300],[500,700],[-300,650],[-750,250]],22,'fw','Фривей',true);
@@ -3648,15 +3658,15 @@ function owRoadsDef(){const R=[],add=(pts,w,k,nm,closed)=>R.push({ctl:pts,w,k,nm
   add([[-1045,-600],[-1052,-200],[-1032,200],[-1046,600],[-1025,1170]],14,'bl','Оушен-авеню');
   add([[1000,-380],[1060,300],[1010,900],[1040,1170]],12,'st','Шоссе пустыни');
   // даунтаун: сетка, повёрнутая на 30°
-  {const C=[250,-80],a=.52,ux=Math.cos(a),uz=Math.sin(a),vx=-uz,vz=ux;for(let k=-2;k<=2;k++){const o=k*88,L=235;
+  {const C=[250,-80],a=.52,ux=Math.cos(a),uz=Math.sin(a),vx=-uz,vz=ux;for(let k=-3;k<=3;k++){const o=k*66,L=235;
       add([[C[0]+vx*o-ux*L,C[1]+vz*o-uz*L],[C[0]+vx*o+ux*L,C[1]+vz*o+uz*L]],k?11:14,k?'st':'bl',k?'':'Гранд-авеню');
       add([[C[0]+ux*o-vx*L,C[1]+uz*o-vz*L],[C[0]+ux*o+vx*L,C[1]+uz*o+vz*L]],11,'st','')}}
   // пригород: извилистые улочки
-  for(const z0 of[370,510,650,790,930,1070]){const P=[];for(let x=-1045;x<=-395;x+=65)P.push([x,z0+20*Math.sin(x*.011+z0*.3)]);add(P,9,'st','')}
-  for(const x0 of[-930,-760,-590]){const P=[];for(let z=300;z<=1150;z+=70)P.push([x0+22*Math.sin(z*.013+x0),z]);add(P,9,'st','')}
+  for(const z0 of[370,440,510,580,650,720,790,860,930,1000,1070]){const P=[];for(let x=-1045;x<=-395;x+=65)P.push([x,z0+20*Math.sin(x*.011+z0*.3)]);add(P,9,'st','')}
+  for(const x0 of[-980,-870,-760,-650,-540]){const P=[];for(let z=300;z<=1150;z+=70)P.push([x0+22*Math.sin(z*.013+x0),z]);add(P,9,'st','')}
   // мидтаун: несколько улиц
-  for(const x0 of[-200,40,560,760]){const P=[];for(let z=-340;z<=650;z+=90)P.push([x0+15*Math.sin(z*.008+x0*.01),z]);add(P,10,'st','')}
-  for(const z0 of[-180,330,500]){const P=[];for(let x=-400;x<=920;x+=90)P.push([x,z0+14*Math.sin(x*.009+z0)]);add(P,10,'st','')}
+  for(const x0 of[-300,-200,-90,40,140,560,660,760,860]){const P=[];for(let z=-340;z<=650;z+=90)P.push([x0+15*Math.sin(z*.008+x0*.01),z]);add(P,10,'st','')}
+  for(const z0 of[-260,-180,-60,250,330,420,500,590]){const P=[];for(let x=-400;x<=920;x+=90)P.push([x,z0+14*Math.sin(x*.009+z0)]);add(P,10,'st','')}
   // холмы: серпантины и Малхолланд по гребню
   add([[-200,-352],[-210,-560],[-120,-640],[-262,-720],[-110,-800],[-252,-880],[-120,-960],[-170,-1045]],9,'hl','Каньон-драйв');
   add([[500,-418],[530,-560],[700,-660],[560,-760],[720,-860],[650,-985]],9,'hl','Обсерватория-роуд');
@@ -3664,7 +3674,7 @@ function owRoadsDef(){const R=[],add=(pts,w,k,nm,closed)=>R.push({ctl:pts,w,k,nm
   add([[-600,-470],[-640,-640],[-520,-760],[-700,-860],[-560,-960]],9,'hl','');
   // порт
   add([[300,800],[700,900],[1175,940]],14,'bl','Харбор-роуд');add([[700,900],[720,1170]],12,'st','');add([[950,925],[960,1170]],12,'st','');add([[420,1060],[1175,1060]],12,'st','');
-  return R}
+  for(const r of R)r.ctl=r.ctl.map(p=>[p[0]*OWK,p[1]*OWK]);return R}
 function owSample(ctl,closed,n){const P=closed?ctl.concat([ctl[0]]):ctl;if(P.length===2){const L=Math.hypot(P[1][0]-P[0][0],P[1][1]-P[0][1]),m=Math.max(1,Math.ceil(L/n)),o=[];for(let k=0;k<=m;k++)o.push([P[0][0]+(P[1][0]-P[0][0])*k/m,P[0][1]+(P[1][1]-P[0][1])*k/m]);return o}
   if(!closed)return catmull(P,n);const N=ctl.length,out=[];for(let i=0;i<N;i++){const p0=ctl[(i-1+N)%N],p1=ctl[i],p2=ctl[(i+1)%N],p3=ctl[(i+2)%N],L=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]),m=Math.max(1,Math.ceil(L/n));
     for(let k=0;k<m;k++){const t=k/m,t2=t*t,t3=t2*t,f=(a,b,c,d)=>.5*(2*b+(-a+c)*t+(2*a-5*b+4*c-d)*t2+(-a+3*b-3*c+d)*t3);out.push([f(p0[0],p1[0],p2[0],p3[0]),f(p0[1],p1[1],p2[1],p3[1])])}}out.push(out[0].slice());return out}
@@ -3729,14 +3739,14 @@ function owH(Wd,x,z){const T=Wd.owT;if(!T||z>OWHZ+16)return 0;const fx=(x-T.x0)/
 function owObAdd(Wd,o){const S=Wd.obs,cs=48,r=o.r||Math.hypot(o.hx||0,o.hz||0);for(let i=Math.floor((o.x-r)/cs);i<=Math.floor((o.x+r)/cs);i++)for(let j=Math.floor((o.z-r)/cs);j<=Math.floor((o.z+r)/cs);j++){const k=i*10000+j;if(!S.has(k))S.set(k,[]);S.get(k).push(o)}}
 function owObsAt(Wd,x,z){return Wd.obs.get(Math.floor(x/48)*10000+Math.floor(z/48))||[]}
 function owIn(Wd,x,z){for(const o of owObsAt(Wd,x,z)){if(o.c){if((x-o.x)**2+(z-o.z)**2<(o.r+.3)**2)return o;continue}const dx=x-o.x,dz=z-o.z,lx=dx*o.ux+dz*o.uz,lz=-dx*o.uz+dz*o.ux;if(Math.abs(lx)<o.hx+1.2&&Math.abs(lz)<o.hz+1.2)return o}
-  if(x<-1170||(x>350&&z>1172)||Math.abs(x)>OWR-4||Math.abs(z)>OWR-4)return{edge:1};return null}
+  if(x<OCX+10||(x>350*OWK&&z>1172*OWK)||Math.abs(x)>OWR-4||Math.abs(z)>OWR-4)return{edge:1};return null}
 function owCollide(Wd,st,circles,r,push){if(st.y>(Wd.owT?owH(Wd,st.x,st.z)+6:6))return;
   for(const cc of circles){for(const o of owObsAt(Wd,cc[0],cc[1])){const dx=cc[0]-o.x,dz=cc[1]-o.z;
       if(o.c){const d=Math.hypot(dx,dz),rr=r*.8+o.r;if(d<rr&&d>1e-4)push(dx/d,dz/d,rr-d);continue}
       const lx=dx*o.ux+dz*o.uz,lz=-dx*o.uz+dz*o.ux,px=Math.max(-o.hx,Math.min(lx,o.hx)),pz=Math.max(-o.hz,Math.min(lz,o.hz)),ex=lx-px,ez=lz-pz,d=Math.hypot(ex,ez);
       if(d<r){let nx,nz,pen;if(d>1e-4){nx=ex/d;nz=ez/d;pen=r-d}else{const m=[o.hx-lx,lx+o.hx,o.hz-lz,lz+o.hz],k=m.indexOf(Math.min(...m));nx=[1,-1,0,0][k];nz=[0,0,1,-1][k];pen=m[k]+r}
         push(nx*o.ux-nz*o.uz,nx*o.uz+nz*o.ux,pen)}}
-    if(cc[0]<-1170+r)push(1,0,-1170+r-cc[0]);if(cc[0]>350&&cc[1]>1172-r)push(0,-1,cc[1]-(1172-r))}}
+    if(cc[0]<OCX+10+r)push(1,0,OCX+10+r-cc[0]);if(cc[0]>350*OWK&&cc[1]>1172*OWK-r)push(0,-1,cc[1]-(1172*OWK-r))}}
 /* ---------- текстуры дорог ---------- */
 function owRoadTex(k){return mc('owR'+k,()=>{const W=k==='fw'?192:k==='bl'?128:64,t=ctex(cvs(W,256,(c,w,h)=>{c.fillStyle=k==='fw'?'#4a4c51':'#404247';c.fillRect(0,0,w,h);for(let i=0;i<w*14;i++){const v=Math.random();c.fillStyle='rgba('+(v<.5?'255,255,255':'0,0,0')+','+Math.random()*.08+')';c.fillRect(Math.random()*w,Math.random()*h,2,2)}
   const ln=(x,col,dash)=>{c.fillStyle=col;if(dash)for(let y=0;y<h;y+=64)c.fillRect(x,y,3,34);else c.fillRect(x,0,3,h)};ln(3,'#e8e5dc');ln(w-6,'#e8e5dc');
@@ -3776,18 +3786,18 @@ function buildOpen(Wd,M){const T=THREE,sc=Wd.sc,q=Wd.q,det=q.det,rg=seeded(hashS
   const MD={dt:{w:[26,40],d:[24,36],h:[45,190],tall:1,set:5,gap:8,p:.95},mid:{w:[14,26],d:[14,24],h:[8,24],set:3,gap:4,p:.85},sub:{w:[10,13],d:[10,13],h:[4,7],house:1,set:7,gap:8,p:.9},beach:{w:[10,16],d:[10,14],h:[5,13],house:1,set:5,gap:6,p:.8},
     hills:{w:[13,18],d:[12,16],h:[5,8],house:1,set:6,gap:22,p:.55},port:{w:[30,46],d:[22,30],h:[9,14],set:6,gap:10,p:.8},desert:{w:[14,22],d:[12,16],h:[4,7],set:8,gap:60,p:.35}};
   const COLS={dt:[0xd5dee6,0xc4d2dc,0xe1e7ec,0xbfcad6],mid:[0xf3e0c8,0xe8c9a8,0xf6efe2,0xd9e6ee,0xf1d4d4,0xe2edd6,0xd6c2a6],sub:[0xf6efe2,0xf3e0c8,0xe9d7c0,0xdfe8ee,0xf1dcd0,0xe6efe0],beach:[0x9fd3e0,0xf6efe2,0xf2c6b8,0xf3e0c8,0xd6ecd2],hills:[0xf6f2ea,0xeee6d6,0xe2e8ec],port:[0x9aa0a6,0x8a8f96,0xb0a898,0x7d8590],desert:[0xe8d6b0,0xd9c49a]};
-  const MAX=det>=2?1500:det>=1?950:520,placed=[],blocked=(x,z,r)=>{const L=owObsAt(Wd,x,z);for(const o of L)if((o.x-x)**2+(o.z-z)**2<(r+(o.r||Math.max(o.hx,o.hz)))**2*.8)return true;return false};let nb=0;
+  const MAX=det>=2?2300:det>=1?1400:700,placed=[],blocked=(x,z,r)=>{const L=owObsAt(Wd,x,z);for(const o of L)if((o.x-x)**2+(o.z-z)**2<(r+(o.r||Math.max(o.hx,o.hz)))**2*.8)return true;return false};let nb=0;
   const order=G.roads.map((r,i)=>i).sort(()=>rg()-.5);
   for(const ri of order){const r=G.roads[ri];if(r.k==='fw')continue;let s=8;while(s<r.len-8&&nb<MAX){let k=0;while(k<r.S.length-2&&r.S[k+1]<s)k++;const a=r.P[k],b=r.P[k+1],dx=b[0]-a[0],dz=b[1]-a[1],l=Math.hypot(dx,dz)||1,ux=dx/l,uz=dz/l;
       const D=owDistrict(a[0],a[1]),md=MD[D];let adv=md.w[1]*.7;for(const sd of[1,-1]){if(rg()>md.p)continue;const w=RR(md.w[0],md.w[1]),d=RR(md.d[0],md.d[1]),off=r.w/2+3.2+md.set+d/2,cx=a[0]-uz*sd*off,cz=a[1]+ux*sd*off;
-        if(owDistrict(cx,cz)!==D&&D!=='hills')continue;if(D==='beach'&&cx<-1060)continue;if(cx<-1150||Math.abs(cx)>OWR-30||Math.abs(cz)>OWR-30||(cx>340&&cz>1150))continue;
+        if(owDistrict(cx,cz)!==D&&D!=='hills')continue;if(D==='beach'&&cx<-1060*OWK)continue;if(cx<OCX+30||Math.abs(cx)>OWR-30||Math.abs(cz)>OWR-30||(cx>340*OWK&&cz>1150*OWK))continue;
         const R2=Math.hypot(w,d)/2;if(blocked(cx,cz,R2))continue;let ok=true;for(const[fx,fz]of[[0,0],[-.5,-.5],[.5,-.5],[.5,.5],[-.5,.5]]){const px=cx+ux*w*fx-uz*d*fz,pz=cz+uz*w*fx+ux*d*fz;if(roadClear(px,pz)<2.5){ok=false;break}}if(!ok)continue;
-        const base=Math.min(owH(Wd,cx-ux*w/2,cz-uz*w/2),owH(Wd,cx+ux*w/2,cz+uz*w/2),owH(Wd,cx,cz))-(D==='hills'?.5:0),tall=md.tall&&rg()<.75,h=RR(md.h[0],md.h[1])*(D==='dt'?(1.3-Math.min(1,Math.hypot(cx-250,cz+80)/300)):1);
+        const base=Math.min(owH(Wd,cx-ux*w/2,cz-uz*w/2),owH(Wd,cx+ux*w/2,cz+uz*w/2),owH(Wd,cx,cz))-(D==='hills'?.5:0),tall=md.tall&&rg()<.75,h=RR(md.h[0],md.h[1])*(D==='dt'?(1.3-Math.min(1,Math.hypot(cx-250*OWK,cz+80*OWK)/(300*OWK))):1);
         const style=md.house?'house':tall?PK(['tower','round','step','tower']):D==='mid'&&rg()<.25?'shop':'box',gl=tall||(D==='dt'&&rg()<.6),K=getK(Math.floor(cx/320)+'_'+Math.floor(cz/320));
         const L0={W:K.BW.p.length,G:K.BG.p.length,B:K.BB.p.length,S:K.SP.length};genBld(K,M,rg,-w/2,-d/2,w/2,d/2,Math.max(4,h),{c:new T.Color(gl?PK(COLS.dt):PK(COLS[D])),style,face:sd>0?['n']:['s'],gl,brick:!gl&&det>=1&&rg()<(D==='mid'?.3:.08)});
         const vx=-uz,vz=ux;for(const[B,i0]of[[K.BW,L0.W],[K.BG,L0.G],[K.BB,L0.B]]){const p=B.p,n=B.n;for(let i=i0;i<p.length;i+=3){const x=p[i],y=p[i+1],z=p[i+2];p[i]=cx+x*ux+z*vx;p[i+1]=y+base;p[i+2]=cz+x*uz+z*vz;const nx2=n[i],nz2=n[i+2];n[i]=nx2*ux+nz2*vx;n[i+2]=nx2*uz+nz2*vz}}
         const Tm=new T.Matrix4().set(ux,0,vx,cx,0,1,0,base,uz,0,vz,cz,0,0,0,1);for(let i=L0.S;i<K.SP.length;i++){const it=K.SP[i];it.m=it.m?Tm.clone().multiply(it.m):Tm.clone()}
-        owObAdd(Wd,{x:cx,z:cz,ux,uz,hx:w/2,hz:d/2,r:R2});placed.push([cx,cz,w,d,ux,uz,D]);nb++;adv=Math.max(adv,w+md.gap)}
+        owObAdd(Wd,{x:cx,z:cz,ux,uz,hx:w/2,hz:d/2,r:R2});placed.push([cx,cz,w,d,ux,uz,D,sd,Math.max(4,h)]);nb++;adv=Math.max(adv,w+md.gap)}
       s+=adv}}
   Wd.owB=placed;const chunks=[];
   for(const k in CH){const K=CH[k],grp=new T.Group();for(const[B,m]of[[K.BW,matW],[K.BG,matG],[K.BB,matB]])if(B.p.length){const ms=new T.Mesh(geoB(B),m);ms.userData.bld=1;if(q.bcast===0)ms.userData.noCast=1;grp.add(ms)}
@@ -3806,38 +3816,38 @@ function buildOpen(Wd,M){const T=THREE,sc=Wd.sc,q=Wd.q,det=q.det,rg=seeded(hashS
   {const e=G.E.find(e=>G.roads[e.road].nm==='Уилшир-бульвар'&&e.len>60&&Math.abs(e.pts[0][0]-0)<400)||G.E[0],p=owAt(e,e.len/2);Wd.spawn={x:p[0]-p[3]*2.2,z:p[1]+p[2]*2.2,h:Math.atan2(-p[3],p[2])}}
   {const e=G.E.find(e=>G.roads[e.road].nm==='Мейн-стрит'&&e.len>60)||G.E[1],p=owAt(e,e.len/2);Wd.owSvc={x:p[0],z:p[1],h:0}}
   // трафик
-  owTraffic(Wd,M,rg);pedsBuild(Wd,M,rg);Wd.missions=true}
+  gtaWorld(Wd,M,rg);owTraffic(Wd,M,rg);pedsBuild(Wd,M,rg);Wd.missions=true}
 /* пирс с колесом обозрения, надпись на холмах, обсерватория, порт, океан, пустыня */
 function owExtras(Wd,M,rg){const T=THREE,sc=Wd.sc,q=Wd.q,fogc=new T.Color(M.fog);
   // океан и пляж
   const om=new T.MeshPhongMaterial({color:0x2a6f98,specular:0xbcd6e8,shininess:70});if(q.env&&ENV){om.envMap=ENV;om.combine=T.MixOperation;om.reflectivity=.28}
-  const oc=new T.Mesh(new T.PlaneGeometry(2200,4400),om);oc.rotation.x=-Math.PI/2;oc.position.set(-1180-1100,.05,0);oc.userData.noCast=1;sc.add(oc);
-  const hb=new T.Mesh(new T.PlaneGeometry(1800,1400),om);hb.rotation.x=-Math.PI/2;hb.position.set(350+900,.05,1180+700);hb.userData.noCast=1;sc.add(hb);
-  const sand=new T.Mesh(new T.PlaneGeometry(130,2700),lamb(0xe8d3a2));sand.rotation.x=-Math.PI/2;sand.position.set(-1115,.03,0);sand.userData.noCast=1;sc.add(sand);
-  {const fm=new T.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.6,depthWrite:false}),foam=new T.Mesh(new T.PlaneGeometry(3,2700),fm);foam.rotation.x=-Math.PI/2;foam.position.set(-1181,.08,0);foam.userData.noCast=1;sc.add(foam);let ft=0;Wd.fx.push(dt=>{ft+=dt;const s=Math.sin(ft*.9);foam.position.x=-1181-s*1.6;fm.opacity=.35+.3*(s*.5+.5);foam.updateMatrix()})}
-  {const pts=[];for(let z=-560;z<1150;z+=24)pts.push([-1090+rg()*12,z]);addTrees(Wd,'palm',pts,rg,false)}
+  const oc=new T.Mesh(new T.PlaneGeometry(2200,5200),om);oc.rotation.x=-Math.PI/2;oc.position.set(OCX-1100,.05,0);oc.userData.noCast=1;sc.add(oc);
+  const hb=new T.Mesh(new T.PlaneGeometry(2400,1800),om);hb.rotation.x=-Math.PI/2;hb.position.set(350*OWK+1200,.05,1180*OWK+900);hb.userData.noCast=1;sc.add(hb);
+  const sand=new T.Mesh(new T.PlaneGeometry(175,3600),lamb(0xe8d3a2));sand.rotation.x=-Math.PI/2;sand.position.set(OCX+87,.03,0);sand.userData.noCast=1;sc.add(sand);
+  {const fm=new T.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.6,depthWrite:false}),foam=new T.Mesh(new T.PlaneGeometry(3,3600),fm);foam.rotation.x=-Math.PI/2;foam.position.set(OCX-1,.08,0);foam.userData.noCast=1;sc.add(foam);let ft=0;Wd.fx.push(dt=>{ft+=dt;const s=Math.sin(ft*.9);foam.position.x=OCX-1-s*1.6;fm.opacity=.35+.3*(s*.5+.5);foam.updateMatrix()})}
+  {const pts=[];for(let z=-560*OWK;z<1150*OWK;z+=24)pts.push([OCX+90+rg()*12,z]);addTrees(Wd,'palm',pts,rg,false)}
   // пирс
-  {const z0=0,L=[],dk=0x8a6e52;L.push({g:new T.BoxGeometry(260,.5,12),c:dk,m:M4(-1180-110,3.2,z0)},{g:new T.BoxGeometry(70,.5,46),c:dk,m:M4(-1180-220,3.2,z0)});for(let x=-1185;x>-1250;x-=10)for(const s of[-1,1])L.push({g:new T.CylinderGeometry(.35,.35,6,6),c:0x5d4a38,m:M4(x,.2,z0+s*5)});
-    for(let k=0;k<4;k++)L.push({g:new T.BoxGeometry(6,4,8),c:[0xe8d6b0,0x9fd3e0,0xf2b8b0,0xf4f4f4][k],m:M4(-1250-k*9,5.5,z0+16)});const pm=new T.Mesh(mergeC(L),mc('vcL',()=>new T.MeshLambertMaterial({vertexColors:true})));pm.userData.noCast=1;sc.add(pm);
-    const wh=new T.Group(),R=21,rm=new T.MeshLambertMaterial({color:0xd93a2f}),gm=new T.MeshLambertMaterial({color:0xf3f0e8});wh.position.set(-1225,3.4+24,z0-12);wh.rotation.y=Math.PI/2;wh.add(new T.Mesh(new T.TorusGeometry(R,.32,6,56),rm));wh.add(new T.Mesh(new T.TorusGeometry(R*.82,.22,6,48),rm));
+  {const z0=0,L=[],dk=0x8a6e52;L.push({g:new T.BoxGeometry(260,.5,12),c:dk,m:M4(OCX-110,3.2,z0)},{g:new T.BoxGeometry(70,.5,46),c:dk,m:M4(OCX-220,3.2,z0)});for(let x=OCX-5;x>OCX-70;x-=10)for(const s of[-1,1])L.push({g:new T.CylinderGeometry(.35,.35,6,6),c:0x5d4a38,m:M4(x,.2,z0+s*5)});
+    for(let k=0;k<4;k++)L.push({g:new T.BoxGeometry(6,4,8),c:[0xe8d6b0,0x9fd3e0,0xf2b8b0,0xf4f4f4][k],m:M4(OCX-70-k*9,5.5,z0+16)});const pm=new T.Mesh(mergeC(L),mc('vcL',()=>new T.MeshLambertMaterial({vertexColors:true})));pm.userData.noCast=1;sc.add(pm);
+    const wh=new T.Group(),R=21,rm=new T.MeshLambertMaterial({color:0xd93a2f}),gm=new T.MeshLambertMaterial({color:0xf3f0e8});wh.position.set(OCX-45,3.4+24,z0-12);wh.rotation.y=Math.PI/2;wh.add(new T.Mesh(new T.TorusGeometry(R,.32,6,56),rm));wh.add(new T.Mesh(new T.TorusGeometry(R*.82,.22,6,48),rm));
     const sp=[];for(let k=0;k<16;k++)sp.push(new T.BoxGeometry(.2,R,.2).translate(0,R/2,0).rotateZ(k/16*Math.PI*2));wh.add(new T.Mesh(mergeGeos(sp),gm));const gon=[];for(let k=0;k<16;k++){const a=k/16*Math.PI*2,g=new T.Mesh(new T.BoxGeometry(2,2.2,2.6),new T.MeshLambertMaterial({color:[0xf2d14a,0x5ab6e0,0x7bd389,0xf28fb0][k%4]}));g.position.set(Math.cos(a)*R,Math.sin(a)*R-1.2,0);wh.add(g);gon.push(g)}
     wh.traverse(o=>o.userData.noCast=1);sc.add(wh);Wd.fx.push(dt=>{wh.rotateZ(dt*.09);wh.updateMatrix();for(const g of gon){g.rotation.z-=dt*.09;g.updateMatrix()}})}
   // надпись на холмах
-  {const txt='LOS ANGELES',px=3.2,ls=6*px+3,W0=txt.length*ls,list=[],cz=-1000,cxm=-420;let x0=cxm-W0/2,yT=0;for(let k=0;k<=txt.length;k++)yT=Math.max(yT,owH(Wd,cxm-W0/2+k*ls,cz));yT+=3;
+  {const txt='LOS ANGELES',px=3.2,ls=6*px+3,W0=txt.length*ls,list=[],cz=-1000*OWK,cxm=-420*OWK;let x0=cxm-W0/2,yT=0;for(let k=0;k<=txt.length;k++)yT=Math.max(yT,owH(Wd,cxm-W0/2+k*ls,cz));yT+=3;
     for(const ch of txt){if(ch!==' '){LAF[ch].forEach((row,ri)=>{for(let ci=0;ci<5;ci++)if(row[ci]==='1')list.push(new T.BoxGeometry(px*.96,px*.96,.8).translate(x0+ci*px,yT+(6-ri)*px+5,cz+(6-ri)*px*.25))});
       for(const lx of[x0+px,x0+3*px]){const gy=owH(Wd,lx,cz)-1,hh=yT+5+px*2-gy;list.push(new T.BoxGeometry(.5,hh,.5).translate(lx,gy+hh/2,cz-1.2))}}x0+=ls}
     const m=new T.Mesh(mergeGeos(list),new T.MeshLambertMaterial({color:0xffffff}));m.userData.noCast=1;sc.add(m)}
   // обсерватория на вершине
-  {const x=650,z=-1000,y=owH(Wd,x,z),g=new T.Group();g.position.set(x,y,z+18);const wm=lamb(0xf2efe6),dm=new T.MeshPhongMaterial({color:0x5b6b78,shininess:80,specular:0x888888});
+  {const x=650*OWK,z=-1000*OWK,y=owH(Wd,x,z),g=new T.Group();g.position.set(x,y,z+18);const wm=lamb(0xf2efe6),dm=new T.MeshPhongMaterial({color:0x5b6b78,shininess:80,specular:0x888888});
     g.add(new T.Mesh(new T.BoxGeometry(46,9,16).translate(0,4.5,0),wm));for(const s of[-1,0,1]){const d=new T.Mesh(new T.SphereGeometry(s?5:8,20,10,0,Math.PI*2,0,Math.PI/2),dm);d.position.set(s*19,9,0);g.add(d);const c=new T.Mesh(new T.CylinderGeometry(s?5:8,s?5:8,3,20),wm);c.position.set(s*19,9,0);g.add(c)}
     g.traverse(o=>{o.userData.noCast=1});sc.add(g);owObAdd(Wd,{x,z:z+18,ux:1,uz:0,hx:24,hz:9,r:26})}
   // порт: краны и контейнеры
-  {const L=[],cc=[0xd8261c,0x2457a6,0x2f8a4f,0xe8b923,0xe07a1f,0x8a8f96];for(let k=0;k<5;k++){const x=520+k*140,z=1150;for(const dx of[-9,9])for(const dz of[-6,6])L.push({g:new T.BoxGeometry(1.2,40,1.2),c:0xd9862b,m:M4(x+dx,20,z+dz)});
+  {const L=[],cc=[0xd8261c,0x2457a6,0x2f8a4f,0xe8b923,0xe07a1f,0x8a8f96];for(let k=0;k<6;k++){const x=520*OWK+k*170,z=1150*OWK;for(const dx of[-9,9])for(const dz of[-6,6])L.push({g:new T.BoxGeometry(1.2,40,1.2),c:0xd9862b,m:M4(x+dx,20,z+dz)});
       L.push({g:new T.BoxGeometry(22,3,14),c:0xd9862b,m:M4(x,40,z)},{g:new T.BoxGeometry(3,2.4,60),c:0xd9862b,m:M4(x,42,z+10)},{g:new T.BoxGeometry(5,4,6),c:0x3a3d42,m:M4(x,39,z+30)})}
-    const pr=seeded(77);for(let k=0;k<70;k++){const x=460+pr()*700,z=980+pr()*150;if(owNearest(Wd.ow,x,z).d<14)continue;if(owIn(Wd,x,z))continue;const a=pr()<.5?0:Math.PI/2,n=1+Math.floor(pr()*3);for(let h=0;h<n;h++)L.push({g:new T.BoxGeometry(12.2,2.6,2.45),c:cc[Math.floor(pr()*cc.length)],m:M4(x,1.3+h*2.6,z,0,a,0)});owObAdd(Wd,{x,z,ux:Math.cos(a),uz:-Math.sin(a),hx:6.1,hz:1.25,r:6.3})}
+    const pr=seeded(77);for(let k=0;k<110;k++){const x=460*OWK+pr()*700*OWK,z=980*OWK+pr()*150*OWK;if(owNearest(Wd.ow,x,z).d<14)continue;if(owIn(Wd,x,z))continue;const a=pr()<.5?0:Math.PI/2,n=1+Math.floor(pr()*3);for(let h=0;h<n;h++)L.push({g:new T.BoxGeometry(12.2,2.6,2.45),c:cc[Math.floor(pr()*cc.length)],m:M4(x,1.3+h*2.6,z,0,a,0)});owObAdd(Wd,{x,z,ux:Math.cos(a),uz:-Math.sin(a),hx:6.1,hz:1.25,r:6.3})}
     const m=new T.Mesh(mergeC(L),mc('vcL',()=>new T.MeshLambertMaterial({vertexColors:true})));sc.add(m)}
   // кактусы в пустыне
-  {const L=[],pr=seeded(78);for(let k=0;k<160;k++){const x=980+pr()*300,z=-500+pr()*1600;const n=owNearest(Wd.ow,x,z);if(n&&n.d<n.w/2+4)continue;const h=2+pr()*3;L.push({g:new T.CylinderGeometry(.3,.35,h,6),c:0x4f7a3a,m:M4(x,h/2,z)});if(pr()<.6)L.push({g:new T.CylinderGeometry(.2,.22,1.4,6),c:0x4f7a3a,m:M4(x+.55,h*.6,z)},{g:new T.BoxGeometry(.6,.25,.3),c:0x4f7a3a,m:M4(x+.3,h*.6-.6,z)})}
+  {const L=[],pr=seeded(78);for(let k=0;k<160;k++){const x=980*OWK+pr()*300*OWK,z=-500*OWK+pr()*1600*OWK;const n=owNearest(Wd.ow,x,z);if(n&&n.d<n.w/2+4)continue;const h=2+pr()*3;L.push({g:new T.CylinderGeometry(.3,.35,h,6),c:0x4f7a3a,m:M4(x,h/2,z)});if(pr()<.6)L.push({g:new T.CylinderGeometry(.2,.22,1.4,6),c:0x4f7a3a,m:M4(x+.55,h*.6,z)},{g:new T.BoxGeometry(.6,.25,.3),c:0x4f7a3a,m:M4(x+.3,h*.6-.6,z)})}
     const m=new T.Mesh(mergeC(L),mc('vcL',()=>new T.MeshLambertMaterial({vertexColors:true})));m.userData.noCast=1;sc.add(m)}
   // горы на горизонте (севере и востоке)
   {const na=120,nr=10,P=[],C=[],I=[],c=new T.Color(),c1=new T.Color(0x8a7a58),c2=new T.Color(0x6b6648);for(let i=0;i<=na;i++){const a=-.45+2.35*i/na;for(let k=0;k<=nr;k++){const r=OWR*1.25+700*k/nr,x=r*Math.sin(a),z=-r*Math.cos(a),u=k/nr,h=Math.sin(Math.min(1,u*1.8)*Math.PI/2)*(1-Math.max(0,u-.8)*2)*(160+110*Math.sin(a*5.1+1)+60*Math.sin(a*13.3))*(1-Math.pow(Math.min(1,Math.abs(a-.73)/1.18),4));P.push(x,Math.max(0,h),z);
@@ -3852,7 +3862,7 @@ function owTraffic(Wd,M,rg){const T=THREE,G=Wd.ow,q=Wd.q,types=['sedan','hatch',
   const PK=a=>a[Math.floor(rg()*a.length)],n=Math.round(q.npc*1.1);Wd.owTotal=G.E.reduce((s,e)=>s+e.len,0);
   for(let i=0;i<n;i++){const sp=i===3||i===40?'police':i===9?'amb':null,isTaxi=!sp&&rg()<.12,pl=q.det>=1?build(rg()<.85?0:1,'us','civil'):null,ty=sp==='amb'?'van':sp==='police'?'sedan':PK(types);
     const car=buildCar({type:ty},sp?0xf4f4f4:isTaxi?0xf2c31b:PK(cols),pl,true);if(sp)livery(car,sp,M);Wd.sc.add(car.g);car.lod=[];car.g.traverse(o=>{if(o.isMesh&&!o.userData.ind&&o!==car.bm&&!Array.isArray(o.material)&&o.material!==car.glassM)car.lod.push(o)});
-    const t={car,sp,ow:1,cruise:(sp?13:9.5)+rg()*4,v:0,px:0,pz:0,lane:0,e:0,dir:1,s:0,hh:0};owPlace(t,Wd,Wd.spawn,0,560,true);t.v=t.cruise*.6;Wd.traffic.push(t)}}
+    const t={car,sp,ow:1,cruise:(sp?13:9.5)+rg()*4,v:0,px:0,pz:0,lane:0,e:0,dir:1,s:0,hh:0};owPlace(t,Wd,Wd.spawn,0,600,true);t.v=t.cruise*.6;Wd.traffic.push(t)}}
 function owPlace(t,Wd,c,rmin,rmax,init){const G=Wd.ow;for(let k=0;k<60;k++){const e=G.E[Math.floor(Math.random()*G.E.length)];if(Math.random()>e.len/120)continue;const s=Math.random()*e.len,p=owAt(e,s),d=Math.hypot(p[0]-c.x,p[1]-c.z);if(d<rmin||d>rmax)continue;
     t.e=e.id;t.dir=Math.random()<.5?1:-1;t.s=t.dir>0?s:e.len-s;const L=OWLN[e.k];t.lane=L[Math.floor(Math.random()*L.length)];t.cruise=(t.sp?14:e.k==='fw'?17:e.k==='bl'?12:e.k==='hl'?8:9)+Math.random()*4;if(e.k==='fw'&&t.lane<3)t.cruise+=5;t.v=t.cruise*.7;return true}return false}
 function owPose(t){const e=DR.Wd.ow.E[t.e],p=owAt(e,t.dir>0?t.s:e.len-t.s),dx=p[2]*t.dir,dz=p[3]*t.dir;return[p[0]-dz*t.lane,p[1]+dx*t.lane,Math.atan2(-dz,dx)]}
@@ -3881,17 +3891,184 @@ function owNPC(t,dt,Wd,st){if(t.phys){t.car.g.visible=true;npcPhys(t,dt,Wd);retu
   if(brk!==t.brk){t.brk=brk;t.car.tlM.color.setHex(brk?0xff2a2a:0x7a0c10)}
   if(t.car.flash&&g.visible){const f=t.car.flash,ph=Math.floor(performance.now()/200)%2;f[0].color.setHex(ph?0xff2020:0x440000);f[1].color.setHex(ph?0x000044:0x2a5cff)}}
 /* точка для доставки */
-function owMissionPt(st){const G=DR.Wd.ow;for(let k=0;k<80;k++){const e=G.E[Math.floor(Math.random()*G.E.length)];if(e.k==='fw')continue;const p=owAt(e,Math.random()*e.len),d=Math.hypot(p[0]-st.x,p[1]-st.z);if(d>250&&d<1000)return{x:p[0]-p[3]*3,z:p[1]+p[2]*3,d}}const e=G.E[0],p=owAt(e,e.len/2);return{x:p[0],z:p[1],d:Math.hypot(p[0]-st.x,p[1]-st.z)}}
+function owMissionPt(st){const G=DR.Wd.ow;for(let k=0;k<80;k++){const e=G.E[Math.floor(Math.random()*G.E.length)];if(e.k==='fw')continue;const p=owAt(e,Math.random()*e.len),d=Math.hypot(p[0]-st.x,p[1]-st.z);if(d>300&&d<1300)return{x:p[0]-p[3]*3,z:p[1]+p[2]*3,d}}const e=G.E[0],p=owAt(e,e.len/2);return{x:p[0],z:p[1],d:Math.hypot(p[0]-st.x,p[1]-st.z)}}
 /* карта */
 function owMapBg(x,X,s){const Wd=DR.Wd,G=Wd.ow;const cl={};for(const k in OWGC)cl[k]='#'+new THREE.Color(OWGC[k]).multiplyScalar(.42).getHexString();const st=50;for(let z=-OWR;z<OWR;z+=st)for(let xx=-OWR;xx<OWR;xx+=st){x.fillStyle=cl[owDistrict(xx+st/2,z+st/2)];x.fillRect(X(xx),X(z),st*s+1,st*s+1)}
-  x.fillStyle='#1d4a6b';x.fillRect(X(-OWR-50),X(-OWR-50),X(-1175)-X(-OWR-50),X(OWR+50)-X(-OWR-50));x.fillRect(X(350),X(1175),X(OWR+50)-X(350),X(OWR+50)-X(1175));
+  x.fillStyle='#1d4a6b';x.fillRect(X(-OWR-50),X(-OWR-50),X(OCX+5)-X(-OWR-50),X(OWR+50)-X(-OWR-50));x.fillRect(X(350*OWK),X(1175*OWK),X(OWR+50)-X(350*OWK),X(OWR+50)-X(1175*OWK));
   x.fillStyle='#5b6372';for(const b of Wd.owB){x.save();x.translate(X(b[0]),X(b[1]));x.rotate(Math.atan2(b[5],b[4]));x.fillRect(-b[2]/2*s,-b[3]/2*s,b[2]*s,b[3]*s);x.restore()}
-  x.lineCap='round';x.lineJoin='round';for(const r of G.roads){x.strokeStyle=r.k==='fw'?'#d9b24a':r.k==='bl'?'#b8bfcc':'#8b93a4';x.lineWidth=Math.max(r.k==='fw'?2.4:1.3,r.w*s);x.beginPath();r.P.forEach((p,i)=>i?x.lineTo(X(p[0]),X(p[1])):x.moveTo(X(p[0]),X(p[1])));x.stroke()}}
+  x.lineCap='round';x.lineJoin='round';const SH=Wd.shops||[];for(const r of G.roads){x.strokeStyle=r.k==='fw'?'#d9b24a':r.k==='bl'?'#b8bfcc':'#8b93a4';x.lineWidth=Math.max(r.k==='fw'?2.4:1.3,r.w*s);x.beginPath();r.P.forEach((p,i)=>i?x.lineTo(X(p[0]),X(p[1])):x.moveTo(X(p[0]),X(p[1])));x.stroke()};x.textAlign='center';x.textBaseline='middle';x.font=Math.max(9,Math.round(26*s))+'px sans-serif';for(const q of SH)x.fillText(q.e,X(q.x),X(q.z));x.textAlign='left';x.textBaseline='alphabetic'}
 /* пешеходы в свободном мире: идут по тротуарам вдоль рёбер */
 function owPedInit(p,Wd,c){const G=Wd.ow;for(let k=0;k<80;k++){const e=G.E[Math.floor(Math.random()*G.E.length)];if(e.k==='fw'||e.k==='hl')continue;const s=Math.random()*e.len,q=owAt(e,s);if(c&&Math.hypot(q[0]-c.x,q[1]-c.z)>(c.r||300))continue;p.oe=e.id;p.os=s;p.dir=Math.random()<.5?1:-1;p.side=Math.random()<.5?1:-1;owPedPos(p,Wd);return}}
 function owPedPos(p,Wd){const e=Wd.ow.E[p.oe],q=owAt(e,p.os),o=e.w/2+1.6;p.x=q[0]-q[3]*p.side*o;p.z=q[1]+q[2]*p.side*o;p.h=Math.atan2(-q[3]*p.dir,q[2]*p.dir);p.y=owH(Wd,p.x,p.z)+.07}
 function owPedWalk(p,v,dt,Wd){const G=Wd.ow;let e=G.E[p.oe];p.os+=v*dt*p.dir;if(p.os<0||p.os>e.len){const nid=p.os<0?e.a:e.b,opts=G.nodes[nid].e.filter(x=>x!==e.id&&G.E[x].k!=='fw'&&G.E[x].k!=='hl');if(opts.length){const ne=G.E[opts[Math.floor(Math.random()*opts.length)]];p.oe=ne.id;p.dir=ne.a===nid?1:-1;p.os=p.dir>0?.5:ne.len-.5}else{p.dir*=-1;p.os=Math.max(0,Math.min(e.len,p.os))}}
   owPedPos(p,Wd);const st=DR.st;if(Math.abs(p.x-st.x)+Math.abs(p.z-st.z)>Wd.far*1.4+200){p.rT=(p.rT||0)+dt;if(p.rT>.5){p.rT=0;owPedInit(p,Wd,{x:st.x,z:st.z,r:Wd.far*.9})}}}
+
+/* ================= РЕЖИМ GTA в «Свободном мире» =================
+   здоровье · голод · энергия (бег), оружие справа сверху как в San Andreas, драки и стрельба по NPC и игрокам,
+   угон машин (вытащить водителя), магазины и клубы с вывесками. */
+const WEAP={fists:{n:'Кулаки',e:'👊',r:1.9,dmg:16,cd:.42,melee:1},bat:{n:'Бита',e:'🏏',r:2.4,dmg:34,cd:.6,melee:1,price:600},
+  pistol:{n:'Пистолет',e:'🔫',r:48,dmg:26,cd:.32,ammo:'p',price:2500},smg:{n:'Автомат',e:'🪖',r:42,dmg:13,cd:.09,ammo:'s',auto:1,price:9000}};
+const WORD=['fists','bat','pistol','smg'];
+function gtaS(){const g=S.gta||(S.gta={});if(g.hp==null)g.hp=100;if(g.food==null)g.food=100;if(g.en==null)g.en=100;g.arm=g.arm||0;g.w=g.w||{fists:1};g.w.fists=1;g.am=g.am||{p:0,s:0};g.cur=g.w[g.cur]?g.cur:'fists';return g}
+const gtaOn=()=>!!(DR&&DR.on&&DR.Wd&&DR.Wd.ow);
+/* ---------- HUD ---------- */
+function gtaHud(){const on=gtaOn();$('drive').classList.toggle('gta',on);if(!on)return;const g=gtaS(),e=$('dstat');if(!e)return;
+  e.innerHTML='<i class="hp"><b style="width:'+Math.max(0,g.hp)+'%"></b>'+(g.arm>0?'<u style="width:'+g.arm+'%"></u>':'')+'</i><i class="fd"><b style="width:'+g.food+'%"></b></i><i class="en"><b style="width:'+g.en+'%"></b></i>';
+  const w=WEAP[g.cur],wb=$('dweap');wb.innerHTML='<b>'+w.e+'</b><small>'+(w.ammo?(g.am[w.ammo]||0):'∞')+'</small>';wb.title=w.n+' — нажми, чтобы сменить (Q)';
+  const f=$('dfire');if(f)f.textContent=w.e}
+A.dweap=()=>{if(!gtaOn())return;const g=gtaS(),own=WORD.filter(k=>g.w[k]);let i=own.indexOf(g.cur);g.cur=own[(i+1)%own.length];tone([520],.05,'square',.04);gtaHud();gtaWeapModel();dMsg(WEAP[g.cur].e+' '+WEAP[g.cur].n,700)};
+/* ---------- тик: голод, энергия, здоровье ---------- */
+let GT={hudT:0,cd:0,fireHeld:false,muz:null,tr:[]};
+function gtaTick(dt){if(!gtaOn())return;const g=gtaS(),F=DR.foot;
+  g.food=Math.max(0,g.food-dt/22);const running=F&&!F.rag&&Math.abs(F.v)>4.2;
+  if(running)g.en=Math.max(0,g.en-dt*9);else g.en=Math.min(100,g.en+dt*(g.food>10?(F?3.2:1.6):.3));
+  if(g.food<=0)gtaDmg(dt/2.5,'голод',1);else if(g.food>55&&g.hp<60)g.hp=Math.min(60,g.hp+dt*.4);
+  if(GT.cd>0)GT.cd-=dt;if(GT.fireHeld&&F&&WEAP[g.cur].auto)gtaAttack();
+  for(let i=GT.tr.length-1;i>=0;i--){const t=GT.tr[i];t.t-=dt;t.m.material.opacity=Math.max(0,t.t/.12);if(t.t<=0){t.m.parent&&t.m.parent.remove(t.m);GT.tr.splice(i,1)}}
+  if(GT.muz){GT.muz.t-=dt;if(GT.muz.t<=0){GT.muz.s.visible=false}}
+  if(F&&F.atk>0){F.atk-=dt;const P=F.P,k=Math.max(0,F.atk/.25);P.armR.rotation.z=-1.5*Math.sin(k*Math.PI)-(WEAP[g.cur].melee?0:1.45)}else if(F&&!WEAP[g.cur].melee)F.P.armR.rotation.z=-1.45;
+  GT.hudT+=dt;if(GT.hudT>.25){GT.hudT=0;gtaHud()}}
+function gtaCanRun(){return!gtaOn()||gtaS().en>1}
+function gtaDmg(d,why,quiet){const g=gtaS();if(g.dead)return;if(g.arm>0&&!quiet){const a=Math.min(g.arm,d*.7);g.arm-=a;d-=a}g.hp-=d;if(!quiet){DR.shake=Math.max(DR.shake,.15);vib(30);const e=$('dhurt');if(e){e.classList.remove('on');void e.offsetWidth;e.classList.add('on')}}
+  if(g.hp<=0)gtaWasted(why)}
+function gtaWasted(why){const g=gtaS();g.dead=1;g.hp=0;const fine=Math.min(2000,Math.round(S.coins*.1));S.coins-=fine;const e=$('dwasted');e.innerHTML='<b>ПОТРАЧЕНО</b><small>'+(why?esc(why)+' · ':'')+'больница −'+fmt(fine)+' ₽</small>';e.classList.add('on');
+  tone([300,220,150,90],.35,'sawtooth',.08);wantedClear(true);W.stars=0;W.mode=false;wantedHud();
+  setTimeout(()=>{e.classList.remove('on');if(!gtaOn())return;g.dead=0;g.hp=100;g.food=Math.max(g.food,50);g.en=100;const Wd=DR.Wd,hp=Wd.owHosp||Wd.spawn;
+    if(DR.foot){try{DR.foot.P.g.parent.remove(DR.foot.P.g)}catch(x){}DR.foot=null;engineMute(false);footUI()}if(DR.jack)gtaBackToOwn(true);
+    const st=DR.st;st.x=hp.x;st.z=hp.z;st.h=st.vh=hp.h||0;st.v=0;st.y=groundH(Wd,st.x,st.z).h;st.wreck=null;st.roll=0;st.fall=0;st.fallA=0;if(DR.car.rider)DR.car.rider.visible=true;save();dMsg('🏥 Ты в больнице<small>Здоровье восстановлено</small>',2200)},2600)}
+/* ---------- оружие в руке ---------- */
+function gtaWeapModel(){const F=DR&&DR.foot;if(!F)return;const P=F.P,T=THREE;if(P.wm){P.armR.remove(P.wm);P.wm=null}const k=gtaS().cur;if(k==='fists')return;
+  const g=new T.Group(),dk=mc('wDk',()=>new T.MeshLambertMaterial({color:0x1d1e22})),wd=mc('wWd',()=>new T.MeshLambertMaterial({color:0x9a6b3d}));
+  if(k==='bat'){const b=new T.Mesh(new T.CylinderGeometry(.05,.03,.85,8),wd);b.position.set(0,-.95,0);g.add(b)}
+  else{const b=new T.Mesh(new T.BoxGeometry(k==='smg'?.45:.26,.09,.06),dk);b.position.set(k==='smg'?.18:.1,-.72,0);g.add(b);const h=new T.Mesh(new T.BoxGeometry(.06,.14,.05),dk);h.position.set(0,-.78,0);g.add(h)}
+  P.armR.add(g);P.wm=g}
+/* ---------- атака ---------- */
+function gtaTargets(F,w){const Wd=DR.Wd,L=[],fx=Math.cos(F.h),fz=-Math.sin(F.h),cone=w.melee?.2:.55;
+  const consider=(o,x,z,kind)=>{const dx=x-F.x,dz=z-F.z,d=Math.hypot(dx,dz);if(d>w.r||d<.05)return;const c=(dx*fx+dz*fz)/d;if(c<cone)return;L.push({o,x,z,d,kind,sc:d*(1.6-c)})};
+  if(Wd.peds)for(const p of Wd.peds.list)if(p.mode!=='down')consider(p,p.x,p.z,'ped');
+  if(typeof NET!=='undefined'&&NET.on)for(const id in NET.peers){const P=NET.peers[id];if(P.pers&&P.s&&P.s.ft)consider(P,P.x,P.z,'pl')}
+  if(!w.melee){for(const t of Wd.traffic)if(!t.rival)consider(t,t.px,t.pz,'car');for(const c of W.cops)if(!c.dead)consider(c,c.x,c.z,'cop')}
+  L.sort((a,b)=>a.sc-b.sc);return L[0]||null}
+function gtaAttack(){if(!gtaOn())return;const F=DR.foot;if(!F||F.rag||GT.cd>0)return;const g=gtaS(),w=WEAP[g.cur];if(g.dead)return;
+  if(w.ammo&&!(g.am[w.ammo]>0)){dMsg('Нет патронов — купи в оружейной',1200);g.cur='fists';gtaWeapModel();gtaHud();return}
+  GT.cd=w.cd;F.atk=.25;if(w.ammo)g.am[w.ammo]--;const tg=gtaTargets(F,w);
+  if(tg)F.h=Math.atan2(-(tg.z-F.z),tg.x-F.x);const fx=Math.cos(F.h),fz=-Math.sin(F.h),hx=F.x+fx*.5-fz*.3,hz=F.z+fz*.5+fx*.3,hy=F.y+1.35;
+  if(w.melee){tone([tg?160:240],.06,'square',.05);if(tg)gtaHitTarget(tg,w.dmg,fx,fz,true)}
+  else{tone([900,300],.05,'sawtooth',.06);gtaMuzzle(hx,hy,hz);const ex=tg?tg.x:F.x+fx*w.r,ez=tg?tg.z:F.z+fz*w.r,ey=tg?(tg.kind==='car'||tg.kind==='cop'?F.y+.9:F.y+1.2):hy;gtaTracer(hx,hy,hz,ex,ey,ez);
+    if(tg&&Math.random()<(tg.d<15?.92:.7))gtaHitTarget(tg,w.dmg,fx,fz,false);gtaAlarm(F.x,F.z,w)}
+  // полиция рядом видит нападение
+  if(tg&&(tg.kind==='ped'||tg.kind==='cop'||tg.kind==='pl'||!w.melee)){if(tg.kind==='cop')wantedAdd(W.stars?0:2,'Стрельба по полиции');else if(tg.kind==='ped'||!w.melee){W.heat+=w.melee?.35:.6;const need=HEAT[Math.min(4,W.stars)];if(W.stars<5&&W.heat>=need)wantedAdd(1,'Нападение на прохожих')}}
+  gtaHud()}
+function gtaHitTarget(tg,dmg,fx,fz,melee){const Wd=DR.Wd;
+  if(tg.kind==='ped'){const p=tg.o;p.hp=(p.hp==null?40:p.hp)-dmg;if(p.hp<=0){p.ko=1;pedHit(p,fx*(melee?4:2),fz*(melee?4:2),melee?5:3,Wd);W.cost+=300}else{p.run=6;if(p.gang)p.mode='fight';else p.dir*=-1}}
+  else if(tg.kind==='pl'){mqPub('h',{i:NET.id,n:S.nick||'Игрок',to:tg.o.id,d:dmg});dMsg('🎯 Попадание по '+esc(tg.o.n||'игроку'),600)}
+  else if(tg.kind==='car'){const t=tg.o;t.panic=10;t.pH=0;if(t.sp==='police'&&!W.stars)wantedSet(2,'Стрельба по полиции')}
+  else if(tg.kind==='cop'){copDamage(tg.o,-fx,-fz,dmg*.8);if(tg.o.hp<=0)copTakedown(tg.o,fx,fz,8)}}
+function gtaAlarm(x,z,w){const Wd=DR.Wd;if(!Wd.peds)return;for(const p of Wd.peds.list){if(p.mode==='down'||p.mode==='fight')continue;if((p.x-x)**2+(p.z-z)**2<900){p.run=5+Math.random()*3;if(Math.random()<.5)p.dir*=-1}}}
+function gtaMuzzle(x,y,z){if(!GT.muz){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:haloTex(),color:0xffd27a,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));s.scale.set(.9,.9,1);s.userData.noCast=1;GT.muz={s,t:0}}
+  if(GT.muz.s.parent!==DR.Wd.sc)DR.Wd.sc.add(GT.muz.s);GT.muz.s.position.set(x,y,z);GT.muz.s.visible=true;GT.muz.t=.05}
+function gtaTracer(x,y,z,x2,y2,z2){const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute([x,y,z,x2,y2,z2],3));const m=new THREE.Line(g,new THREE.LineBasicMaterial({color:0xfff2a8,transparent:true,opacity:1}));m.userData.noCast=1;DR.Wd.sc.add(m);GT.tr.push({m,t:.12})}
+/* удар от другого игрока (ПВП) */
+function gtaNetHit(d){if(!gtaOn()||d.to!==NET.id)return;const dm=Math.max(0,Math.min(60,+d.d||0));gtaDmg(dm,'Тебя победил '+String(d.n||'игрок').slice(0,18));dMsg('💢 '+esc(d.n||'Игрок')+' атакует!',700)}
+/* ---------- уличные банды: дерутся в ответ ---------- */
+function pedFight(p,dt,Wd){const F=DR.foot,tx=F?F.x:DR.st.x,tz=F?F.z:DR.st.z,dx=tx-p.x,dz=tz-p.z,d=Math.hypot(dx,dz);
+  if(d>45||gtaS().dead){p.mode='walk';p.fx=p.x;p.fz=p.z;p.back=1.2;return}
+  p.h=Math.atan2(-dz,dx);p.fcd=(p.fcd||0)-dt;
+  if(p.gun&&d<20&&d>3){if(p.fcd<=0){p.fcd=1.3;gtaMuzzle(p.x+dx/d*.5,p.y+1.35,p.z+dz/d*.5);gtaTracer(p.x,p.y+1.35,p.z,tx,(F?F.y:DR.st.y)+1.1,tz);tone([800,250],.05,'sawtooth',.04);if(F&&Math.random()<.45)gtaDmg(8,'Перестрелка')}}
+  else if(d>1.4){const v=4.2;p.x+=dx/d*v*dt;p.z+=dz/d*v*dt;p.ph+=dt*11;p.sw=Math.sin(p.ph)*.85}
+  else{p.sw=0;if(p.fcd<=0){p.fcd=1.05;p.punch=.25;tone([150],.05,'square',.04);if(F&&!F.rag)gtaDmg(7,'Уличная драка')}}
+  if(p.punch>0)p.punch-=dt;p.y=groundH(Wd,p.x,p.z).h+(Wd.ow?.07:CURB)}
+/* ---------- угон: вытащить водителя ---------- */
+function gtaNearCar(F){const Wd=DR.Wd;let best=null,bd=1e9;for(const t of Wd.traffic){if(t.rival||t.bot||t.phys)continue;const d=Math.hypot(t.px-F.x,t.pz-F.z);if(d<t.car.L/2+1.8&&d<bd&&t.v<9){bd=d;best=t}}return best}
+function gtaJack(t){const Wd=DR.Wd,F=DR.foot,st=DR.st,ty=t.car.c.type,base=CARS.find(c=>c.type===ty)||CARS[1],col=t.car.paint.color.getHex();
+  // свою машину оставляем на месте
+  if(!DR.jack){DR.own={car:DR.car,x:st.x,z:st.z,h:st.h,y:st.y,dmg:st.dmg};}else{try{Wd.sc.remove(DR.car.g);Wd.sc.remove(DR.car.shadow)}catch(e){}}
+  DR.jack=Object.assign({},base,{id:'jack',color:'#'+new THREE.Color(col).getHexString(),price:0});
+  const g=t.car.g,h=g.rotation.y;Wd.sc.remove(g);Wd.traffic.splice(Wd.traffic.indexOf(t),1);
+  // водитель вылетает на тротуар и убегает
+  if(Wd.peds){let pd=null,far=-1;for(const p of Wd.peds.list){if(p.mode==='down')continue;const dd=(p.x-F.x)**2+(p.z-F.z)**2;if(dd>far){far=dd;pd=p}}
+    if(pd){if(Wd.ow)owPedInit(pd,Wd,{x:t.px,z:t.pz,r:40});const sx=Math.sin(h),sz=Math.cos(h);pd.x=t.px-sx*1.3;pd.z=t.pz-sz*1.3;pd.y=groundH(Wd,pd.x,pd.z).h;pd.hp=40;pedHit(pd,-sx*4,-sz*4,4,Wd);pd.gang=pd.gang&&Math.random()<.5}}
+  DR.car=makePlayerCar(Wd.sc);DR.cdef=tuned(DR.jack);Object.assign(st,{x:t.px,z:t.pz,h,vh:h,v:0,y:g.position.y,dmg:0,wreck:null,roll:0,pitch:0,fall:0,fallA:0,kick:0});
+  F.P.g.parent&&F.P.g.parent.remove(F.P.g);DR.foot=null;engineMute(false);footUI();setCam(S.cam||'3');
+  W.heat+=t.sp==='police'?2:.8;if(t.sp==='police')wantedAdd(W.stars?1:2,'Угон полицейской машины');else{const need=HEAT[Math.min(4,W.stars)];if(W.stars<5&&W.heat>=need)wantedAdd(1,'Угон машины')}
+  dMsg('🚗 Угнал: '+(BODY_RU[ty]||'машина')+'<small>Свою машину можно забрать там, где оставил (F рядом с ней)</small>',2600);tone([392,523],.12,'triangle',.07)}
+function gtaBackToOwn(silent){const Wd=DR.Wd,o=DR.own;if(!o)return;try{Wd.sc.remove(DR.car.g);Wd.sc.remove(DR.car.shadow)}catch(e){}DR.car=o.car;DR.jack=null;DR.cdef=tuned(carById(S.car));const st=DR.st;Object.assign(st,{x:o.x,z:o.z,h:o.h,vh:o.h,y:o.y,v:0,dmg:o.dmg,wreck:null,roll:0,pitch:0});DR.own=null;if(!silent)dMsg('🔑 Снова в своей машине',1200)}
+/* F на ногах: своя машина рядом / угнанная / угнать новую */
+const _dfoot0=A.dfoot;A.dfoot=()=>{if(!DR||!DR.on)return;const F=DR.foot;if(!F||!gtaOn())return _dfoot0();if(F.rag)return;
+  const st=DR.st,dCur=Math.hypot(F.x-st.x,F.z-st.z),o=DR.own,dOwn=o?Math.hypot(F.x-o.x,F.z-o.z):1e9,t=gtaNearCar(F),dT=t?Math.hypot(t.px-F.x,t.pz-F.z):1e9;
+  if(dOwn<4.5&&dOwn<=dCur&&dOwn<dT){gtaBackToOwn();footEnter();return}
+  if(dCur<4.5&&dCur<=dT)return footEnter();
+  if(t)return gtaJack(t);dMsg('Подойди к машине',1000)};
+/* ---------- магазины, клубы и вывески ---------- */
+const SHOPT={
+  burger:{e:'🍔',c:'#d8261c',items:[['Бургер',150,{food:40}],['Двойной бургер',260,{food:70,hp:5}],['Газировка',60,{en:15,food:5}]]},
+  pizza:{e:'🍕',c:'#e07a1f',items:[['Кусок пиццы',120,{food:30}],['Целая пицца',420,{food:100,hp:10}]]},
+  taco:{e:'🌮',c:'#2f8a4f',items:[['Тако',110,{food:28}],['Буррито',220,{food:55}]]},
+  cafe:{e:'☕',c:'#6b4e33',items:[['Кофе',90,{en:45,food:3}],['Пончик',70,{food:15,en:10}],['Энергетик',160,{en:100}]]},
+  market:{e:'🛒',c:'#2457a6',items:[['Вода',40,{en:12,food:6}],['Сэндвич',130,{food:35}],['Энергетик',150,{en:100}],['Шоколад',60,{food:12,en:15}]]},
+  pharm:{e:'💊',c:'#14b8b0',items:[['Бинт',150,{hp:20}],['Аптечка',450,{hp:60}],['Витамины',200,{en:40,hp:10}]]},
+  gun:{e:'🔫',c:'#3a3d42',items:[['Бита',600,{w:'bat'}],['Пистолет',2500,{w:'pistol',am:['p',24]}],['Автомат',9000,{w:'smg',am:['s',90]}],['Патроны для пистолета ×36',350,{am:['p',36]}],['Патроны для автомата ×120',800,{am:['s',120]}],['Бронежилет',1500,{arm:100}]]},
+  bar:{e:'🍹',c:'#8a4fd0',items:[['Лимонад',120,{en:30}],['Коктейль',250,{en:50,food:5}]]},
+  club:{e:'🪩',c:'#ff2fb4',club:1,items:[['Потанцевать (15 с)',300,{en:60,dance:15}],['VIP-коктейль',800,{en:100,hp:20}],['Вход для двоих',500,{en:30,dance:8}]]},
+  wear:{e:'👕',c:'#c9a227',items:[['Красная футболка',400,{shirt:0xd23b3b}],['Синяя футболка',400,{shirt:0x2f6bff}],['Чёрная куртка',900,{shirt:0x22252b}],['Гавайская рубашка',700,{shirt:0xff7a2f}],['Белая рубашка',500,{shirt:0xf4f4f4}]]}};
+const SHOPN={burger:['Бургер Бро','Бургер Ранчо','Сочный Бургер'],pizza:['Пицца Луна','Мама Пицца'],taco:['Тако Соль','Эль Тако'],cafe:['Кофе 24','Кофейня Утро','Бодрость'],market:['Супермаркет Пальма','Маркет 7/24','Продукты Оазис'],
+  pharm:['Аптека Плюс','Аптека Здоровье'],gun:['Оружейная Меткий','Тир и снаряжение'],bar:['Бар Пятница','Бар Закат'],club:['Клуб Неоновая лагуна','Клуб Pulse','Ночной прибой','Клуб Фламинго'],wear:['Одежда Стиль','Бутик Ривьера']};
+const DECON=['Отель Закат','Банк Оазис','Фитнес Волна','Кино Ривьера','Мотель 66','Ломбард','Барбершоп Бритва','Цветы Роза','Студия Звезда','Химчистка','Тату Чернила','Ювелир Блеск','Риелтор Дом','Офис Сфера','Пекарня Хлебушек','Суши Сакура','Автомойка Блеск','Прачечная','Стоматология','Видеопрокат','Сёрф-шоп Волна','Скейт-шоп','Музыка Винил','Книги Страница','Игры Пиксель','Электроника Ток','Мебель Уют','Ресторан Океан','Стейк-хаус Техас','Йога Лотос','Отель Пальмира','Казино Удача'];
+function signAtlas(names){const N=names.length,rows=Math.ceil(N/4),c=cvs(1024,rows*64,(x,w,h)=>{names.forEach((nm,i)=>{const cx=(i%4)*256,cy=Math.floor(i/4)*64,col=nm[2];x.fillStyle=col;x.fillRect(cx+2,cy+2,252,60);x.strokeStyle='rgba(255,255,255,.85)';x.lineWidth=3;x.strokeRect(cx+5,cy+5,246,54);
+  x.fillStyle='#fff';x.textBaseline='middle';x.textAlign='center';let fs=26;x.font='800 '+fs+'px Arial,sans-serif';const t=(nm[1]?nm[1]+' ':'')+nm[0];while(x.measureText(t).width>232&&fs>13){fs--;x.font='800 '+fs+'px Arial,sans-serif'}x.fillText(t,cx+128,cy+33)})});
+  const t=new THREE.CanvasTexture(c);t.anisotropy=4;return{t,rows}}
+function gtaWorld(Wd,M,rg){const T=THREE,sc=Wd.sc,B=Wd.owB,PK=a=>a[Math.floor(rg()*a.length)];Wd.shops=[];
+  const want={burger:5,pizza:3,taco:3,cafe:4,market:5,pharm:4,gun:3,bar:3,club:4,wear:3},types=[];for(const k in want)for(let i=0;i<want[k];i++)types.push(k);types.sort(()=>rg()-.5);
+  const cand=B.filter(b=>['dt','mid','beach','sub'].includes(b[6])&&b[8]>=4).sort(()=>rg()-.5);const names=[],signs=[],club=[],used=new Set();
+  const nameIdx=nm=>{let i=names.findIndex(q=>q[0]===nm[0]&&q[1]===nm[1]);if(i<0){names.push(nm);i=names.length-1}return i};
+  let ci=0;for(const ty of types){while(ci<cand.length&&(cand[ci][6]==='sub'&&!['market','burger','cafe','pharm'].includes(ty)))ci++;const b=cand[ci++];if(!b)break;used.add(b);const S2=SHOPT[ty],nm=PK(SHOPN[ty]);
+    const[cx,cz,w,d,ux,uz,D,sd,h]=b,fx=uz*sd,fz=-ux*sd,px=cx+fx*(d/2),pz=cz+fz*(d/2),y0=groundH(Wd,px,pz).h;const si=nameIdx([nm,S2.e,S2.c]);
+    (ty==='club'?club:signs).push({x:px+fx*.18,z:pz+fz*.18,y:y0+Math.min(h-1.2,5),w:Math.min(w*.85,ty==='club'?11:8.5),h:ty==='club'?2.4:1.7,fx,fz,si});
+    Wd.shops.push({ty,nm,e:S2.e,x:px+fx*3.2,z:pz+fz*3.2,y:y0})}
+  // вывески на других домах
+  for(const b of B){if(used.has(b)||!['dt','mid','beach'].includes(b[6])||b[8]<4||rg()>.3)continue;const[cx,cz,w,d,ux,uz,D,sd,h]=b,fx=uz*sd,fz=-ux*sd,px=cx+fx*(d/2),pz=cz+fz*(d/2),nm=PK(DECON),col=PK(['#1f4fbf','#7d2121','#2f7d4f','#3a3d42','#6a3fc8','#b07a1f','#1f6f6f','#c8322c']);
+    signs.push({x:px+fx*.18,z:pz+fz*.18,y:groundH(Wd,px,pz).h+Math.min(h-1.2,4.4+rg()*2),w:Math.min(w*.8,8),h:1.5,fx,fz,si:nameIdx([nm,'',col])})}
+  const{t:tex,rows}=signAtlas(names.slice(0,4*16));
+  const build=(L,mat)=>{if(!L.length)return null;const P=[],U=[],I=[];let o=0;for(const s of L){const rx=-s.fz,rz=s.fx,hw=s.w/2,u0=(s.si%4)/4,v0=1-Math.floor(s.si/4)/rows,v1=v0-1/rows;
+      for(const[a,b,u,v]of[[-hw,0,u0+.25,v1],[hw,0,u0,v1],[hw,s.h,u0,v0],[-hw,s.h,u0+.25,v0]])P.push(s.x+rx*a,s.y+b,s.z+rz*a),U.push(u,v);I.push(o,o+1,o+2,o,o+2,o+3);o+=4}
+    const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(P,3));g.setAttribute('uv',new T.Float32BufferAttribute(U,2));g.setIndex(I);g.computeVertexNormals();const m=new T.Mesh(g,mat);m.userData.noCast=1;sc.add(m);return m};
+  build(signs,new T.MeshBasicMaterial({map:tex,side:T.DoubleSide,polygonOffset:true,polygonOffsetFactor:-2}));
+  const neon=new T.MeshBasicMaterial({map:tex,side:T.DoubleSide,color:0xffffff,polygonOffset:true,polygonOffsetFactor:-2});build(club,neon);
+  // кольца входа и неоновые пятна у клубов
+  {const L=[],cols={burger:0xd8261c,pizza:0xe07a1f,taco:0x2f8a4f,cafe:0xb08a5a,market:0x2457a6,pharm:0x14b8b0,gun:0x8a8f96,bar:0x8a4fd0,club:0xff2fb4,wear:0xc9a227};
+    for(const s of Wd.shops)L.push({g:new T.TorusGeometry(1.6,.14,6,24).rotateX(Math.PI/2),c:cols[s.ty],m:M4(s.x,s.y+.18,s.z)});
+    const m=new T.Mesh(mergeC(L),new T.MeshBasicMaterial({vertexColors:true}));m.userData.noCast=1;sc.add(m)}
+  const glow=[];for(const s of Wd.shops)if(s.ty==='club'){const p=new T.Mesh(new T.CircleGeometry(6,24),new T.MeshBasicMaterial({map:haloTex(),color:0xff2fb4,transparent:true,depthWrite:false,blending:T.AdditiveBlending,opacity:.7}));p.rotation.x=-Math.PI/2;p.position.set(s.x,s.y+.09,s.z);p.userData.noCast=1;sc.add(p);glow.push(p)}
+  let nt=0;Wd.fx.push(dt=>{nt+=dt;const a=(Math.sin(nt*3)+1)/2,c1=new THREE.Color(0xff2fb4),c2=new THREE.Color(0x2fe0ff);neon.color.copy(c1).lerp(c2,a).lerp(new THREE.Color(0xffffff),.35);for(const p of glow)p.material.color.copy(c1).lerp(c2,1-a);shopStep(dt)});
+  // больница
+  {const e=Wd.ow.E.find(e=>e.k==='bl'&&Math.abs(owAt(e,e.len/2)[0]+400*OWK)<300&&Math.abs(owAt(e,e.len/2)[1])<500)||Wd.ow.E[2],p=owAt(e,e.len/2);Wd.owHosp={x:p[0]-p[3]*2,z:p[1]+p[2]*2,h:Math.atan2(-p[3],p[2])}}}
+/* вход в магазин */
+function shopStep(dt){if(!gtaOn()||!DR.Wd.shops)return;const F=DR.foot,st=DR.st,px=F?F.x:st.x,pz=F?F.z:st.z;let near=null;
+  for(const s of DR.Wd.shops){const d=Math.hypot(s.x-px,s.z-pz);if(d<(F?2.6:5)&&(F||Math.abs(st.v)<3)){near=s;break}}
+  if(near&&DR.shopIn!==near){DR.shopIn=near;if(W.stars){dMsg('🚨 Сначала оторвись от полиции',1500);return}shopOpen(near)}else if(!near&&DR.shopIn){const s=DR.shopIn,d=Math.hypot(s.x-px,s.z-pz);if(d>6){DR.shopIn=null;if(DR.shop)shopClose()}}}
+function shopOpen(s){DR.shop=s;DR.svcOpen=true;for(const k in KEYS)KEYS[k]=false;$('dsvc').classList.remove('hidden');shopRender()}
+function shopClose(){DR.shop=null;svcClose()}
+function shopRender(){const s=DR.shop,T=SHOPT[s.ty],g=gtaS();$('dsvcb').innerHTML='<div class="svh"><b>'+T.e+' '+esc(s.nm)+'</b><span>'+fmt(S.coins)+' ₽ · ❤️ '+Math.round(g.hp)+' · 🍔 '+Math.round(g.food)+' · ⚡ '+Math.round(g.en)+'</span><button class="dbtn" data-a="shopx" aria-label="Закрыть">✕</button></div>'
+  +'<div class="svo">'+T.items.map((it,i)=>{const own=it[2].w&&g.w[it[2].w];return '<button data-a="shopb" data-v="'+i+'" class="'+(own?'cur':'')+'"><b>'+it[0]+'</b><small>'+(own?'✓ Уже есть':fmt(it[1])+' ₽ · '+shopFx(it[2]))+'</small></button>'}).join('')+'</div>'
+  +(T.club?'<div class="hint" style="margin-top:8px">🪩 В клубе играет музыка, пока танцуешь. Танец восстанавливает энергию.</div>':'')}
+function shopFx(e){const L=[];if(e.food)L.push('🍔+'+e.food);if(e.en)L.push('⚡+'+e.en);if(e.hp)L.push('❤️+'+e.hp);if(e.arm)L.push('🛡 броня');if(e.am&&!e.w)L.push('патроны');if(e.w)L.push(WEAP[e.w].e+' '+WEAP[e.w].n);if(e.shirt)L.push('👕 новый вид');return L.join(' ')}
+A.shopx=()=>shopClose();
+A.shopb=v=>{const s=DR.shop;if(!s)return;const it=SHOPT[s.ty].items[+v],g=gtaS(),e=it[2];if(e.w&&g.w[e.w]&&!e.am){return}if(S.coins<it[1]){toast('Не хватает '+fmt(it[1]-S.coins)+' ₽');return}S.coins-=it[1];
+  if(e.food)g.food=Math.min(100,g.food+e.food);if(e.en)g.en=Math.min(100,g.en+e.en);if(e.hp)g.hp=Math.min(100,g.hp+e.hp);if(e.arm)g.arm=100;if(e.w){g.w[e.w]=1;g.cur=e.w}if(e.am)g.am[e.am[0]]=(g.am[e.am[0]]||0)+e.am[1];
+  if(e.shirt){g.shirt=e.shirt;if(DR.foot)DR.foot.P.g.children.forEach(o=>{if(o.isMesh&&o.geometry.parameters&&o.geometry.parameters.width===.26&&o.geometry.parameters.height===.62)o.material.color.setHex(e.shirt)})}
+  if(e.dance)clubBeat(e.dance);tone([660,880],.08,'triangle',.06);save();gtaHud();gtaWeapModel();shopRender()};
+/* музыка в клубе */
+function clubBeat(sec){const a=ac();if(!a||!S.snd)return;const t0=a.currentTime+.05,bpm=124,b=60/bpm,v=.12*S.sndV/100;
+  for(let i=0;i<sec/b;i++){const t=t0+i*b,o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(45,t+.12);g.gain.setValueAtTime(v*1.6,t);g.gain.exponentialRampToValueAtTime(.001,t+.2);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.22);
+    const h=a.createOscillator(),hg=a.createGain();h.type='square';h.frequency.value=7000+Math.random()*900;hg.gain.setValueAtTime(v*.18,t+b/2);hg.gain.exponentialRampToValueAtTime(.001,t+b/2+.04);h.connect(hg);hg.connect(a.destination);h.start(t+b/2);h.stop(t+b/2+.05);
+    if(i%2===0){const s=a.createOscillator(),sg=a.createGain();s.type='sawtooth';const n=[55,55,65.4,49][Math.floor(i/4)%4];s.frequency.value=n;sg.gain.setValueAtTime(v*.5,t);sg.gain.exponentialRampToValueAtTime(.001,t+b*.9);s.connect(sg);sg.connect(a.destination);s.start(t);s.stop(t+b)}}
+  dMsg('🪩 Танцуешь!',1500)}
+/* клавиши: Space — атака на ногах, Q — оружие */
+addEventListener('keydown',e=>{if(!gtaOn()||e.target&&(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'))return;if(e.code==='KeyQ'&&!e.repeat){A.dweap();return}if(DR.foot&&e.code==='Space'){e.preventDefault();GT.fireHeld=true;if(!e.repeat)gtaAttack()}});
+addEventListener('keyup',e=>{if(e.code==='Space')GT.fireHeld=false});
+(function(){const b=$('dfire');if(!b)return;b.addEventListener('pointerdown',e=>{e.preventDefault();GT.fireHeld=true;gtaAttack();try{b.setPointerCapture(e.pointerId)}catch(x){}});const up=()=>GT.fireHeld=false;b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('lostpointercapture',up)})();
+/* урон от аварий */
+const _hitGta=hit;hit=function(nx,nz,imp){_hitGta(nx,nz,imp);try{if(gtaOn()&&imp>13)gtaDmg((imp-13)*1.2+(DR.foot&&DR.foot.rag?10:0),'Авария')}catch(e){}};
 
 function lapCheck(prev,cur){const tk=DR.Wd.trk,n=tk.n,L=DR.lap,q=Math.floor(cur/(n/4));if(q===L.cp+1&&q<4)L.cp=q;
   if(prev>n*.9&&cur<n*.1){if(L.cp>=3){const tm=performance.now()-L.t0;S.laps=(S.laps||0)+1;let msg='🏁 Круг '+(L.n+1)+': '+tfmt(tm);if(!S.bestLap||tm<S.bestLap){S.bestLap=tm;msg+=' — рекорд!'}S.coins+=300;dMsg(msg+' · +300 ₽',3000);tone([523,784,1046],.18,'triangle',.09);L.n++;save()}L.t0=performance.now();L.cp=0}}
@@ -4013,7 +4190,7 @@ function garageRender(){S.cars=S.cars||{sv_kombi:1};if(!S.cars.sv_kombi)S.cars.s
   $('v-garage').innerHTML=h;if(gTab==='opt'){radLoadUser().then(renderRadio);renderRadio()}setTimeout(gPreview,0)}
 
 let LOOPID=0;
-function restartDrive(){if(!DR)return;S.dmg=S.dmg||{};S.dmg[S.car]=Math.round(DR.st.dmg);DR.on=false;engineStop();save();startDrive()}
+function restartDrive(){if(!DR)return;S.dmg=S.dmg||{};S.dmg[S.car]=Math.round(DR.jack&&DR.own?DR.own.dmg:DR.st.dmg);DR.on=false;engineStop();save();startDrive()}
 Object.assign(A,{
   gtab(v){gTab=v;garageRender()},
   gtune(k){const id=S.gsel||S.car,c=carById(id);if(!S.cars[id])return;S.tune=S.tune||{};const t=S.tune[id]=S.tune[id]||{},mx=TUNE.find(x=>x[0]===k)[3],l=t[k]||0;if(l>=mx)return;const cost=tuneCost(c,k,l);if(S.coins<cost){toast('Не хватает '+fmtS(cost-S.coins));return}S.coins-=cost;t[k]=l+1;save();SFX.sell();toast('🔧 '+TUNE.find(x=>x[0]===k)[1]+': уровень '+(l+1));garageRender()},
