@@ -470,6 +470,14 @@ body.driving{overflow:hidden}
 #drive.dport #dwheel{bottom:calc(150px*var(--bs) + var(--sab))}
 #drive.dland.dsm #dmap{margin-left:calc(84px*var(--bs))}
 .dpanel{position:absolute;right:calc(10px + var(--sar));top:calc(58px + var(--sat));width:min(430px,calc(100% - 20px));max-height:calc(100% - 70px - var(--sat));overflow:auto;background:rgba(14,18,28,.95);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:12px 14px 14px;z-index:6;color:#fff;-webkit-overflow-scrolling:touch;touch-action:pan-y;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+#dchat{position:absolute;left:calc(12px + var(--sal));top:calc(96px + var(--sat));width:min(330px,46%);pointer-events:none;z-index:4;display:flex;flex-direction:column;gap:4px}
+#dchat .cm,#dchath .cm{background:rgba(10,14,24,.62);color:#fff;border-radius:10px;padding:5px 9px;font:500 13px/1.3 system-ui,sans-serif;word-wrap:break-word;animation:cmin .25s ease-out}#dchat .cm b,#dchath .cm b{color:#7fe0ff;font-weight:700}#dchat .cm.me b,#dchath .cm.me b{color:#ffd23f}
+@keyframes cmin{from{opacity:0;transform:translateY(6px)}}
+#dchatin{position:absolute;left:50%;top:calc(58px + var(--sat));transform:translateX(-50%);width:min(520px,calc(100% - 24px));z-index:7;background:rgba(14,18,28,.95);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:10px;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+#dchath{max-height:150px;overflow:auto;display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+#dchatin .cq{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}#dchatin .cq button{background:#2a2f3c;color:#fff;border:0;border-radius:999px;padding:6px 11px;font:600 12.5px system-ui,sans-serif}
+#dchatin .cr2{display:flex;gap:6px}#dchatt{flex:1;min-width:0;background:#0b0f18;color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:10px 12px;font:500 15px system-ui,sans-serif}#dchatin .cr2 button{border:0;border-radius:12px;padding:0 14px;background:#2a2f3c;color:#fff;font-size:16px}#dchatin .cr2 .go{background:#2f6bff}
+#drive.fp #dchat{top:auto;bottom:calc(150px + var(--sab))}
 #donlbtn{width:auto;padding:0 10px;font-size:15px;font-weight:700}#donlbtn.on{background:rgba(56,200,255,.28);border-color:rgba(56,200,255,.6)}#dmicbtn.on{background:rgba(95,227,154,.3)}
 #donl .ocode{display:flex;align-items:center;gap:10px;background:rgba(56,200,255,.1);border:1px solid rgba(56,200,255,.35);border-radius:14px;padding:10px 12px;margin:6px 0}#donl .ocode span{color:#aab2c2;font-size:13px}#donl .ocode b{font:800 26px/1 var(--pf);letter-spacing:3px;color:#7fe0ff;flex:1}#donl .ocode .btn{width:auto;margin:0;padding:8px 12px}
 #donl .ost{font-size:13px;margin:4px 2px}#donl .opl{display:flex;align-items:center;gap:8px;padding:9px 2px;border-bottom:1px solid rgba(255,255,255,.08)}#donl .opl b{font-weight:700}#donl .opl span{color:#aab2c2;font-size:13px;flex:1}#donl .opl .btn{width:auto;margin:0;padding:6px 10px;font-size:13px}#donl .irow .btn{flex:1}
@@ -589,7 +597,7 @@ body.driving{overflow:hidden}
 <div id="tut" class="hidden"><div id="tuthole"></div><div id="tutbox"></div></div>
 <div id="drive" class="hidden">
   <div id="dcan"></div>
-  <div class="dtop"><button class="dbtn" data-a="dexit" aria-label="Выйти в гараж">✕</button><div class="dinfo"><b id="dcity"></b><span id="dmis"></span><div class="dhpw"><i id="dhp"></i></div></div><div class="dright"><div class="dmrow"><div id="dfps">— FPS</div><div id="dmoney"></div></div><div class="drow"><button class="dbtn hidden" id="dmicbtn" data-a="dmic" aria-label="Микрофон">🔇</button><button class="dbtn" id="donlbtn" data-a="donl" aria-label="Онлайн">🌐</button><button class="dbtn" data-a="drad" aria-label="Музыка">🎵</button><button class="dbtn" data-a="dset" aria-label="Настройки">⚙️</button><button class="dbtn" data-a="dhorn" aria-label="Сигнал">📯</button><button class="dbtn" id="dcambtn" data-a="dcam">🎥</button></div><button class="dbtn hidden" id="dorb" data-a="dorb">⟲ Камера</button></div></div>
+  <div class="dtop"><button class="dbtn" data-a="dexit" aria-label="Выйти в гараж">✕</button><div class="dinfo"><b id="dcity"></b><span id="dmis"></span><div class="dhpw"><i id="dhp"></i></div></div><div class="dright"><div class="dmrow"><div id="dfps">— FPS</div><div id="dmoney"></div></div><div class="drow"><button class="dbtn hidden" id="dchatbtn" data-a="dchat" aria-label="Чат">💬</button><button class="dbtn hidden" id="dmicbtn" data-a="dmic" aria-label="Микрофон">🔇</button><button class="dbtn" id="donlbtn" data-a="donl" aria-label="Онлайн">🌐</button><button class="dbtn" data-a="drad" aria-label="Музыка">🎵</button><button class="dbtn" data-a="dset" aria-label="Настройки">⚙️</button><button class="dbtn" data-a="dhorn" aria-label="Сигнал">📯</button><button class="dbtn" id="dcambtn" data-a="dcam">🎥</button></div><button class="dbtn hidden" id="dorb" data-a="dorb">⟲ Камера</button></div></div>
   <canvas id="dmap" data-a="dbig" title="Карта (E)" width="240" height="240"></canvas>
   <div id="dkeys" aria-hidden="true"><div class="t">Управление</div><div><kbd>W</kbd><kbd>↑</kbd> газ</div><div><kbd>S</kbd><kbd>↓</kbd> тормоз и назад</div><div><kbd>A</kbd><kbd>D</kbd><kbd>← →</kbd> руль</div><div><kbd>Пробел</kbd> тормоз</div><div><kbd>Shift</kbd> дрифт (ручник)</div><div><kbd>N</kbd> нитро</div><div><kbd>E</kbd> карта и маршрут</div><div><kbd>C</kbd> камера 1-е / 3-е лицо</div><div><kbd>H</kbd> сигнал</div><div><kbd>R</kbd> ремонт</div><div>Мышь — осмотр, колёсико — зум</div><div class="k"><kbd>K</kbd> скрыть / показать подсказки</div></div>
   <div id="dbig" class="hidden"><canvas id="dbigc" width="900" height="900"></canvas><div class="bh"><b id="dbigi"></b><button data-a="dwpclr">Сбросить точку</button><button class="p" data-a="dbigx">Закрыть (E)</button></div><div class="bt">Нажми на дорогу — маршрут построится сам · нажми на точку ещё раз, чтобы убрать</div></div>
@@ -602,6 +610,8 @@ body.driving{overflow:hidden}
   <div id="ddrift" class="hidden"></div>
   <button id="dflip" class="hidden" data-a="dflip">⟲ На колёса</button>
   <div id="dset" class="dpanel hidden"><div class="dph"><b>⚙️ Настройки</b><button class="dbtn" data-a="dsetx" aria-label="Закрыть">✕</button></div><div id="dsetb" class="f"></div></div>
+  <div id="dchat" aria-live="polite"></div>
+  <div id="dchatin" class="hidden"><div id="dchath"></div><div class="cq"><button data-a="dchatq" data-v="👋 Привет!">👋 Привет!</button><button data-a="dchatq" data-v="Поехали!">Поехали!</button><button data-a="dchatq" data-v="Жду тебя тут">Жду тебя тут</button><button data-a="dchatq" data-v="Давай наперегонки!">Наперегонки?</button></div><div class="cr2"><input id="dchatt" maxlength="140" autocomplete="off" placeholder="Сообщение… (Enter — отправить)"><button class="go" data-a="dchats">➤</button><button data-a="dchatx" aria-label="Закрыть">✕</button></div></div>
   <div id="donl" class="dpanel hidden"><div class="dph"><b>🌐 Онлайн</b><button class="dbtn" data-a="donlx" aria-label="Закрыть">✕</button></div><div id="donlb" class="f"></div></div>
   <div id="drad" class="dpanel hidden"><div class="dph"><b>🎵 Музыка</b><button class="dbtn" data-a="dradx" aria-label="Закрыть">✕</button></div><div id="dradb" class="radio"></div></div>
   <div id="dload">Загрузка…</div>
@@ -2756,6 +2766,7 @@ function netState(){const o={i:NET.id,n:S.nick||'Игрок',m:null};if(DR&&DR.o
   else o.mic=NET.micOn?1:0;return o}
 function netMsg(topic,d){if(!d||!d.i||d.i===NET.id)return;const sub=topic.slice(topic.lastIndexOf('/')+1);
   if(sub==='b'){netDrop(d.i);netUI();return}
+  if(sub==='c'){if(typeof d.t==='string'&&d.t.trim()){const P0=NET.peers[d.i];chatAdd(String(d.n||'Игрок').slice(0,18),d.t.slice(0,140),false,P0)}return}
   let P=NET.peers[d.i];if(sub==='w'){if(d.to!==NET.id)return;if(!P)P=NET.peers[d.i]={id:d.i,t:performance.now(),n:''};rtcSignal(P,d);return}
   if(sub!=='s')return;const now=performance.now();
   if(!P||!P.n){const nw=!P;P=P||(NET.peers[d.i]={id:d.i,t:now});if(nw||!P.hi){P.hi=1;if(DR&&DR.on)dMsg('👋 '+esc(d.n)+' в комнате',1800);else toast('👋 '+esc(d.n)+' в комнате')}}
@@ -2780,7 +2791,7 @@ function netStep(dt){if(!NET.on)return;const now=performance.now(),Wd=DR.Wd,st=D
   for(const id in NET.peers){const P=NET.peers[id],s=P.s;if(now-P.t>8000){netDrop(id);netUI();continue}
     if(!s||s.m!==Wd.M.id||s.x==null){if(P.car)netCarRm(P);continue}
     if(!P.car||P.key!==netKey(s))netCarRm(P),netCarMake(P,s,Wd);
-    if(P.labN!==s.n){P.lab.material.map=nickTex(String(s.n||'Игрок').slice(0,18));P.labN=s.n}
+    const sayOn=P.say&&now<P.sayT,lk=sayOn?s.n+'\u0001'+P.say:s.n;if(P.labN!==lk){P.lab.material.map=sayOn?sayTex(String(s.n||'Игрок').slice(0,18),P.say):nickTex(String(s.n||'Игрок').slice(0,18));P.lab.scale.set(sayOn?7:4,sayOn?1.75:1,1);P.labN=lk}
     const age=Math.min(.35,(now-P.t)/1000),tx=s.x+Math.cos(s.vh)*s.v*age,tz=s.z-Math.sin(s.vh)*s.v*age,k=1-Math.exp(-dt*12),car=P.car;
     if(Math.hypot(tx-P.x,tz-P.z)>25){P.x=tx;P.z=tz;P.y=s.y;P.h=s.h}else{P.x+=(tx-P.x)*k;P.z+=(tz-P.z)*k;P.y+=(s.y-P.y)*k;P.h+=angD(s.h,P.h)*k}
     car.g.position.set(P.x,P.y,P.z);car.g.rotation.set(s.r||0,P.h,0,'YXZ');car.tg.rotation.z=s.pt||0;
@@ -2821,7 +2832,7 @@ function netLeave(quiet){if(!NET.on)return;mqPub('b',{i:NET.id});const ws=NET.ws
   for(const id in NET.peers)netDrop(id);if(NET.mic){NET.mic.getTracks().forEach(t=>t.stop());NET.mic=null}NET.micOn=false;if(!quiet){S.room='';save();toast('Ты вышел из комнаты')}netUI();netBadge()}
 addEventListener('pagehide',()=>{if(NET.on)mqPub('b',{i:NET.id})});
 /* интерфейс */
-function netBadge(){const b=$('donlbtn'),m=$('dmicbtn');if(!b)return;const n=Object.keys(NET.peers).length;b.textContent=NET.on?'🌐 '+(n+1):'🌐';b.classList.toggle('on',NET.on);
+function netBadge(){const b=$('donlbtn'),m=$('dmicbtn'),cb=$('dchatbtn');if(cb)cb.classList.toggle('hidden',!NET.on);if(!NET.on)chatBar(false);if(!b)return;const n=Object.keys(NET.peers).length;b.textContent=NET.on?'🌐 '+(n+1):'🌐';b.classList.toggle('on',NET.on);
   m.classList.toggle('hidden',!NET.on);m.textContent=NET.micOn?'🎤':'🔇';m.classList.toggle('on',NET.micOn)}
 function netUI(soft){const b=$('donlb');if(!b||$('donl').classList.contains('hidden'))return;
   if(!NET.on){b.innerHTML='<label for="onick">Твой ник</label><input class="inp" id="onick" maxlength="18" autocomplete="off" value="'+esc(S.nick||'')+'" placeholder="Например, Артур">'
@@ -2851,6 +2862,31 @@ setInterval(()=>{if(NET.on&&!(DR&&DR.on))mqPub('s',netState());if(NET.on&&!(DR&&
 
 {const _ds=A.dset,_dr=A.drad;A.dset=v=>{$('donl').classList.add('hidden');_ds(v)};A.drad=v=>{$('donl').classList.add('hidden');_dr(v)}}
 if(S.nick==null)S.nick='';
+
+/* ---------- текстовый чат комнаты ---------- */
+NET.chat=[];let chatLast=0;
+function sayTex(n,t){const c=document.createElement('canvas');c.width=512;c.height=128;const x=c.getContext('2d');x.font='700 30px system-ui,sans-serif';
+  let msg=t.length>34?t.slice(0,33)+'…':t;const w=Math.min(500,Math.max(x.measureText(n).width,x.measureText(msg).width)+36);
+  x.fillStyle='rgba(12,16,28,.85)';x.beginPath();x.roundRect?x.roundRect(256-w/2,6,w,100,22):x.rect(256-w/2,6,w,100);x.fill();x.beginPath();x.moveTo(242,105);x.lineTo(256,124);x.lineTo(270,105);x.fill();
+  x.textAlign='center';x.textBaseline='middle';x.fillStyle='#7fe0ff';x.fillText(n,256,36,480);x.fillStyle='#fff';x.font='600 30px system-ui,sans-serif';x.fillText(msg,256,76,480);return new THREE.CanvasTexture(c)}
+function chatAdd(n,t,me,P){const m={n,t,me,at:Date.now()};NET.chat.push(m);if(NET.chat.length>60)NET.chat.shift();if(P){P.say=t;P.sayT=performance.now()+7000}
+  if(DR&&DR.on){chatFeed();if(!$('dchatin').classList.contains('hidden'))chatHist()}else if(!me)toast('💬 <b>'+esc(n)+':</b> '+esc(t));
+  if(!me)tone([880],.06,'sine',.04);if(!$('donl').classList.contains('hidden'))chatHist()}
+function chatFeed(){const f=$('dchat');if(!f)return;const now=Date.now(),list=NET.chat.filter(m=>now-m.at<12000).slice(-5);
+  f.innerHTML=list.map(m=>'<div class="cm'+(m.me?' me':'')+'"><b>'+esc(m.n)+'</b> '+esc(m.t)+'</div>').join('');clearTimeout(chatFeed.t);if(list.length)chatFeed.t=setTimeout(chatFeed,1500)}
+function chatHist(){const h=$('dchath');if(h){h.innerHTML=NET.chat.slice(-30).map(m=>'<div class="cm'+(m.me?' me':'')+'"><b>'+esc(m.n)+'</b> '+esc(m.t)+'</div>').join('')||'<div class="hint">Сообщений пока нет</div>';h.scrollTop=h.scrollHeight}}
+function chatSend(t){t=String(t||'').replace(/\s+/g,' ').trim().slice(0,140);if(!t||!NET.on)return false;const now=Date.now();if(now-chatLast<900){toast('Не так быстро');return false}chatLast=now;
+  mqPub('c',{i:NET.id,n:S.nick||'Игрок',t});chatAdd(S.nick||'Игрок',t,true);return true}
+function chatBar(open){const b=$('dchatin');if(!b)return;if(open==null)open=b.classList.contains('hidden');if(open&&!NET.on)return;b.classList.toggle('hidden',!open);$('dchat').classList.toggle('hidden',open);
+  if(open){for(const k in KEYS)KEYS[k]=false;chatHist();const i=$('dchatt');setTimeout(()=>{try{i.focus()}catch(e){}},30)}else{const i=$('dchatt');if(i)i.blur()}}
+A.dchat=()=>chatBar();A.dchatx=()=>chatBar(false);
+A.dchats=()=>{const i=$('dchatt');if(chatSend(i.value)){i.value=''}};
+A.dchatq=v=>{if(chatSend(v))chatBar(false)};
+document.addEventListener('keydown',e=>{const tg=e.target;
+  if(e.key==='Escape'&&$('dchatin')&&!$('dchatin').classList.contains('hidden')){e.preventDefault();chatBar(false);return}
+  if(tg&&tg.id==='dchatt'){if(e.key==='Enter'){e.preventDefault();A.dchats()}else if(e.key==='Escape'){e.preventDefault();chatBar(false)}return}
+  if(!DR||!DR.on||!NET.on||(tg&&(tg.tagName==='INPUT'||tg.tagName==='TEXTAREA')))return;
+  if((e.code==='KeyT'||e.code==='Enter')&&!e.repeat&&$('dchatin').classList.contains('hidden')){e.preventDefault();chatBar(true)}});
 
 function lapCheck(prev,cur){const tk=DR.Wd.trk,n=tk.n,L=DR.lap,q=Math.floor(cur/(n/4));if(q===L.cp+1&&q<4)L.cp=q;
   if(prev>n*.9&&cur<n*.1){if(L.cp>=3){const tm=performance.now()-L.t0;S.laps=(S.laps||0)+1;let msg='🏁 Круг '+(L.n+1)+': '+tfmt(tm);if(!S.bestLap||tm<S.bestLap){S.bestLap=tm;msg+=' — рекорд!'}S.coins+=300;dMsg(msg+' · +300 ₽',3000);tone([523,784,1046],.18,'triangle',.09);L.n++;save()}L.t0=performance.now();L.cp=0}}
