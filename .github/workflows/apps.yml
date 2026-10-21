@@ -72,7 +72,7 @@ jobs:
 
   ios:
     needs: version
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
       - name: XcodeGen
@@ -85,11 +85,17 @@ jobs:
         run: |
           mkdir -p Web
           cp ../index.html Web/index.html
-          xcodegen generate
-          xcodebuild -project Nomera.xcodeproj -scheme Nomera -configuration Release -sdk iphoneos \
+          xcodegen generate 2>&1 | tee gen.log || { tail -5 gen.log | while read -r l; do echo "::error::xcodegen: $l"; done; exit 1; }
+          xcodebuild -version
+          set -o pipefail
+          if ! xcodebuild -project Nomera.xcodeproj -scheme Nomera -configuration Release -sdk iphoneos \
             -destination 'generic/platform=iOS' -derivedDataPath build \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
-            MARKETING_VERSION="$V" CURRENT_PROJECT_VERSION="$CODE" build
+            MARKETING_VERSION="$V" CURRENT_PROJECT_VERSION="$CODE" build > build.log 2>&1; then
+            # ошибки — в заметки сборки, чтобы их было видно без скачивания логов
+            (grep -E "error:|xcodebuild: error|is not installed|Unable to find" build.log || tail -15 build.log) | head -15 | while read -r l; do echo "::error::$l"; done
+            exit 1
+          fi
           mkdir -p Payload
           cp -R build/Build/Products/Release-iphoneos/Nomera.app Payload/
           zip -qry ../nomera-goroda.ipa Payload
