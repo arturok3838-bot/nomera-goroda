@@ -8,8 +8,14 @@
         android:label="Номера"
         android:icon="@mipmap/ic_launcher"
         android:hardwareAccelerated="true"
+        android:largeHeap="true"
         android:allowBackup="true"
-        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        android:isGame="true"
+        android:appCategory="game"
+        android:theme="@style/GameTheme">
+        <!-- игра лежит внутри приложения: проверка ссылок Safe Browsing не нужна, запуск быстрее -->
+        <meta-data android:name="android.webkit.WebView.EnableSafeBrowsing" android:value="false" />
+        <meta-data android:name="android.webkit.WebView.MetricsOptOut" android:value="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
