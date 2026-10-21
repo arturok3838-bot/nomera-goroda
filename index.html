@@ -414,6 +414,7 @@ body.driving{overflow:hidden}
 .dinfo b{display:block;font-size:14px}.dinfo span{display:block;color:#ffd23f;font-weight:600}.dinfo small{display:block;color:#c9d2e0;font-weight:400}
 .dhpw{height:5px;border-radius:3px;background:rgba(255,255,255,.15);margin-top:5px;overflow:hidden}#dhp{display:block;height:100%;width:100%;background:#38e07b;transition:width .2s}
 .dright{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.dmrow{display:flex;gap:6px;align-items:flex-start}#dfps{background:rgba(10,14,24,.55);border-radius:12px;padding:6px 9px;font:800 13px/1.2 system-ui,sans-serif;color:#5fe39a;white-space:nowrap;font-variant-numeric:tabular-nums;min-width:62px;text-align:center}
 #dmoney{background:rgba(10,14,24,.55);border-radius:12px;padding:6px 10px;font-weight:700;font-size:14px;text-align:right}#dmoney small{display:block;font-weight:400;font-size:10.5px;color:#c9d2e0}
 .drow{display:flex;gap:6px}
 #dmap{position:absolute;right:10px;top:calc(124px + var(--sat));width:104px;height:104px;border-radius:50%;border:2px solid rgba(255,255,255,.35);background:#141820;pointer-events:auto;cursor:pointer}
@@ -588,7 +589,7 @@ body.driving{overflow:hidden}
 <div id="tut" class="hidden"><div id="tuthole"></div><div id="tutbox"></div></div>
 <div id="drive" class="hidden">
   <div id="dcan"></div>
-  <div class="dtop"><button class="dbtn" data-a="dexit" aria-label="Выйти в гараж">✕</button><div class="dinfo"><b id="dcity"></b><span id="dmis"></span><div class="dhpw"><i id="dhp"></i></div></div><div class="dright"><div id="dmoney"></div><div class="drow"><button class="dbtn hidden" id="dmicbtn" data-a="dmic" aria-label="Микрофон">🔇</button><button class="dbtn" id="donlbtn" data-a="donl" aria-label="Онлайн">🌐</button><button class="dbtn" data-a="drad" aria-label="Музыка">🎵</button><button class="dbtn" data-a="dset" aria-label="Настройки">⚙️</button><button class="dbtn" data-a="dhorn" aria-label="Сигнал">📯</button><button class="dbtn" id="dcambtn" data-a="dcam">🎥</button></div><button class="dbtn hidden" id="dorb" data-a="dorb">⟲ Камера</button></div></div>
+  <div class="dtop"><button class="dbtn" data-a="dexit" aria-label="Выйти в гараж">✕</button><div class="dinfo"><b id="dcity"></b><span id="dmis"></span><div class="dhpw"><i id="dhp"></i></div></div><div class="dright"><div class="dmrow"><div id="dfps">— FPS</div><div id="dmoney"></div></div><div class="drow"><button class="dbtn hidden" id="dmicbtn" data-a="dmic" aria-label="Микрофон">🔇</button><button class="dbtn" id="donlbtn" data-a="donl" aria-label="Онлайн">🌐</button><button class="dbtn" data-a="drad" aria-label="Музыка">🎵</button><button class="dbtn" data-a="dset" aria-label="Настройки">⚙️</button><button class="dbtn" data-a="dhorn" aria-label="Сигнал">📯</button><button class="dbtn" id="dcambtn" data-a="dcam">🎥</button></div><button class="dbtn hidden" id="dorb" data-a="dorb">⟲ Камера</button></div></div>
   <canvas id="dmap" data-a="dbig" title="Карта (E)" width="240" height="240"></canvas>
   <div id="dkeys" aria-hidden="true"><div class="t">Управление</div><div><kbd>W</kbd><kbd>↑</kbd> газ</div><div><kbd>S</kbd><kbd>↓</kbd> тормоз и назад</div><div><kbd>A</kbd><kbd>D</kbd><kbd>← →</kbd> руль</div><div><kbd>Пробел</kbd> тормоз</div><div><kbd>Shift</kbd> дрифт (ручник)</div><div><kbd>N</kbd> нитро</div><div><kbd>E</kbd> карта и маршрут</div><div><kbd>C</kbd> камера 1-е / 3-е лицо</div><div><kbd>H</kbd> сигнал</div><div><kbd>R</kbd> ремонт</div><div>Мышь — осмотр, колёсико — зум</div><div class="k"><kbd>K</kbd> скрыть / показать подсказки</div></div>
   <div id="dbig" class="hidden"><canvas id="dbigc" width="900" height="900"></canvas><div class="bh"><b id="dbigi"></b><button data-a="dwpclr">Сбросить точку</button><button class="p" data-a="dbigx">Закрыть (E)</button></div><div class="bt">Нажми на дорогу — маршрут построится сам · нажми на точку ещё раз, чтобы убрать</div></div>
@@ -2397,7 +2398,7 @@ function bindOrbit(){const el=$('dcan'),P=new Map();let pd=0;
 /* ---------- игровой цикл ---------- */
 const angD=(a,b)=>{let d=a-b;while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d+=Math.PI*2;return d};
 function loop(t,id){if(!DR||!DR.on||id!==LOOPID)return;requestAnimationFrame(tt=>loop(tt,id));if(DR.big){DR.last=t;return}const q=Q();if(q.skip){DR.skip=!DR.skip;if(DR.skip)return}if(DR.cap){if(t-(DR.lr||0)<DR.cap)return;DR.lr=t}let dt=(t-DR.last)/1000;DR.last=t;if(!(dt>0))return;dt=Math.min(dt,.066);
-  step(dt);if(R3.shadowMap.enabled){R3.shadowMap.autoUpdate=false;DR.sf=(DR.sf||0)+1;R3.shadowMap.needsUpdate=DR.sf%(Q().sev||2)===0}renderFrame(DR.Wd.sc,DR.cam);
+  step(dt);if(R3.shadowMap.enabled){R3.shadowMap.autoUpdate=false;DR.sf=(DR.sf||0)+1;R3.shadowMap.needsUpdate=DR.sf%(Q().sev||2)===0}renderFrame(DR.Wd.sc,DR.cam);fpsTick(t);
   DR.fpsN++;if(t-DR.fpsT>1500){const fps=DR.fpsN*1000/(t-DR.fpsT);DR.fpsN=0;DR.fpsT=t;const tgt=q.skip?27:44;
     if(!S.res||S.res==='auto'){if(fps<tgt&&DR.pr>.55){DR.pr=Math.max(.55,DR.pr-.15);fitR()}else if(fps>(q.skip?29:57)&&DR.pr<DR.prMax){DR.pr=Math.min(DR.prMax,DR.pr+.1);fitR()}}
     // авто-качество: если всё равно тормозит — отключаем тени, потом постобработку
@@ -2515,6 +2516,9 @@ function wreckStep(dt,st){const w=st.wreck;w.t+=dt;
   st.roll+=(w.tr-st.roll)*Math.min(1,dt*4);st.pitch+=(w.tp-st.pitch)*Math.min(1,dt*4);
   const left=Math.max(0,10-w.t);$('dflip').innerHTML='⟲ На колёса <small>'+Math.ceil(left)+' с</small>';if(left<=0)flipBack()}
 function flipBack(){const st=DR&&DR.st;if(!st||!st.wreck||st.wreck.rec!=null)return;st.wreck.rec=0;st.wreck.r0=st.roll;st.wreck.p0=st.pitch;st.v=0;tone([330,440],.12,'triangle',.06)}
+
+/* счётчик кадров в правом верхнем углу */
+function fpsTick(t){const f=DR.fc||(DR.fc={n:0,t:t});f.n++;if(t-f.t<500)return;const v=Math.round(f.n*1000/(t-f.t));f.n=0;f.t=t;const e=$('dfps');if(!e)return;e.textContent=v+' FPS';e.style.color=v>=50?'#5fe39a':v>=30?'#ffd23f':'#ff6a5a'}
 
 function disposeWorld(W){try{W.sc.traverse(o=>{if(o.geometry&&!o.isSprite)o.geometry.dispose()})}catch(e){}}
 
