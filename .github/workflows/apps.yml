@@ -1,0 +1,120 @@
+name: Приложения (APK и IPA)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - android/**
+      - ios/**
+      - .github/workflows/apps.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apps
+  cancel-in-progress: true
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      v: ${{ steps.v.outputs.v }}
+      code: ${{ steps.v.outputs.code }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: v
+        run: |
+          V=$(grep -o "GAME_VER='[^']*'" index.html | head -1 | cut -d"'" -f2)
+          IFS=. read -r A B C <<< "$V"
+          echo "v=$V" >> "$GITHUB_OUTPUT"
+          echo "code=$((A*10000+B*100+C))" >> "$GITHUB_OUTPUT"
+          echo "Версия игры: $V"
+
+  android:
+    needs: version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Игра внутрь приложения
+        run: |
+          mkdir -p android/app/src/main/assets
+          cp index.html android/app/src/main/assets/index.html
+      - name: Свой ключ подписи (если добавлен в секреты репозитория)
+        env:
+          KS: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          KSP: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+        run: |
+          if [ -n "$KS" ] && [ -n "$KSP" ]; then echo "$KS" | base64 -d > android/app/release.keystore; echo "KS_FILE=release.keystore" >> "$GITHUB_ENV"; else echo "::warning::Секрет ANDROID_KEYSTORE_B64 не задан — APK подписан временным ключом"; fi
+      - name: Сборка APK
+        working-directory: android
+        env:
+          VERSION_NAME: ${{ needs.version.outputs.v }}
+          VERSION_CODE: ${{ needs.version.outputs.code }}
+          KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          KS_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KS_KEYPASS: ${{ secrets.ANDROID_KEY_PASS }}
+        run: gradle --no-daemon assembleRelease
+      - run: cp android/app/build/outputs/apk/release/app-release.apk nomera-goroda.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: nomera-goroda.apk
+
+  ios:
+    needs: version
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: XcodeGen
+        run: brew install xcodegen
+      - name: Сборка IPA (без подписи)
+        working-directory: ios
+        env:
+          V: ${{ needs.version.outputs.v }}
+          CODE: ${{ needs.version.outputs.code }}
+        run: |
+          mkdir -p Web
+          cp ../index.html Web/index.html
+          xcodegen generate
+          xcodebuild -project Nomera.xcodeproj -scheme Nomera -configuration Release -sdk iphoneos \
+            -destination 'generic/platform=iOS' -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            MARKETING_VERSION="$V" CURRENT_PROJECT_VERSION="$CODE" build
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/Nomera.app Payload/
+          zip -qry ../nomera-goroda.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ipa
+          path: nomera-goroda.ipa
+
+  release:
+    needs: [version, android, ios]
+    if: always() && needs.android.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.version.outputs.v }}
+          name: Номера города ${{ needs.version.outputs.v }}
+          make_latest: true
+          body: |
+            **Android:** скачай `nomera-goroda.apk`, открой файл и разреши установку из этого источника.
+            **iPhone:** `nomera-goroda.ipa` без подписи — установи через Sideloadly или AltStore со своим Apple ID.
+            Игра работает без интернета; онлайн, чат и аккаунт — когда есть сеть.
+          files: |
+            nomera-goroda.apk
+            nomera-goroda.ipa

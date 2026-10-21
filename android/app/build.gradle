@@ -1,0 +1,44 @@
+plugins { id 'com.android.application' }
+
+def env = { String k, String d -> def v = System.getenv(k); (v != null && !v.isEmpty()) ? v : d }
+
+android {
+    namespace 'ru.arturok.nomera'
+    compileSdk 34
+    defaultConfig {
+        applicationId 'ru.arturok.nomera'
+        minSdk 24
+        targetSdk 34
+        versionCode env('VERSION_CODE', '1').toInteger()
+        versionName env('VERSION_NAME', '1.0')
+    }
+    // Ключ подписи хранится только в секретах GitHub (ANDROID_KEYSTORE_B64 и пароль), в репозитории его нет.
+    // Без секрета APK подписывается временным ключом сборки — ставится, но обновлять поверх не получится.
+    def hasKey = System.getenv('KS_FILE') != null && System.getenv('KS_PASS') != null
+    signingConfigs {
+        if (hasKey) {
+            release {
+                storeFile file(System.getenv('KS_FILE'))
+                storePassword System.getenv('KS_PASS')
+                keyAlias env('KS_ALIAS', 'nomera')
+                keyPassword env('KS_KEYPASS', System.getenv('KS_PASS'))
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig hasKey ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    // игра лежит внутри приложения и не сжимается (быстрее открывается)
+    androidResources { noCompress 'html' }
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.11.0'
+}
