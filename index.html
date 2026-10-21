@@ -7,7 +7,12 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Номера</title>
+<title>Номера города</title>
+<meta name="apple-mobile-web-app-title" content="Номера">
+<meta name="application-name" content="Номера города">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Condensed:wght@600..900&display=swap" rel="stylesheet">
@@ -195,7 +200,9 @@ table{width:100%;border-collapse:collapse;font-size:14px}td{padding:6px 0;border
   background:conic-gradient(var(--acc) calc(var(--xp)*1%),rgba(255,255,255,.12) 0);position:relative}
 .av::before{content:"";position:absolute;inset:4px;border-radius:50%;background:linear-gradient(160deg,#2a3150,#141827)}
 .av span{position:relative;text-align:center}.av small{display:block;font:600 9px Roboto,Arial;opacity:.7;letter-spacing:.5px;margin-bottom:1px}
-.prof .pn{font-weight:500;font-size:15px}.prof .acb{font-size:12px;font-weight:600;margin-top:3px;color:#9fd8ff}.prof .hint{color:rgba(238,241,248,.6)}
+.prof .pn{font-weight:500;font-size:15px}
+.instb{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 14px;border-radius:16px;border:1px solid rgba(127,224,255,.35);background:linear-gradient(135deg,rgba(47,107,255,.25),rgba(56,200,255,.12));color:var(--ink)}.instb span{font-size:28px}.instb b{display:block;font-size:15px}.instb small{display:block;color:var(--mute);font-size:12.5px;margin-top:2px}
+.ist{display:flex;gap:12px;align-items:flex-start;margin:10px 0}.ist i{flex:none;width:28px;height:28px;border-radius:50%;background:var(--acc);color:var(--accInk);display:grid;place-items:center;font-style:normal;font-weight:700}.ist div{padding-top:3px}.prof .acb{font-size:12px;font-weight:600;margin-top:3px;color:#9fd8ff}.prof .hint{color:rgba(238,241,248,.6)}
 .prof .bl{margin-left:auto;text-align:right;position:relative;z-index:1}
 .prof .bl b{display:block;font-size:18px;font-weight:700;white-space:nowrap}.prof .bl span{color:#f0c55a;font-weight:700}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-bottom:14px}
@@ -971,7 +978,7 @@ function renderMenu(){
     ['ach','','#b08a2a','#33240a',SVG.medal,'Достижения',aReady?bd(aReady+' награды','hot'):''],
     ['opt','','#5d6a86','#161b28',SVG.gear,'Настройки','']];
   $('tiles').innerHTML='<div class="prof" data-a="acct" style="grid-column:1/-1;cursor:pointer;--xp:'+S.xp+'"><div class="av"><span><small>УР.</small>'+S.lvl+'</span></div><div><div class="pn">'+(ACC?'👤 '+escH(ACC.login):'Коллекционер номеров')+'</div><div class="hint">'+S.xp+' / 100 XP · '+nf(S.gen)+' генераций</div><div class="acb">'+(ACC?'☁️ Прогресс в аккаунте':'Войти или создать аккаунт ›')+'</div></div><div class="bl"><b>'+fmt(S.coins)+'</b><span>'+S.usd+' $</span></div></div>'
-    +T.map((t,i)=>'<button class="tile '+t[1]+'" style="--t1:'+t[2]+';--t2:'+t[3]+';animation-delay:'+(i*.035)+'s" data-a="go" data-v="'+t[0]+'">'+(t[6]||'')+'<div class="ill">'+t[4]+'</div><b>'+t[5]+'</b></button>').join('')
+    +instBanner()+T.map((t,i)=>'<button class="tile '+t[1]+'" style="--t1:'+t[2]+';--t2:'+t[3]+';animation-delay:'+(i*.035)+'s" data-a="go" data-v="'+t[0]+'">'+(t[6]||'')+'<div class="ill">'+t[4]+'</div><b>'+t[5]+'</b></button>').join('')
     +'<div class="soon"><h2>Скоро в игре</h2><div class="hint">Эти разделы ещё в разработке — они откроются в следующих обновлениях.</div></div>'
     +['Рейтинг игроков','Магазин','Кейсы','Альбом','Карта','Обмен'].map(n=>'<div class="tile off"><b>'+n+'</b></div>').join('')}
 
@@ -1251,6 +1258,23 @@ Object.assign(A,{
   async svgo(){try{svApply(await svDecode($('svin').value))}catch(e){toast('Код не подходит — проверь, что скопирован целиком')}},
   async svfile(){saveNow();const c=await svEncode(),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/plain'}));a.download='nomera-'+new Date().toISOString().slice(0,10)+'.nomera';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast('💾 Файл сохранения скачан')}});
 C.svload=async t=>{const f=t.files&&t.files[0];t.value='';if(!f)return;try{svApply(await svDecode(await f.text()))}catch(e){toast('Это не файл сохранения игры')}};
+
+/* ---------- установка на телефон (PWA) и работа без интернета ---------- */
+let instEvt=null;const isStand=()=>matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true;
+const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();instEvt=e;if(view==='menu')try{renderMenu()}catch(x){}});
+addEventListener('appinstalled',()=>{instEvt=null;toast('📲 Игра установлена — ищи иконку «Номера» на экране');if(view==='menu')try{renderMenu()}catch(x){}});
+function instBanner(){if(isStand()||location.protocol==='file:')return '';return '<button class="instb" data-a="install" style="grid-column:1/-1"><span>📲</span><div><b>Установить игру на телефон</b><small>Иконка на экране, весь экран и игра без интернета</small></div></button>'}
+Object.assign(A,{async install(){
+  if(instEvt){instEvt.prompt();try{await instEvt.userChoice}catch(e){}instEvt=null;return}
+  const step=(n,t)=>'<div class="ist"><i>'+n+'</i><div>'+t+'</div></div>';
+  $('mc').innerHTML='<div class="mb"><h3>Установить «Номера города»</h3>'+(isIOS?
+     (/CriOS|FxiOS|EdgiOS|YaBrowser/.test(navigator.userAgent)?'<div class="hint" style="text-align:center;margin:6px 0 10px">На iPhone установить можно только из <b>Safari</b>. Открой этот сайт в Safari и сделай так:</div>':'<div class="hint" style="text-align:center;margin:6px 0 10px">Три шага в Safari:</div>')
+     +step(1,'Нажми кнопку <b>«Поделиться»</b> — квадрат со стрелкой вверх внизу экрана')+step(2,'Пролистай и выбери <b>«На экран „Домой“»</b>')+step(3,'Нажми <b>«Добавить»</b> — иконка появится на экране')
+    :'<div class="hint" style="text-align:center;margin:6px 0 10px">В браузере Chrome или Яндекс:</div>'+step(1,'Открой меню браузера <b>⋮</b> (три точки)')+step(2,'Выбери <b>«Установить приложение»</b> или <b>«Добавить на главный экран»</b>')+step(3,'Подтверди — иконка появится на экране'))
+   +'<div class="hint" style="margin-top:12px">После установки игра открывается на весь экран и работает <b>без интернета</b>. Интернет нужен только для онлайна, чата и сохранения в аккаунт. Прогресс в установленной игре и в браузере хранится отдельно — чтобы перенести его, войди в аккаунт (Меню → профиль).</div>'
+   +'<button class="btn" data-a="mdclose" style="margin-top:12px">Понятно</button></div>';$('md').classList.remove('hidden')}});
 
 /* ---------- аккаунт и облачное сохранение (сервер на Netlify, как у сайта АРТурок) ---------- */
 const GAPI='https://arturok-studio.netlify.app/game/api',AK='nomera_acct';
