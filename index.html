@@ -490,6 +490,8 @@ body.driving{overflow:hidden}
 #drive.fp #dchat{top:auto;bottom:calc(150px + var(--sab))}
 #dwant{position:absolute;left:50%;top:calc(64px + var(--sat));transform:translateX(-50%);text-align:center;pointer-events:none;z-index:4;text-shadow:0 2px 6px rgba(0,0,0,.7)}#dwant b{font-size:30px;letter-spacing:2px;color:#ffd23f;display:block;line-height:1}#dwant b i{font-style:normal;color:rgba(255,255,255,.25)}#dwant small{display:inline-block;margin-top:4px;background:rgba(10,14,24,.6);border-radius:10px;padding:3px 10px;font:600 12.5px system-ui,sans-serif;color:#fff}#dwant small.ar{background:#c62828}
 #dwant .pbar{display:flex;gap:4px;width:min(320px,70vw);margin:6px auto 0}#dwant .pbar span{position:relative;display:flex;align-items:center;flex:1;height:15px;border-radius:7px;background:rgba(10,14,24,.65);overflow:hidden;border:1px solid rgba(255,255,255,.25)}#dwant .pbar i{position:absolute;top:0;bottom:0;display:block;transition:width .2s}#dwant .bu i{right:0;background:linear-gradient(90deg,#ff6a5a,#d01616)}#dwant .ev i{left:0;background:linear-gradient(90deg,#2fd06f,#7dffb0)}#dwant .pbar em{position:relative;z-index:1;font:800 9.5px/1 system-ui,sans-serif;letter-spacing:1px;color:#fff;font-style:normal}#dwant .bu em{margin-left:auto;margin-right:6px}#dwant .ev em{margin-left:6px}
+#dpur{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;transition:opacity .4s}#dpur.on{opacity:1;animation:dpur .68s steps(1) infinite}@keyframes dpur{0%{box-shadow:inset 0 0 110px 18px rgba(255,30,40,.42)}50%{box-shadow:inset 0 0 110px 18px rgba(40,90,255,.42)}}
+#dwant .pst{display:flex;justify-content:center;gap:10px;margin-top:5px;font:700 12px/1 system-ui,sans-serif;color:#fff}#dwant .pst span{background:rgba(10,14,24,.6);padding:3px 7px;border-radius:6px}
 #dwant.lost b{animation:wblink .5s steps(2) infinite}@keyframes wblink{50%{opacity:.35}}#dchase.on{background:rgba(220,40,40,.45);border-color:rgba(255,90,90,.7)}
 #dchp .chs{display:flex;align-items:center;gap:10px;width:100%;margin-top:6px;padding:10px 12px;border:0;border-radius:12px;background:#222838;color:#fff;text-align:left}#dchp .chs b{color:#ffd23f;font-size:17px;min-width:84px}#dchp .chs span{flex:1;font-size:13px;color:#c9d2e0}#dchp .chs em{font-style:normal;font-weight:700;color:#5fe39a;font-size:13px}
 #dsvc{position:absolute;left:50%;bottom:calc(10px + var(--sab));transform:translateX(-50%);width:min(560px,calc(100% - 20px));max-height:58%;overflow:auto;z-index:8;background:rgba(14,18,28,.96);border:1px solid rgba(47,168,255,.5);border-radius:18px;padding:12px;color:#fff;box-shadow:0 12px 40px rgba(0,0,0,.55);-webkit-overflow-scrolling:touch}
@@ -636,6 +638,7 @@ body.driving{overflow:hidden}
   <div id="ddrift" class="hidden"></div>
   <button id="dflip" class="hidden" data-a="dflip">⟲ На колёса</button>
   <div id="dset" class="dpanel hidden"><div class="dph"><b>⚙️ Настройки</b><button class="dbtn" data-a="dsetx" aria-label="Закрыть">✕</button></div><div id="dsetb" class="f"></div></div>
+  <div id="dpur"></div>
   <div id="dwant" class="hidden"></div>
   <div id="dchp" class="dpanel hidden"></div>
   <div id="dsvc" class="hidden"><div id="dsvcb"></div></div>
@@ -648,7 +651,7 @@ body.driving{overflow:hidden}
 
 <script>
 'use strict';
-const GAME_VER='1.1.17';
+const GAME_VER='1.1.18';
 const KEY='nomera_v3';
 const $=id=>document.getElementById(id);
 let RNG=Math.random;
@@ -1327,7 +1330,7 @@ Object.assign(A,{
   async svfile(){saveNow();const c=await svEncode(),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/plain'}));a.download='nomera-'+new Date().toISOString().slice(0,10)+'.nomera';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast('💾 Файл сохранения скачан')}});
 C.svload=async t=>{const f=t.files&&t.files[0];t.value='';if(!f)return;try{svApply(await svDecode(await f.text()))}catch(e){toast('Это не файл сохранения игры')}};
 
-const CHANGES={'1.1.17':['🚨 Погоня как в Need for Speed: 1–5 звёзд, полоски АРЕСТ / УХОД, награда за уход и штраф за арест','💥 Полицейских можно таранить — разбитые машины дают бонус, каждые 3 тарана +1 звезда','🚁 На 4–5 звёздах — вертолёт и сирены','🔧 Тюнинг-сервис на карте: металлик/матовая/хром краска, неоновая подсветка, рамка номера, обвес, спойлеры, диски, покрышки, спидометр и руль','🏍 Мотоциклы с наклоном в поворотах','🚶 Можно выйти из машины (F) и ходить — друзья в онлайне видят тебя пешком','🛡 Все машины в 9 раз прочнее','🌳 Деревьев стало меньше'],'1.1.16':['⭐ Новые уровни: 1 — 10 генераций, 2 — 30, 3 — 200, 4 — 1 000, 5 — 10 000, 6 — 15 000, 7 — 20 000, 8 — 25 000, 9 — 30 000, 10 — 50 000, дальше каждые 10 000','📊 В профиле видно, сколько генераций осталось до следующего уровня','⚡ На экранах 90/120 Гц игра не рисует лишние кадры — меньше нагрев','🚀 Шейдеры готовятся заранее — без рывков в начале поездки','🧱 На слабых видеочипах текстуры домов вдвое легче, дороги посёлка проще'],'1.1.15':['⚡ Android-приложение: максимальная частота экрана (90/120 Гц), ровная производительность без провалов при нагреве','🎮 Приложение отмечено как игра — работают игровые режимы телефона','🔋 В фоне игра полностью замирает и не тратит батарею','🧠 При нехватке памяти игра снижает разрешение, а не вылетает','🚀 Быстрый запуск без белой вспышки'],'1.1.14':['🤖 Приложение для Android (APK) и 🍏 для iPhone (IPA) — кнопки в меню','🛠️ Админка: свой номер — страна, тип, буквы, цифры, регион, редкость, износ и цена','🔊 Звук выпадения мифического номера'],'1.1.13':['📲 Игру можно установить на телефон — работает без интернета','🔄 Установленная игра сама получает обновления','💬 Текстовый чат в онлайн-комнате','🏘️ Новая карта «Посёлок»: избы, кирпич, гаражи, неровные дороги','🌐 Онлайн: комнаты по коду, совместная езда и голосовой чат','👤 Аккаунты: прогресс сохраняется на сервере','🟥 Мифическая редкость и износ номеров','🗺️ Карта на E с маршрутом и стрелкой над машиной','📊 Счётчик FPS']};
+const CHANGES={'1.1.18':['🚓 Полиция в стиле Most Wanted: чёрные машины с белыми дверями и надписью «ПОЛИЦИЯ», стробоскопы с ореолом и отсветом на асфальте','💥 Полицейские мнутся в точке удара: вмятины, царапины, отлетают бамперы и зеркала, двери распахиваются и отваливаются, идёт дым','🛡 Полиция стала прочнее — обычно нужно 2–4 тарана','🚨 Погоня начинается только по кнопке или от аварий с машинами — по нарастающей (без звёзд за скорость)','🎬 Замедление при выводе полицейского из строя, мигание экрана красным/синим, счётчик ущерба','🎨 Тёплая цветокоррекция как в Most Wanted и размытие на большой скорости (на высоком качестве)'],'1.1.17':['🚨 Погоня как в Need for Speed: 1–5 звёзд, полоски АРЕСТ / УХОД, награда за уход и штраф за арест','💥 Полицейских можно таранить — разбитые машины дают бонус, каждые 3 тарана +1 звезда','🚁 На 4–5 звёздах — вертолёт и сирены','🔧 Тюнинг-сервис на карте: металлик/матовая/хром краска, неоновая подсветка, рамка номера, обвес, спойлеры, диски, покрышки, спидометр и руль','🏍 Мотоциклы с наклоном в поворотах','🚶 Можно выйти из машины (F) и ходить — друзья в онлайне видят тебя пешком','🛡 Все машины в 9 раз прочнее','🌳 Деревьев стало меньше'],'1.1.16':['⭐ Новые уровни: 1 — 10 генераций, 2 — 30, 3 — 200, 4 — 1 000, 5 — 10 000, 6 — 15 000, 7 — 20 000, 8 — 25 000, 9 — 30 000, 10 — 50 000, дальше каждые 10 000','📊 В профиле видно, сколько генераций осталось до следующего уровня','⚡ На экранах 90/120 Гц игра не рисует лишние кадры — меньше нагрев','🚀 Шейдеры готовятся заранее — без рывков в начале поездки','🧱 На слабых видеочипах текстуры домов вдвое легче, дороги посёлка проще'],'1.1.15':['⚡ Android-приложение: максимальная частота экрана (90/120 Гц), ровная производительность без провалов при нагреве','🎮 Приложение отмечено как игра — работают игровые режимы телефона','🔋 В фоне игра полностью замирает и не тратит батарею','🧠 При нехватке памяти игра снижает разрешение, а не вылетает','🚀 Быстрый запуск без белой вспышки'],'1.1.14':['🤖 Приложение для Android (APK) и 🍏 для iPhone (IPA) — кнопки в меню','🛠️ Админка: свой номер — страна, тип, буквы, цифры, регион, редкость, износ и цена','🔊 Звук выпадения мифического номера'],'1.1.13':['📲 Игру можно установить на телефон — работает без интернета','🔄 Установленная игра сама получает обновления','💬 Текстовый чат в онлайн-комнате','🏘️ Новая карта «Посёлок»: избы, кирпич, гаражи, неровные дороги','🌐 Онлайн: комнаты по коду, совместная езда и голосовой чат','👤 Аккаунты: прогресс сохраняется на сервере','🟥 Мифическая редкость и износ номеров','🗺️ Карта на E с маршрутом и стрелкой над машиной','📊 Счётчик FPS']};
 A.ver=()=>{$('mc').innerHTML='<div class="mb"><h3>Версия '+GAME_VER+'</h3><div class="hint" style="text-align:center;margin:4px 0 10px">Что нового</div>'+(CHANGES[GAME_VER]||[]).map(t=>'<div class="ml" style="justify-content:flex-start"><span>'+t+'</span></div>').join('')+'<button class="btn" data-a="mdclose" style="margin-top:12px">Отлично</button></div>';$('md').classList.remove('hidden')};
 try{const lv=localStorage.getItem('nomera_ver');if(lv&&lv!==GAME_VER)setTimeout(()=>{toast('🆕 Игра обновлена до версии '+GAME_VER);if(typeof A.ver==='function')A.ver()},1500);localStorage.setItem('nomera_ver',GAME_VER)}catch(e){}
 
@@ -1709,8 +1712,8 @@ function hashStr(s){let h=2166136261;for(const ch of s)h=Math.imul(h^ch.charCode
 /* ---------- постобработка: сглаживание FXAA / MSAA, свечение, цветокоррекция, виньетка ---------- */
 const FSV='varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}';
 function postMats(){const T=THREE,U=o=>{const u={};for(const k in o)u[k]={value:o[k]};return u};
-  const comp=new T.ShaderMaterial({defines:{FXAA:1,BLOOM:1},uniforms:U({tD:null,tB:null,rp:new T.Vector2(),bS:.42,vig:.5,sat:1.1,con:1.05}),vertexShader:FSV,depthTest:false,depthWrite:false,
-    fragmentShader:`uniform sampler2D tD,tB;uniform vec2 rp;uniform float bS,vig,sat,con;varying vec2 vUv;
+  const comp=new T.ShaderMaterial({defines:{FXAA:1,BLOOM:1},uniforms:U({tD:null,tB:null,rp:new T.Vector2(),bS:.42,vig:.5,sat:1.1,con:1.05,spd:0,mw:0}),vertexShader:FSV,depthTest:false,depthWrite:false,
+    fragmentShader:`uniform sampler2D tD,tB;uniform vec2 rp;uniform float bS,vig,sat,con,spd,mw;varying vec2 vUv;
 vec3 fxaa(vec2 uv){vec3 nw=texture2D(tD,uv+vec2(-1.,-1.)*rp).rgb,ne=texture2D(tD,uv+vec2(1.,-1.)*rp).rgb,sw=texture2D(tD,uv+vec2(-1.,1.)*rp).rgb,se=texture2D(tD,uv+vec2(1.,1.)*rp).rgb,m=texture2D(tD,uv).rgb;
  vec3 L=vec3(.299,.587,.114);float lnw=dot(nw,L),lne=dot(ne,L),lsw=dot(sw,L),lse=dot(se,L),lm=dot(m,L);
  float mn=min(lm,min(min(lnw,lne),min(lsw,lse))),mx=max(lm,max(max(lnw,lne),max(lsw,lse)));
@@ -1723,9 +1726,11 @@ void main(){
 #else
  vec3 c=texture2D(tD,vUv).rgb;
 #endif
+if(spd>.01){vec2 dv=(vUv-.5)*spd*.03;vec3 a=texture2D(tD,vUv-dv).rgb+texture2D(tD,vUv-dv*2.).rgb+texture2D(tD,vUv-dv*3.2).rgb;c=mix(c,(c+a)*.25,smoothstep(.12,.55,length(vUv-.5)));}
 #if BLOOM==1
- c+=texture2D(tB,vUv).rgb*bS;
+ c+=texture2D(tB,vUv).rgb*bS*(1.+mw*.25);
 #endif
+ if(mw>.0){float l0=dot(c,vec3(.2126,.7152,.0722));c=mix(c,c*vec3(1.07,1.03,.83)+vec3(.012,.014,0.),mw*.75);c=mix(c,smoothstep(0.,1.,c),mw*.35);}
  float l=dot(c,vec3(.2126,.7152,.0722));c=mix(vec3(l),c,sat);c=(c-.5)*con+.5;c*=vec3(1.015,1.,.975);
  vec2 q=vUv-.5;c*=1.-dot(q,q)*vig;
  c+=(fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453)-.5)/255.;
@@ -1746,7 +1751,7 @@ function postGet(q){if(!q.post||!R3){if(POST)postFree();return null}
   POST={rt,a:bl?new T.WebGLRenderTarget(qw,qh,o):null,b:bl?new T.WebGLRenderTarget(qw,qh,o):null,w,h,qw,qh,ms,bl,mats};return POST}
 function fsq(mat,tg){if(!PQ){const T=THREE,s=new T.Scene(),m=new T.Mesh(new T.PlaneGeometry(2,2),mat);m.frustumCulled=false;s.add(m);PQ={s,m,c:new T.OrthographicCamera(-1,1,1,-1,0,1)}}PQ.m.material=mat;R3.setRenderTarget(tg);R3.render(PQ.s,PQ.c)}
 function renderFrame(sc,cam){const P=postGet(Q());if(!P){R3.setRenderTarget(null);R3.render(sc,cam);return}
-  const m=P.mats;R3.setRenderTarget(P.rt);R3.render(sc,cam);
+  const m=P.mats,on=DR&&DR.on&&DR.st&&!DR.foot;m.comp.uniforms.spd.value=on&&S.mblur!==0?Math.max(0,Math.min(1,(Math.abs(DR.st.v)*3.6-110)/140)):0;m.comp.uniforms.mw.value=on&&S.mwfx!==0?1:0;R3.setRenderTarget(P.rt);R3.render(sc,cam);
   if(P.bl){m.br.uniforms.tD.value=P.rt.texture;m.br.uniforms.rp.value.set(1/P.w,1/P.h);fsq(m.br,P.a);
     for(const s of(Q().bit===1?[1.6]:[1,2])){m.bl.uniforms.tD.value=P.a.texture;m.bl.uniforms.dir.value.set(s/P.qw,0);fsq(m.bl,P.b);m.bl.uniforms.tD.value=P.b.texture;m.bl.uniforms.dir.value.set(0,s/P.qh);fsq(m.bl,P.a)}}
   const u=m.comp.uniforms;u.tD.value=P.rt.texture;u.tB.value=P.bl?P.a.texture:P.rt.texture;u.rp.value.set(1/P.w,1/P.h);fsq(m.comp,null)}
@@ -1903,13 +1908,24 @@ function buildCar(c,color,plateP,simple,opt){if(c.type==='moto')return buildMoto
     if(c.type!=='ev'){const eg=new T.Group(),n=c.type==='super'||c.type==='hyper'?4:['sport','muscle','sedan','limo'].includes(c.type)?2:1,ez=n===4?[-.2,-.07,.07,.2]:n===2?[-W/2+.42,W/2-.42]:[-W/2+.46];
       const pg=new T.CylinderGeometry(.045,.05,.22,10).rotateZ(Math.PI/2);ez.forEach(z=>{const p=new T.Mesh(pg,chrome);p.position.set(nose[0]-hx-.03,by-.11,z);eg.add(p)});body.add(eg);parts.ex=eg}
     // молдинги, швы дверей, ручки, рейлинги, стойки — сливаем в 2 отрисовки
-    const dkL=[],crL=[],sideZ=(x,y)=>{const s=bodySec(x+hx),y0=s.yb+s.rb,y2=s.yt-s.rt,y1=(y0+y2)/2,z1=(s.hw+s.hwT)/2+s.bulge;if(y<=y1)return s.hw+(z1-s.hw)*(y-y0)/Math.max(.01,y1-y0);return z1+(s.hwT-z1)*(y-y1)/Math.max(.01,y2-y1)};
+    var car_doors=null;const dkL=[],crL=[],sideZ=(x,y)=>{const s=bodySec(x+hx),y0=s.yb+s.rb,y2=s.yt-s.rt,y1=(y0+y2)/2,z1=(s.hw+s.hwT)/2+s.bulge;if(y<=y1)return s.hw+(z1-s.hw)*(y-y0)/Math.max(.01,y1-y0);return z1+(s.hwT-z1)*(y-y1)/Math.max(.01,y2-y1)};
     const belt=pr.cab[1][1],dy0=Math.max(pr.body[0][1]+.13,by+.08),dy1=belt-.04,two=['sport','muscle','super','hyper'].includes(c.type);
     const dA=pr.cab[1][0]-.04-hx,dC=pr.cab[0][0]+.2-hx,seams=two?[dA,dA-(dA-dC)*.72]:c.type==='limo'?[dA,dA-(dA-dC)*.36,dA-(dA-dC)*.68,dC]:[dA,(dA+dC)/2,dC];
     if(det>=1&&!pr.cabW)for(const sx of seams)for(const s of[1,-1]){const steps=4;for(let k=0;k<steps;k++){const ya=dy0+(dy1-dy0)*k/steps,yb2=dy0+(dy1-dy0)*(k+1)/steps,za=sideZ(sx,ya)+.002,zb=sideZ(sx,yb2)+.002,ym=(ya+yb2)/2,zm=(za+zb)/2,ang=Math.atan2(zb-za,yb2-ya);dkL.push({g:new T.BoxGeometry(.014,(yb2-ya)*1.04,.006),c:0x0e0f11,m:M4(sx,ym,s*zm,-s*ang,0,0)})}
-      const hx2=sx-.16,hy=belt-.13;if(sx!==seams[seams.length-1]||two)crL.push({g:new T.BoxGeometry(.15,.035,.03),c:0xd5d9df,m:M4(hx2,hy,s*(sideZ(hx2,hy)+.012))})}
+      const hx2=sx-.16,hy=belt-.13;if((sx!==seams[seams.length-1]||two)&&!(opt&&opt.doors))crL.push({g:new T.BoxGeometry(.15,.035,.03),c:0xd5d9df,m:M4(hx2,hy,s*(sideZ(hx2,hy)+.012))})}
     if(!pr.cabW){const cm=(C0+C1)/2;for(const s of[1,-1]){const zc=cabSec(cm).hw+.006;crL.push({g:new T.BoxGeometry(C1-C0-.3,.025,.018),c:0xd5d9df,m:M4(cm-hx,belt+.0,s*zc)})}
       if(!two&&det>=2){const bx2=(seams[1]!==undefined?seams[1]:dA)+.02,s0=cabSec(bx2+hx),yb3=s0.yb+.03,yt3=s0.yt-.05,ang=Math.atan2(s0.hwT-s0.hw,yt3-yb3);for(const s of[1,-1])dkL.push({g:new T.BoxGeometry(.09,(yt3-yb3)*1.02,.01),c:0x121314,m:M4(bx2,(yb3+yt3)/2,s*((s0.hw+s0.hwT)/2+.004),-s*ang,0,0)})}}
+    if(opt&&opt.doors&&!pr.cabW)buildDoors();
+    function buildDoors(){const dmat=opt.doorCol!=null?carMats(opt.doorCol,false).paint:paint,hole=mc('doorHole',()=>new T.MeshLambertMaterial({color:0x08090b,side:T.DoubleSide})),hm=chrome;car_doors=[];parts.door=[];
+      for(let i=0;i<seams.length-1;i++)for(const s of[1,-1]){const xa=seams[i]-.008,xb=seams[i+1]+.008,nx=8,ny=5,ym=(dy0+dy1)/2,hz=s*(sideZ(xa,ym)+.007),P=[],P2=[],I=[];
+        for(let a=0;a<=nx;a++)for(let b=0;b<=ny;b++){const x=xa+(xb-xa)*a/nx,y=dy0+(dy1-dy0)*b/ny,z=s*(sideZ(x,y)+.007);P.push(x-xa,y-ym,z-hz);P2.push(x,y,s*(sideZ(x,y)+.002))}
+        for(let a=0;a<nx;a++)for(let b=0;b<ny;b++){const p00=a*(ny+1)+b,p10=(a+1)*(ny+1)+b,p01=p00+1,p11=p10+1;if(s>0)I.push(p00,p01,p10,p10,p01,p11);else I.push(p00,p10,p01,p10,p11,p01)}
+        const dg=new T.BufferGeometry();dg.setAttribute('position',new T.Float32BufferAttribute(P,3));dg.setAttribute('dmg',new T.Float32BufferAttribute(new Float32Array(P.length/3),1));dg.setIndex(I);dg.computeVertexNormals();
+        const grp=new T.Group();grp.position.set(xa,ym,hz);const dm=new T.Mesh(dg,dmat);dm.castShadow=true;grp.add(dm);
+        const zh=sideZ(xa-.2,belt-.13)+.02-sideZ(xa,ym)-.007;const hd=new T.Mesh(new T.BoxGeometry(.15,.035,.03),hm);hd.position.set(-.2,belt-.13-ym,s*zh);grp.add(hd);
+        const hg=new T.BufferGeometry();hg.setAttribute('position',new T.Float32BufferAttribute(P2,3));hg.setIndex(I);hg.computeVertexNormals();const hl=new T.Mesh(hg,hole);hl.visible=false;body.add(hl);
+        body.add(grp);const y0=sideZ(xa+(xb-xa)/2,dy0),y1=sideZ(xa+(xb-xa)/2,dy1);
+        car_doors.push({g:grp,geo:dg,hole:hl,s,i,hx:xa,hy:ym,hz,len:xa-xb,hgt:dy1-dy0,cz:s*(sideZ(xa+(xb-xa)/2,ym)+.007)-hz,tilt:Math.atan2(y1-y0,dy1-dy0),open:0,off:false});parts.door.push(grp)}}
     if((c.type==='suv'||c.type==='offroad')&&det>=1){const zr=cabSec((RF0+RF1)/2).hwT-.1;for(const s of[1,-1]){dkL.push({g:new T.BoxGeometry(RF1-RF0-.2,.04,.05),c:0x111214,m:M4((RF0+RF1)/2-hx,topY+.06,s*zr)});for(const f of[RF0+.15,RF1-.15])dkL.push({g:new T.BoxGeometry(.06,.06,.05),c:0x111214,m:M4(f-hx,topY+.03,s*zr)})}}
     if(det>=2){for(const s of[1,-1]){crL.push({g:new T.BoxGeometry(.05,.03,.12),c:0xffb020,m:M4(fxh-.02,pr.hy-.1,s*(lz+.1))})}}
     if(dkL.length)body.add(new T.Mesh(mergeC(dkL),mc('vcD',()=>new T.MeshLambertMaterial({vertexColors:true}))));
@@ -1936,11 +1952,12 @@ function buildCar(c,color,plateP,simple,opt){if(c.type==='moto')return buildMoto
     for(const s of[1,-1]){box(.5,.12,.48,dk,dashX-1.2,belt-.42,s*W*.22,inter);box(.12,.62,.46,dk,dashX-1.48,belt-.08,s*W*.22,inter)}
     var swRef=sw}
   const roofY=pr.cabW?pr.body[5][1]:topY;
-  if(opt&&!simple){const MC={body,tg,paint,wheels,pr,L,W,hx};applyMods(MC,opt);var neonM=MC.neon}
-  return {neon:neonM,c,g,tg,body,bm,bg,orig:Float32Array.from(bg.attributes.position.array),paint,glassM,hlM,tlM,parts,wheels,inter,sw:swRef||new T.Object3D(),L,W,pr,wb:pr.ax[1]-pr.ax[0],eye:[dashX-.95,Math.min(belt+.42,roofY-.13),-W*.22]}}
+  if(opt&&!simple&&!opt.cop){const MC={body,tg,paint,wheels,pr,L,W,hx};applyMods(MC,opt);var neonM=MC.neon}
+  return {doors:typeof car_doors!=='undefined'?car_doors:null,neon:neonM,c,g,tg,body,bm,bg,orig:Float32Array.from(bg.attributes.position.array),paint,glassM,hlM,tlM,parts,wheels,inter,sw:swRef||new T.Object3D(),L,W,pr,wb:pr.ax[1]-pr.ax[0],eye:[dashX-.95,Math.min(belt+.42,roofY-.13),-W*.22]}}
 
 /* повреждения: вмятина кузова + царапины в точке удара */
-function dent(car,lp,ln,str){const g=car.bg,pos=g.attributes.position,a=pos.array,dm=g.attributes.dmg,R=.85,R2=R*1.35;
+function dent(car,lp,ln,str){dentGeo(car.bg,lp,ln,str);if(car.doors)for(const d of car.doors){if(d.off)continue;const lx=lp.x-d.hx,ly=lp.y-d.hy,lz=lp.z-d.hz;if(lx*lx+ly*ly+lz*lz<4)dentGeo(d.geo,{x:lx,y:ly,z:lz},ln,str*1.15)}}
+function dentGeo(g,lp,ln,str){const pos=g.attributes.position,a=pos.array,dm=g.attributes.dmg,R=.85,R2=R*1.35;
   for(let i=0,k=0;i<a.length;i+=3,k++){const dx=a[i]-lp.x,dy=a[i+1]-lp.y,dz=a[i+2]-lp.z,d2=dx*dx+dy*dy+dz*dz;if(d2>R2*R2)continue;const d=Math.sqrt(d2);
     if(d<R){const f=(1-d/R)*(1-d/R)*str*(.45+Math.random()*1.1);a[i]-=ln.x*f;a[i+1]-=f*.28+(Math.random()-.5)*f*.2;a[i+2]-=ln.z*f}
     if(dm)dm.array[k]=Math.min(1,dm.array[k]+(1-d/R2)*(.3+str*2.2))}
@@ -2691,7 +2708,7 @@ function bindOrbit(){const el=$('dcan'),P=new Map();let pd=0;
 
 /* ---------- игровой цикл ---------- */
 const angD=(a,b)=>{let d=a-b;while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d+=Math.PI*2;return d};
-function loop(t,id){if(!DR||!DR.on||id!==LOOPID)return;requestAnimationFrame(tt=>loop(tt,id));if(DR.big){DR.last=t;return}const q=Q();if(q.skip){DR.skip=!DR.skip;if(DR.skip)return}if(DR.cap){if(t-(DR.lr||0)<DR.cap)return;DR.lr=t}let dt=(t-DR.last)/1000;DR.last=t;if(!(dt>0))return;dt=Math.min(dt,.066);
+function loop(t,id){if(!DR||!DR.on||id!==LOOPID)return;requestAnimationFrame(tt=>loop(tt,id));if(DR.big){DR.last=t;return}const q=Q();if(q.skip){DR.skip=!DR.skip;if(DR.skip)return}if(DR.cap){if(t-(DR.lr||0)<DR.cap)return;DR.lr=t}let dt=(t-DR.last)/1000;DR.last=t;if(!(dt>0))return;dt=Math.min(dt,.066);if(DR.slowT>0){DR.slowT-=dt;dt*=.3}
   step(dt);if(R3.shadowMap.enabled){R3.shadowMap.autoUpdate=false;DR.sf=(DR.sf||0)+1;R3.shadowMap.needsUpdate=DR.sf%(Q().sev||2)===0}renderFrame(DR.Wd.sc,DR.cam);fpsTick(t);
   DR.fpsN++;if(t-DR.fpsT>1500){const fps=DR.fpsN*1000/(t-DR.fpsT);DR.fpsN=0;DR.fpsT=t;const tgt=q.skip?27:44;
     if(!S.res||S.res==='auto'){if(fps<tgt&&DR.pr>.55){DR.pr=Math.max(.55,DR.pr-.15);fitR()}else if(fps>(q.skip?29:57)&&DR.pr<DR.prMax){DR.pr=Math.min(DR.prMax,DR.pr+.1);fitR()}}
@@ -3041,27 +3058,29 @@ document.addEventListener('keydown',e=>{const tg=e.target;
    мимо патруля), со временем погоня усиливается. Уйти — скрыться из виду и выехать из красного круга поиска.
    ★ одна машина · ★★ две и таранят · ★★★ три, быстрее · ★★★★ четыре + вертолёт + заслоны · ★★★★★ шесть быстрых */
 const WCOPS=[0,1,2,3,4,6],WSPD=[0,.8,.9,.97,1.04,1.12],WREW=[0,1000,3000,7000,15000,30000];
-const W={bounty:0,tdn:0,stars:0,mode:false,seen:false,ls:null,unseen:0,esc:0,cops:[],heli:null,arrest:0,bumpT:0,blockT:0,spawnT:0,upT:0,siren:null,startT:0};
+const W={heat:0,cost:0,bounty:0,tdn:0,stars:0,mode:false,seen:false,ls:null,unseen:0,esc:0,cops:[],heli:null,arrest:0,bumpT:0,blockT:0,spawnT:0,upT:0,siren:null,startT:0};
 function wantedOn(){return DR&&DR.on&&DR.Wd.kind==='city'}
-function wantedInit(){wantedClear(true);W.stars=0;W.mode=false;W.bounty=0;W.tdn=0;wantedHud()}
-function wantedClear(silent){for(const c of W.cops)copRemove(c);W.cops=[];if(W.heli){try{W.heli.g.parent&&W.heli.g.parent.remove(W.heli.g);W.heli.spot.parent&&W.heli.spot.parent.remove(W.heli.spot)}catch(e){}W.heli=null}sirenStop();W.arrest=0;W.seen=false;W.ls=null;W.unseen=0;if(!silent)wantedHud()}
+function wantedInit(){wantedClear(true);W.stars=0;W.mode=false;W.bounty=0;W.tdn=0;W.heat=0;W.cost=0;wantedHud()}
+function wantedClear(silent){for(const c of W.cops)copRemove(c);W.cops=[];if(W.heli){try{W.heli.g.parent&&W.heli.g.parent.remove(W.heli.g);W.heli.spot.parent&&W.heli.spot.parent.remove(W.heli.spot)}catch(e){}W.heli=null}sirenStop();wantedPur(false);W.arrest=0;W.seen=false;W.ls=null;W.unseen=0;if(!silent)wantedHud()}
 function copRemove(c){try{c.car.g.parent&&c.car.g.parent.remove(c.car.g)}catch(e){}}
 function wantedSet(n,why){n=Math.max(0,Math.min(5,n|0));if(!wantedOn()&&n>0)return;const up=n>W.stars;W.stars=n;W.upT=0;
   if(n===0){wantedClear();W.mode=false}else{if(!W.startT)W.startT=performance.now();if(up){W.seen=true;W.unseen=0;W.ls={x:DR.st.x,z:DR.st.z};dMsg('🚨 Розыск: '+'★'.repeat(n)+(why?'<small>'+why+'</small>':''),2200);tone([660,880],.12,'square',.05)}sirenStart()}
   wantedHud()}
 function wantedAdd(k,why){if(!wantedOn())return;wantedSet(Math.min(5,W.stars+k),why)}
 /* нарушения */
-function wantedHitNpc(t,sp){if(!wantedOn()||sp<4)return;const st=DR.st;
-  if(t.sp==='police'){wantedAdd(W.stars?1:2,'Ты протаранил полицию');return}
-  if(W.stars)return;for(const o of DR.Wd.traffic)if(o.sp==='police'&&Math.hypot(o.px-st.x,o.pz-st.z)<70){wantedSet(1,'Полиция видела аварию');return}}
-function wantedSpeed(){if(W.stars||!wantedOn())return;const st=DR.st,kmh=Math.abs(st.v)*3.6;if(kmh<95)return;
-  for(const o of DR.Wd.traffic)if(o.sp==='police'&&Math.hypot(o.px-st.x,o.pz-st.z)<32){wantedSet(1,'Превышение скорости при полиции');return}}
+/* погоня начинается только по кнопке 🚨 или от аварий с машинами — по нарастающей */
+const HEAT=[2,5,9,14,20];
+function wantedHitNpc(t,sp){if(!wantedOn()||sp<4)return;const now=performance.now();if(now-(W.hT||0)<800)return;W.hT=now;W.cost+=Math.round(400+sp*90);
+  if(t.sp==='police'&&!W.stars){W.heat=Math.max(W.heat,HEAT[0]);wantedSet(1,'Ты протаранил полицию');return}
+  W.heat+=sp>18?1.6:sp>10?1.25:1;W.heatT=0;if(W.stars>=5)return;const need=HEAT[W.stars];
+  if(W.heat>=need)wantedAdd(1,W.stars?'Новые аварии — подкрепление':'Свидетели вызвали полицию');
+  else if(!W.stars)dMsg('⚠️ Авария!<small>Ещё '+Math.ceil(need-W.heat)+' — и вызовут полицию</small>',1400)}
 /* полицейская машина в погоне */
 function copSpawn(block){const Wd=DR.Wd,st=DR.st,M=Wd.M,T=THREE;let best=null;
   for(let k=0;k<30;k++){const a=Math.floor(Math.random()*(NB+1)),b=Math.floor(Math.random()*(NB+1)),x=ixC(a),z=ixC(b),d=Math.hypot(x-st.x,z-st.z);
     const ahead=(x-st.x)*Math.cos(st.h)+(z-st.z)*-Math.sin(st.h);if(d<(block?70:110)||d>(block?150:230))continue;if(block?ahead<40:ahead>20&&d<160)continue;best={x,z};break}
-  if(!best)return null;const typ=W.stars>=4&&Math.random()<.5?'suv':'sedan',car=buildCar({type:typ},W.stars>=5?0x16181c:0xf4f4f4,null,true);livery(car,'police',M);Wd.sc.add(car.g);
-  const c={car,x:best.x,z:best.z,h:Math.atan2(-(st.z-best.z),st.x-best.x),v:0,path:null,pT:0,block:!!block,life:0,stuck:0,hp:100+W.stars*15,y:0};
+  if(!best)return null;const typ=W.stars>=4&&Math.random()<.5?'suv':'sedan',five=W.stars>=5,car=buildCar({type:typ},0x121417,null,false,{cop:1,doors:1,doorCol:five?0x121417:0xf2f3f5});copLivery(car,M,five);Wd.sc.add(car.g);
+  const hp=240+W.stars*40+(typ==='suv'?60:0),c={car,x:best.x,z:best.z,h:Math.atan2(-(st.z-best.z),st.x-best.x),v:0,path:null,pT:0,block:!!block,life:0,stuck:0,hp,hp0:hp,y:0};
   if(block){const hd=Math.abs(Math.cos(st.h))>Math.abs(Math.sin(st.h));c.h=hd?Math.PI/2:0;c.v=0}
   car.g.position.set(c.x,0,c.z);car.g.rotation.y=c.h;W.cops.push(c);return c}
 function inBld(Wd,x,z){const i=Math.floor((x+HALF)/PER),j=Math.floor((z+HALF)/PER);if(i<0||j<0||i>=NB||j>=NB||!Wd.blocks)return null;
@@ -3071,12 +3090,13 @@ function copWreck(c,dt){const Wd=DR.Wd,g=c.car.g;c.dt+=dt;c.vy-=16*dt;c.x+=c.vx*
   if(inBld(Wd,c.x,c.z)){c.vx*=-.3;c.vz*=-.3}g.position.set(c.x,c.y,c.z);g.rotation.set(c.rr,c.h,c.rp,'YXZ');
   c.sm=(c.sm||0)+dt;if(c.sm>.18&&c.dt<9){c.sm=0;const s=DR.smoke.find(q=>q.t>1.6);if(s){s.s.position.set(c.x,c.y+1,c.z);s.t=0;s.s.visible=true;s.s.material.color.setHex(0x2a2a2a)}}}
 function copTakedown(c,ux,uz,imp){c.dead=true;c.dt=0;c.vx=-ux*Math.min(22,imp*.9)+Math.cos(c.h)*c.v*.4;c.vz=-uz*Math.min(22,imp*.9)-Math.sin(c.h)*c.v*.4;c.vy=4+Math.min(9,imp*.35);c.wr=(Math.random()<.5?-1:1)*(4+imp*.25);c.wp=(Math.random()-.5)*5;c.rr=0;c.rp=0;c.v=0;
-  if(c.car.flash){c.car.flash[0].color.setHex(0x200000);c.car.flash[1].color.setHex(0x000020)}W.tdn++;const add=500*Math.max(1,W.stars);W.bounty+=add;S.takedowns=(S.takedowns||0)+1;
+  copLights(c);if(c.car.doors)for(const d of c.car.doors)if(!d.off&&Math.random()<.5)copDoorOff(c,d);copDetach(c,'fb');copDetach(c,'rb');c.car.glassM.color.setHex(0x5a646e);
+  if(Math.hypot(c.x-DR.st.x,c.z-DR.st.z)<45)DR.slowT=.85;W.tdn++;W.cost+=12000;const add=500*Math.max(1,W.stars);W.bounty+=add;S.takedowns=(S.takedowns||0)+1;
   dMsg('💥 Полицейский выведен из строя!<small>+'+fmt(add)+' к награде · всего '+W.tdn+'</small>',1700);tone([180,90],.25,'sawtooth',.08);DR.shake=Math.max(DR.shake,.4);
   try{const wp=new THREE.Vector3(c.x,1,c.z);dSparks(wp,16)}catch(e){}
   if(W.stars<5&&W.tdn%3===0)wantedAdd(1,'Ты разбил '+W.tdn+' машин полиции — подкрепление')}
 function copStep(c,dt){if(c.dead)return copWreck(c,dt);const Wd=DR.Wd,st=DR.st,p=DR.car,vmax=Math.min(46,DR.cdef.vmax/3.6*WSPD[W.stars]);c.life+=dt;
-  if(c.block){if(c.life>30||Math.hypot(st.x-c.x,st.z-c.z)<5)c.block=false;else{copBump(c,dt);if(!c.dead){c.car.g.position.set(c.x,0,c.z);c.car.g.rotation.y=c.h;if(c.car.flash){const on=(performance.now()/180|0)%2;c.car.flash[0].color.setHex(on?0xff2a2a:0x400000);c.car.flash[1].color.setHex(on?0x000040:0x2a5bff)}}return}}
+  if(c.block){if(c.life>30||Math.hypot(st.x-c.x,st.z-c.z)<5)c.block=false;else{copBump(c,dt);if(!c.dead){c.car.g.position.set(c.x,0,c.z);c.car.g.rotation.y=c.h;copLights(c);copFx(c,dt)}return}}
   const pdx=st.x-c.x,pdz=st.z-c.z,pd=Math.hypot(pdx,pdz),lead=Math.min(1.2,pd/40);
   const tx=st.x+Math.cos(st.vh)*st.v*lead,tz=st.z-Math.sin(st.vh)*st.v*lead;let gx=tx,gz=tz;
   c.pT-=dt;if(pd>34){if(c.pT<=0||!c.path){c.pT=.7;try{c.path=cityRoute(c.x,c.z,tx,tz)}catch(e){c.path=null}}
@@ -3085,23 +3105,59 @@ function copStep(c,dt){if(c.dead)return copWreck(c,dt);const Wd=DR.Wd,st=DR.st,p
   c.h+=Math.max(-1,Math.min(1,da))*dt*(1.6+2.2*(1-Math.min(1,c.v/30)));
   const tv=vmax*(1-turn*.55)*(pd<9&&Math.abs(st.v)<3?.4:1);c.v+=Math.max(-14,Math.min(9,(tv-c.v)*1.5))*dt;
   let nx=c.x+Math.cos(c.h)*c.v*dt,nz=c.z-Math.sin(c.h)*c.v*dt;const q=inBld(Wd,nx,nz);
-  if(q){c.v*=.5;c.stuck+=dt;const cx=(q[0]+q[2])/2,cz=(q[1]+q[3])/2;nx=c.x+Math.sign(c.x-cx)*dt*3;nz=c.z+Math.sign(c.z-cz)*dt*3;if(c.stuck>2.5){const r=roadSnap(c.x,c.z);nx=r.x;nz=r.z;c.stuck=0}}else c.stuck=Math.max(0,c.stuck-dt);
+  if(q){if(c.v>9&&performance.now()-(c.wT||0)>600){c.wT=performance.now();const fx=Math.cos(c.h),fz=-Math.sin(c.h);copDamage(c,fx,fz,(c.v-8)*6);try{dSparks(new THREE.Vector3(c.x+fx*2,.8,c.z+fz*2),8)}catch(e){}if(c.hp<=0){copTakedown(c,fx,fz,c.v*.5);return}}c.v*=.5;c.stuck+=dt;const cx=(q[0]+q[2])/2,cz=(q[1]+q[3])/2;nx=c.x+Math.sign(c.x-cx)*dt*3;nz=c.z+Math.sign(c.z-cz)*dt*3;if(c.stuck>2.5){const r=roadSnap(c.x,c.z);nx=r.x;nz=r.z;c.stuck=0}}else c.stuck=Math.max(0,c.stuck-dt);
   if(Math.abs(nx)>HALF+RD/2-1)nx=Math.sign(nx)*(HALF+RD/2-1);if(Math.abs(nz)>HALF+RD/2-1)nz=Math.sign(nz)*(HALF+RD/2-1);c.x=nx;c.z=nz;
   copBump(c,dt);if(c.dead)return;
   // машины на дороге отлетают
-  if(c.v>6)for(const o of Wd.traffic){if(o.rival||o.phys)continue;const ex=o.px-c.x,ez=o.pz-c.z,e=Math.hypot(ex,ez);if(e<2.6&&e>.01)npcHit(o,ex/e,ez/e,c.v*.7,[Math.cos(c.h)*c.v,-Math.sin(c.h)*c.v])}
+  if(c.v>6)for(const o of Wd.traffic){if(o.rival||o.phys)continue;const ex=o.px-c.x,ez=o.pz-c.z,e=Math.hypot(ex,ez);if(e<2.6&&e>.01&&npcHit(o,ex/e,ez/e,c.v*.7,[Math.cos(c.h)*c.v,-Math.sin(c.h)*c.v])&&c.v>12)copDamage(c,ex/e,ez/e,(c.v-10)*2)}
   const g=c.car.g;g.position.set(c.x,Wd.pgt?pgH(c.x,c.z):0,c.z);g.rotation.y=c.h;c.car.wheels.forEach(w=>{w.ws.rotation.z-=c.v*dt/c.car.pr.wr;if(w.front)w.wg.rotation.y=Math.max(-.5,Math.min(.5,da))});
-  if(c.car.flash){const on=(performance.now()/180|0)%2;c.car.flash[0].color.setHex(on?0xff2a2a:0x400000);c.car.flash[1].color.setHex(on?0x000040:0x2a5bff)}}
+  copLights(c);copFx(c,dt)}
 /* столкновение с игроком: сильный таран выводит полицейского из строя (как в Need for Speed) */
 function copBump(c,dt){const st=DR.st,p=DR.car,dx=st.x-c.x,dz=st.z-c.z,d=Math.hypot(dx,dz),R=(c.car.L+p.L)*.33;if(d>=R||d<.01)return;
   const ux=dx/d,uz=dz/d,vpx=Math.cos(st.vh)*st.v,vpz=-Math.sin(st.vh)*st.v,vcx=Math.cos(c.h)*c.v,vcz=-Math.sin(c.h)*c.v,imp=Math.abs((vcx-vpx)*ux+(vcz-vpz)*uz),pl=-(vpx*ux+vpz*uz),cp=vcx*ux+vcz*uz;
   st.x=c.x+ux*R;st.z=c.z+uz*R;if(performance.now()-(c.hitT||0)<350)return;c.hitT=performance.now();
   if(pl>=cp&&imp>3.5){// таранишь ты
-    c.hp-=imp*7.5;hit(-ux,-uz,Math.min(10,imp*.35));st.v*=.9;DR.shake=Math.max(DR.shake,.18);c.v*=.35;c.x-=ux*Math.min(1.2,imp*.05);c.z-=uz*Math.min(1.2,imp*.05);
+    const amt=imp>6?imp*imp*.22:imp*1.3;copDamage(c,ux,uz,amt);W.cost+=Math.round(amt*25);hit(-ux,-uz,Math.min(10,imp*.35));st.v*=.9;DR.shake=Math.max(DR.shake,.18);c.v*=.35;c.x-=ux*Math.min(1.2,imp*.05);c.z-=uz*Math.min(1.2,imp*.05);
     if(c.hp<=0)copTakedown(c,ux,uz,imp);else tone([140],.12,'square',.05)}
   else if(imp>3){// таранят тебя
-    if(W.stars>=2){hit(-ux,-uz,Math.min(14,imp*.75));st.v*=.82;DR.shake=Math.max(DR.shake,.25)}c.hp-=imp*2;c.v*=.6;if(c.hp<=0)copTakedown(c,ux,uz,imp)}
+    if(W.stars>=2){hit(-ux,-uz,Math.min(14,imp*.75));st.v*=.82;DR.shake=Math.max(DR.shake,.25)}copDamage(c,ux,uz,imp*1.3);c.v*=.6;if(c.hp<=0)copTakedown(c,ux,uz,imp)}
   else c.v*=.7}
+/* ливрея в стиле Most Wanted: чёрный кузов, белые двери с надписью, люстра с ореолом и отсветом на асфальте */
+let HALO=null;function haloTex(){if(HALO)return HALO;const c=cvs(64,64,(x,w,h)=>{const g=x.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.25,'rgba(255,255,255,.55)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(0,0,w,h)});return HALO=new THREE.CanvasTexture(c)}
+function copText(M,dark){const ru=M.cc==='ru',c=cvs(512,96,(x,w,h)=>{x.clearRect(0,0,w,h);x.fillStyle=dark?'#f4f5f7':'#101215';x.font='900 66px Arial,sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(ru?'ПОЛИЦИЯ':'POLICE',w/2,h/2+2);
+  x.fillStyle=dark?'#3a6bff':'#1f4fbf';x.fillRect(16,h-10,w-32,6)});const t=new THREE.CanvasTexture(c);t.anisotropy=4;return t}
+function copLivery(car,M,dark){const T=THREE,pr=car.pr,L=car.L,W=car.W,top=Math.max(...pr.cab.map(p=>p[1]));
+  const dk=mc('copDk',()=>new T.MeshPhongMaterial({color:0x15161a,shininess:40}));const base=new T.Mesh(new T.BoxGeometry(.34,.08,W*.7),dk);base.position.set(-.25,top+.04,0);car.body.add(base);
+  const mr=new T.MeshBasicMaterial({color:0x3a0000}),mb=new T.MeshBasicMaterial({color:0x00003a}),halo=[];
+  for(const[s,mm,col]of[[1,mr,0xff3030],[-1,mb,0x3070ff]]){const b=new T.Mesh(new T.BoxGeometry(.28,.13,W*.3),mm);b.position.set(-.25,top+.14,s*W*.17);b.userData.noCast=1;car.body.add(b);
+    const sp=new T.Sprite(new T.SpriteMaterial({map:haloTex(),color:col,transparent:true,opacity:0,depthWrite:false,blending:T.AdditiveBlending}));sp.scale.set(2.2,1.3,1);sp.position.set(-.25,top+.18,s*W*.2);sp.userData.noCast=1;car.body.add(sp);halo.push(sp)}
+  // кенгурятник
+  const nose=(envX(pr.body,pr.body[0][1]+.09)||[0,L])[1]-L/2,y0=pr.body[0][1];car.body.add(new T.Mesh(mergeGeos([new T.BoxGeometry(.05,.36,.05).translate(nose+.1,y0+.25,.32),new T.BoxGeometry(.05,.36,.05).translate(nose+.1,y0+.25,-.32),new T.BoxGeometry(.06,.05,.8).translate(nose+.12,y0+.42,0),new T.BoxGeometry(.06,.05,.8).translate(nose+.12,y0+.14,0)]),dk));
+  // надпись на передних дверях
+  const tx=copText(M,dark);for(const d of car.doors||[]){if(d.i!==0)continue;const g=new T.PlaneGeometry(Math.min(1.05,d.len*.95),.19);if(d.s<0)g.rotateY(Math.PI);const m=new T.Mesh(g,new T.MeshBasicMaterial({map:tx,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2}));
+    m.position.set(-d.len/2-.12,-d.hgt*.08,d.cz+d.s*.006);m.rotation.x=-d.s*d.tilt;m.userData.noCast=1;d.g.add(m)}
+  // отсвет мигалок на асфальте
+  const spl=new T.Mesh(new T.CircleGeometry(5.5,24),new T.MeshBasicMaterial({map:haloTex(),color:0,transparent:true,depthWrite:false,blending:T.AdditiveBlending,opacity:.5}));spl.rotation.x=-Math.PI/2;spl.position.y=.07;spl.userData.noCast=1;car.g.add(spl);
+  car.flash=[mr,mb,'police'];car.halo=halo;car.splash=spl}
+/* стробоскоп как у Rockport PD: двойные вспышки красный — синий */
+function copLights(c){const f=c.car.flash;if(!f)return;const ph=(performance.now()/85|0)%8,broke=c.dead||(c.hp<c.hp0*.3&&Math.random()<.3),r=!broke&&(ph===0||ph===2),b=!broke&&(ph===4||ph===6);
+  f[0].color.setHex(r?0xff2a2a:0x3a0000);f[1].color.setHex(b?0x4a7bff:0x00003a);const H=c.car.halo;if(H){H[0].material.opacity=r?1:0;H[1].material.opacity=b?1:0}
+  if(c.car.splash)c.car.splash.material.color.setHex(r?0xff2a2a:b?0x2a5aff:0)}
+/* повреждения полицейской машины: вмятины в точке удара, отлетают бамперы и зеркала, двери распахиваются и отваливаются */
+function copDamage(c,wx,wz,amt){if(c.dead||amt<=0)return;c.hp-=amt;const car=c.car,ch=Math.cos(c.h),sh=Math.sin(c.h);let lx=wx*ch-wz*sh,lz=wx*sh+wz*ch;const n=Math.hypot(lx,lz)||1;lx/=n;lz/=n;
+  const str=Math.min(.42,.06+amt*.0035),fr=Math.max(0,1-c.hp/c.hp0),zone=lx>.55?'f':lx<-.55?'r':'s';
+  dent(car,{x:lx*car.L/2*.95,y:.5+Math.random()*.3,z:lz*car.W/2*.98},{x:lx,y:0,z:lz},str);car.paint.shininess=Math.max(12,110-fr*95);
+  if(zone==='f'&&(fr>.35||amt>70))copDetach(c,'fb');if(zone==='r'&&(fr>.35||amt>70))copDetach(c,'rb');
+  if(zone==='s'){if(amt>15)copDetach(c,'mir',lz>0?0:1);const side=lz>0?1:-1,px=lx*car.L/2;for(const d of car.doors||[]){if(d.s!==side||d.off)continue;if(Math.abs(px-(d.hx-d.len/2))>d.len*.9)continue;
+      if(fr>.7&&Math.random()<.55)copDoorOff(c,d);else if(fr>.38)d.open=Math.min(1.2,Math.max(d.open,.3+Math.random()*.5))}}
+  else if(fr>.6&&car.doors&&Math.random()<.4){const d=car.doors[Math.random()*car.doors.length|0];if(!d.off)d.open=Math.max(d.open,.35)}
+  if(fr>.45)car.glassM.color.setHex(0x56606a);if(fr>.55&&zone==='f')car.hlM.color.setHex(0x2e2e2e);if(fr>.55&&zone==='r')car.tlM.color.setHex(0x3a1414);c.smoke=fr>.5}
+function copDetach(c,key,idx){const P=c.car.parts;let m=P[key];if(!m)return;if(Array.isArray(m)){if(idx==null||idx<0)idx=m.findIndex(x=>x);const o=m[idx];if(!o)return;m[idx]=null;m=o}else P[key]=null;
+  DR.Wd.sc.attach(m);const vx=Math.cos(c.h)*c.v,vz=-Math.sin(c.h)*c.v;DR.debris.push({m,vx:vx*.5+(Math.random()-.5)*4,vy:2.5+Math.random()*3,vz:vz*.5+(Math.random()-.5)*4,sp:(Math.random()-.5)*10,t:0})}
+function copDoorOff(c,d){if(d.off)return;d.off=true;d.hole.visible=true;copDetach(c,'door',c.car.parts.door?c.car.parts.door.indexOf(d.g):-1)}
+/* каждый кадр: болтающиеся двери и дым из-под капота */
+function copFx(c,dt){const car=c.car;if(car.doors)for(const d of car.doors){if(d.off||d.open<=0)continue;d.hole.visible=true;d.ph=(d.ph||0)+dt*(3+c.v*.25);d.g.rotation.y=d.s*Math.max(.05,d.open*(.8+.25*Math.sin(d.ph))+Math.min(.3,c.v*.008))}
+  if(c.smoke){c.sm=(c.sm||0)+dt;if(c.sm>(c.hp<c.hp0*.25?.12:.25)){c.sm=0;const s=DR.smoke.find(q=>q.t>1.6);if(s){s.s.position.set(c.x+Math.cos(c.h)*car.L*.32,1.2,c.z-Math.sin(c.h)*car.L*.32);s.t=0;s.s.visible=true;s.s.material.color.setHex(c.hp<c.hp0*.25?0x303030:0x8a8a8a)}}}}
 /* вертолёт с прожектором */
 function heliMake(){const T=THREE,g=new T.Group(),m=new T.MeshLambertMaterial({color:0x1d2633}),w=new T.MeshLambertMaterial({color:0xe8edf2});
   const body=new T.Mesh(new T.SphereGeometry(1.6,12,8),m);body.scale.set(1.6,1,1);g.add(body);const st=new T.Mesh(new T.BoxGeometry(5,.35,.35),m);st.position.set(-4,.2,0);g.add(st);
@@ -3117,8 +3173,8 @@ function sirenStart(){if(W.siren||!S.snd)return;const a=ac();if(!a)return;try{co
   const f=a.createBiquadFilter();f.type='lowpass';f.frequency.value=2200;o.connect(f);f.connect(g);g.gain.value=0;g.connect(a.destination);o.start();l.start();W.siren={o,l,g}}catch(e){}}
 function sirenStop(){if(!W.siren)return;try{W.siren.o.stop();W.siren.l.stop()}catch(e){}W.siren=null}
 /* каждый кадр */
-function wantedStep(dt){if(!DR||!DR.on)return;if(!wantedOn()){if(W.stars)wantedClear();return}wantedSpeed();if(!W.stars)return;
-  const st=DR.st,Wd=DR.Wd,need=WCOPS[W.stars];W.spawnT-=dt;
+function wantedStep(dt){if(!DR||!DR.on)return;if(!wantedOn()){if(W.stars)wantedClear();return}if(!W.stars){W.heat=Math.max(0,W.heat-dt/25);if(W.pur)wantedPur(false);return}wantedPur(W.seen);
+  const st=DR.st,Wd=DR.Wd,need=GPUT==='weak'||Q().det<1?Math.min(3,WCOPS[W.stars]):WCOPS[W.stars];W.spawnT-=dt;
   if(W.cops.filter(c=>!c.block&&!c.dead).length<need&&W.spawnT<=0){W.spawnT=1.6;copSpawn(false)}
   W.bounty+=dt*25*W.stars;
   if(W.stars>=4){W.blockT-=dt;if(W.blockT<=0){W.blockT=22;const a=copSpawn(true),b=a&&copSpawn(true);if(a&&b){b.x=a.x+(Math.abs(Math.sin(a.h))>.5?3.2:0);b.z=a.z+(Math.abs(Math.sin(a.h))>.5?0:3.2);b.h=a.h}}
@@ -3136,14 +3192,16 @@ function wantedStep(dt){if(!DR||!DR.on)return;if(!wantedOn()){if(W.stars)wantedC
   if(W.siren){const a=ac();W.siren.g.gain.setTargetAtTime(Math.max(0,.05*(1-near/160))*S.sndV/100,a.currentTime,.2)}
   W.hudT=(W.hudT||0)+dt;if(W.hudT>.2){W.hudT=0;wantedHud()}}
 const wantedR=()=>60+25*W.stars;
-function wantedEscape(){const n=W.stars,rew=Math.round((W.mode?WREW[n]:150*n)+W.bounty);S.coins+=rew;S.escapes=(S.escapes||0)+1;S.bestStars=Math.max(S.bestStars||0,n);save();wantedClear();W.stars=0;W.mode=false;W.startT=0;
+function wantedPur(on){W.pur=on;const e=$('dpur');if(e)e.classList.toggle('on',!!on)}
+function wantedEscape(){W.heat=0;W.cost=0;const n=W.stars,rew=Math.round((W.mode?WREW[n]:150*n)+W.bounty);S.coins+=rew;S.escapes=(S.escapes||0)+1;S.bestStars=Math.max(S.bestStars||0,n);save();wantedClear();W.stars=0;W.mode=false;W.startT=0;
   dMsg('😎 Ушёл от погони '+'★'.repeat(n)+'<small>+'+fmt(rew)+(W.tdn?' · разбито полицейских: '+W.tdn:'')+'</small>',3400);W.bounty=0;W.tdn=0;tone([523,659,784,1046],.16,'triangle',.09);wantedHud()}
-function wantedBusted(){const n=W.stars,fine=Math.min(S.coins,500*n*n);S.coins-=fine;save();wantedClear();W.stars=0;W.mode=false;W.startT=0;DR.st.v=0;
+function wantedBusted(){W.heat=0;W.cost=0;const n=W.stars,fine=Math.min(S.coins,500*n*n);S.coins-=fine;save();wantedClear();W.stars=0;W.mode=false;W.startT=0;DR.st.v=0;
   dMsg('🚔 Попался!'+'<small>Штраф '+fmt(fine)+(W.bounty>0?' · награда '+fmt(Math.round(W.bounty))+' сгорела':'')+'</small>',3400);W.bounty=0;W.tdn=0;tone([300,220,160],.25,'square',.07);wantedHud()}
 function wantedHud(){const e=$('dwant');if(!e)return;const on=W.stars>0;e.classList.toggle('hidden',!on);$('dchase')&&$('dchase').classList.toggle('on',on);if(!on)return;
   e.classList.toggle('lost',!W.seen);const need=5+2.5*W.stars,ev=W.seen?0:Math.min(1,W.unseen/need),bu=Math.min(1,W.arrest/3);
   e.innerHTML='<b>'+'★'.repeat(W.stars)+'<i>'+'★'.repeat(5-W.stars)+'</i></b>'
    +'<div class="pbar"><span class="bu"><i style="width:'+(bu*100)+'%"></i><em>АРЕСТ</em></span><span class="ev"><i style="width:'+(ev*100)+'%"></i><em>УХОД</em></span></div>'
+   +'<div class="pst"><span>🚓 '+W.cops.filter(c=>!c.dead).length+'</span><span>💥 '+W.tdn+'</span><span>💸 '+fmt(W.cost)+' ₽</span></div>'
    +'<small>'+(W.seen?'Награда '+fmt(Math.round(W.bounty+(W.mode?WREW[W.stars]:150*W.stars)))+(W.tdn?' · 💥 '+W.tdn:'')+' · тарань полицию!':'Тебя ищут — уйди из красного круга')+'</small>'}
 function wantedMap(x,X,r,s){if(!W.stars)return;if(!W.seen&&W.ls){x.strokeStyle='rgba(255,60,60,.9)';x.fillStyle='rgba(255,60,60,.14)';x.lineWidth=r>4?3:1.5;x.beginPath();x.arc(X(W.ls.x),X(W.ls.z),wantedR()*s,0,7);x.fill();x.stroke()}
   const on=(performance.now()/250|0)%2;for(const c of W.cops){x.fillStyle=on?'#ff3b3b':'#3b7bff';x.beginPath();x.arc(X(c.x),X(c.z),r,0,7);x.fill()}if(W.heli){x.fillStyle='#ffd23f';x.beginPath();x.arc(X(W.heli.x),X(W.heli.z),r*1.2,0,7);x.fill()}}
@@ -3154,7 +3212,7 @@ A.dchase=()=>{if(!DR||!DR.on)return;if(DR.Wd.kind!=='city'){dMsg('🚨 Пого�
    +[1,2,3,4,5].map(n=>'<button class="chs" data-a="dchgo" data-v="'+n+'"><b>'+'★'.repeat(n)+'</b><span>'+['','Одна патрульная машина','Две машины, таранят','Три быстрые машины','Четыре машины, вертолёт, заслоны','Шесть машин, вертолёт, заслоны'][n]+'</span><em>+'+fmt(WREW[n])+'</em></button>').join('')
    +(W.stars?'<button class="btn gray" data-a="dchstop" style="margin-top:8px">Сдаться (штраф)</button>':'');p.classList.remove('hidden')};
 A.dchasex=()=>$('dchp').classList.add('hidden');
-A.dchgo=v=>{$('dchp').classList.add('hidden');wantedClear(true);W.mode=true;W.startT=performance.now();wantedSet(+v,'Погоня началась — уходи!')};
+A.dchgo=v=>{$('dchp').classList.add('hidden');wantedClear(true);W.heat=HEAT[Math.max(0,+v-1)];W.mode=true;W.startT=performance.now();wantedSet(+v,'Погоня началась — уходи!')};
 A.dchstop=()=>{$('dchp').classList.add('hidden');wantedBusted()};
 
 /* ---------- тюнинг-сервис на карте: покраска, подсветка, рамка номера, обвес, спойлер, диски, покрышки, спидометр, руль ---------- */
