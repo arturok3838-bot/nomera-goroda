@@ -1,7 +1,7 @@
 // «Номера города» — работа без интернета.
 // Игра — один файл index.html: при первом открытии он сохраняется в телефоне,
 // дальше игра запускается и без сети. Когда сеть есть, подтягивается свежая версия.
-const CACHE = 'nomera-v1';
+const CACHE = 'nomera-v2';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', (e) => {
@@ -23,7 +23,13 @@ async function page(req) {
     const hit = (await c.match('./index.html')) || (await c.match('./'));
     if (hit) {
       // сеть медленная — отдали сохранённую версию, а свежую докачаем в фоне
-      fetch(req, { cache: 'no-cache' }).then((r) => r.ok && c.put('./index.html', r.clone())).catch(() => {});
+      fetch(req, { cache: 'no-cache' }).then(async (r) => {
+        if (!r.ok) return;
+        const [nt, ot] = await Promise.all([r.clone().text(), hit.clone().text()]);
+        await c.put('./index.html', r);
+        // версия на сайте новее той, что сейчас открыта, — предлагаем обновить
+        if (nt !== ot) (await self.clients.matchAll({ type: 'window' })).forEach((cl) => cl.postMessage({ t: 'upd' }));
+      }).catch(() => {});
       return hit;
     }
     return fetch(req);

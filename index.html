@@ -201,6 +201,7 @@ table{width:100%;border-collapse:collapse;font-size:14px}td{padding:6px 0;border
 .av::before{content:"";position:absolute;inset:4px;border-radius:50%;background:linear-gradient(160deg,#2a3150,#141827)}
 .av span{position:relative;text-align:center}.av small{display:block;font:600 9px Roboto,Arial;opacity:.7;letter-spacing:.5px;margin-bottom:1px}
 .prof .pn{font-weight:500;font-size:15px}
+.updb{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;border:0;border-radius:16px;padding:12px 18px;background:#2f6bff;color:#fff;font:700 15px system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.45);text-align:center}.updb small{display:block;font-weight:500;font-size:12px;opacity:.85;margin-top:2px}
 .instb{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 14px;border-radius:16px;border:1px solid rgba(127,224,255,.35);background:linear-gradient(135deg,rgba(47,107,255,.25),rgba(56,200,255,.12));color:var(--ink)}.instb span{font-size:28px}.instb b{display:block;font-size:15px}.instb small{display:block;color:var(--mute);font-size:12.5px;margin-top:2px}
 .ist{display:flex;gap:12px;align-items:flex-start;margin:10px 0}.ist i{flex:none;width:28px;height:28px;border-radius:50%;background:var(--acc);color:var(--accInk);display:grid;place-items:center;font-style:normal;font-weight:700}.ist div{padding-top:3px}.prof .acb{font-size:12px;font-weight:600;margin-top:3px;color:#9fd8ff}.prof .hint{color:rgba(238,241,248,.6)}
 .prof .bl{margin-left:auto;text-align:right;position:relative;z-index:1}
@@ -1263,6 +1264,7 @@ C.svload=async t=>{const f=t.files&&t.files[0];t.value='';if(!f)return;try{svApp
 let instEvt=null;const isStand=()=>matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true;
 const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',e=>{if(!e.data||e.data.t!=='upd'||$('updb'))return;const b=document.createElement('button');b.id='updb';b.className='updb';b.innerHTML='🔄 Вышло обновление игры<small>Нажми, чтобы обновить</small>';b.onclick=()=>{try{saveNow()}catch(x){}location.reload()};document.body.appendChild(b)});
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();instEvt=e;if(view==='menu')try{renderMenu()}catch(x){}});
 addEventListener('appinstalled',()=>{instEvt=null;toast('📲 Игра установлена — ищи иконку «Номера» на экране');if(view==='menu')try{renderMenu()}catch(x){}});
 function instBanner(){if(isStand()||location.protocol==='file:')return '';return '<button class="instb" data-a="install" style="grid-column:1/-1"><span>📲</span><div><b>Установить игру на телефон</b><small>Иконка на экране, весь экран и игра без интернета</small></div></button>'}
