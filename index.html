@@ -629,7 +629,7 @@ body.driving{overflow:hidden}
 
 <script>
 'use strict';
-const GAME_VER='1.1.15';
+const GAME_VER='1.1.16';
 const KEY='nomera_v3';
 const $=id=>document.getElementById(id);
 let RNG=Math.random;
@@ -664,7 +664,12 @@ const def={coins:50000,usd:0,inv:[],luck:50,minPrice:20,cost:100,pin:'',pinH:'',
   country:'ru',types:{civil:true,taxi:false,police:false,mil:false},group:'all',sort:'date',asc:false,fil:{c:'all',ty:'all',r:[]},
   free:false,pmult:1,theme:'dark',gfx:'auto',snd:true,sndV:70,mus:false,musV:40,vib:true,voice:true,showSkip:true,cars:{sv_kombi:1},car:'sv_kombi',carCol:{},dmg:{},map:'msk',ctrl:'pedals',cam:'3',plateId:null,gsel:null,km:0,kmAcc:0,driveT:0,playT:0,deliv:0,laps:0,jumps:0,bestLap:0,bestJump:0,tutDone:false,skipEpic:false,skipLeg:false,res:'auto',land:true,btnS:100,btnO:100,todMode:'cycle',tod:40,radV:60,radOn:null,radT:'b1'};
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==='object')return Object.assign(JSON.parse(JSON.stringify(def)),s,{types:Object.assign({},def.types,s.types),fil:Object.assign({},def.fil,s.fil)})}catch(e){}return JSON.parse(JSON.stringify(def))}
-let S=load();while(S.cnt.length<6)S.cnt.push(0);if((S.ver||0)<5){S.gfx='auto';S.ver=5}
+/* уровни по числу генераций: 1 — 10, 2 — 30, 3 — 200, 4 — 1 000, 5 — 10 000, 6 — 15 000, 7 — 20 000, 8 — 25 000, 9 — 30 000, 10 — 50 000, дальше каждые 10 000 */
+const LVT=[10,30,200,1000,10000,15000,20000,25000,30000,50000];
+const lvlOf=g=>{let l=0;for(const t of LVT)if(g>=t)l++;if(g>=50000)l+=Math.floor((g-50000)/10000);return l};
+const lvlAt=l=>l<=0?0:l<=10?LVT[l-1]:50000+(l-10)*10000;
+function lvlInfo(){const g=S.gen||0,l=lvlOf(g),a=lvlAt(l),b=lvlAt(l+1);return{l,g,next:b,pct:Math.max(0,Math.min(100,Math.floor((g-a)/(b-a)*100)))}}
+let S=load();S.lvl=lvlOf(S.gen||0);while(S.cnt.length<6)S.cnt.push(0);if((S.ver||0)<5){S.gfx='auto';S.ver=5}
 let saveT=0;
 function saveNow(){clearTimeout(saveT);saveT=0;S.mt=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}if(typeof cloudDirty==='function')cloudDirty()}
 const save=()=>{if(!saveT)saveT=setTimeout(saveNow,400)};
@@ -897,7 +902,7 @@ function tap(){
   const w=wts(),s=w.reduce((a,b)=>a+b,0);let q=Math.random()*s,r=0;for(;r<NR-1;r++){q-=w[r];if(q<=0)break}
   if(forceR>=0){r=forceR;forceR=-1}
   const p=build(r);r=p.rar;
-  S.gen++;S.xp+=10;while(S.xp>=100){S.xp-=100;S.lvl++}S.cnt[r]++;const tk=p.c+p.ty;S.tyc[tk]=(S.tyc[tk]||0)+1;if(p.price>S.best)S.best=p.price;
+  S.gen++;{const nl=lvlOf(S.gen);if(nl>(S.lvl||0))setTimeout(()=>{toast('⭐ Новый уровень '+nl+'!');try{SFX.gen(4)}catch(e){}},500);S.lvl=nl}S.cnt[r]++;const tk=p.c+p.ty;S.tyc[tk]=(S.tyc[tk]||0)+1;if(p.price>S.best)S.best=p.price;
   ses.gen++;ses.cnt[r]++;if(p.price>ses.best)ses.best=p.price;
   bump('g',1);if(r>=1)bump('u',1);if(r>=2)bump('r',1);if(r>=3)bump('e',1);
   if(r===3)S.usd+=1;if(r===4)S.usd+=5;
@@ -981,7 +986,7 @@ function renderMenu(){
     ['theme','','#b0508a','#3a1030',SVG.theme,'Тема',''],
     ['ach','','#b08a2a','#33240a',SVG.medal,'Достижения',aReady?bd(aReady+' награды','hot'):''],
     ['opt','','#5d6a86','#161b28',SVG.gear,'Настройки','']];
-  $('tiles').innerHTML='<div class="prof" data-a="acct" style="grid-column:1/-1;cursor:pointer;--xp:'+S.xp+'"><div class="av"><span><small>УР.</small>'+S.lvl+'</span></div><div><div class="pn">'+(ACC?'👤 '+escH(ACC.login):'Коллекционер номеров')+'</div><div class="hint">'+S.xp+' / 100 XP · '+nf(S.gen)+' генераций</div><div class="acb">'+(ACC?'☁️ Прогресс в аккаунте':'Войти или создать аккаунт ›')+'</div></div><div class="bl"><b>'+fmt(S.coins)+'</b><span>'+S.usd+' $</span></div></div>'
+  $('tiles').innerHTML='<div class="prof" data-a="acct" style="grid-column:1/-1;cursor:pointer;--xp:'+lvlInfo().pct+'"><div class="av"><span><small>УР.</small>'+lvlInfo().l+'</span></div><div><div class="pn">'+(ACC?'👤 '+escH(ACC.login):'Коллекционер номеров')+'</div><div class="hint">'+nf(S.gen)+' / '+nf(lvlInfo().next)+' генераций до ур. '+(lvlInfo().l+1)+'</div><div class="acb">'+(ACC?'☁️ Прогресс в аккаунте':'Войти или создать аккаунт ›')+'</div></div><div class="bl"><b>'+fmt(S.coins)+'</b><span>'+S.usd+' $</span></div></div>'
     +instBanner()+T.map((t,i)=>'<button class="tile '+t[1]+'" style="--t1:'+t[2]+';--t2:'+t[3]+';animation-delay:'+(i*.035)+'s" data-a="go" data-v="'+t[0]+'">'+(t[6]||'')+'<div class="ill">'+t[4]+'</div><b>'+t[5]+'</b></button>').join('')
     +'<button class="verb" data-a="ver" style="grid-column:1/-1">Версия '+GAME_VER+' · что нового</button>'+'<div class="soon"><h2>Скоро в игре</h2><div class="hint">Эти разделы ещё в разработке — они откроются в следующих обновлениях.</div></div>'
     +['Рейтинг игроков','Магазин','Кейсы','Альбом','Карта','Обмен'].map(n=>'<div class="tile off"><b>'+n+'</b></div>').join('')}
@@ -1303,7 +1308,7 @@ Object.assign(A,{
   async svfile(){saveNow();const c=await svEncode(),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/plain'}));a.download='nomera-'+new Date().toISOString().slice(0,10)+'.nomera';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast('💾 Файл сохранения скачан')}});
 C.svload=async t=>{const f=t.files&&t.files[0];t.value='';if(!f)return;try{svApply(await svDecode(await f.text()))}catch(e){toast('Это не файл сохранения игры')}};
 
-const CHANGES={'1.1.15':['⚡ Android-приложение: максимальная частота экрана (90/120 Гц), ровная производительность без провалов при нагреве','🎮 Приложение отмечено как игра — работают игровые режимы телефона','🔋 В фоне игра полностью замирает и не тратит батарею','🧠 При нехватке памяти игра снижает разрешение, а не вылетает','🚀 Быстрый запуск без белой вспышки'],'1.1.14':['🤖 Приложение для Android (APK) и 🍏 для iPhone (IPA) — кнопки в меню','🛠️ Админка: свой номер — страна, тип, буквы, цифры, регион, редкость, износ и цена','🔊 Звук выпадения мифического номера'],'1.1.13':['📲 Игру можно установить на телефон — работает без интернета','🔄 Установленная игра сама получает обновления','💬 Текстовый чат в онлайн-комнате','🏘️ Новая карта «Посёлок»: избы, кирпич, гаражи, неровные дороги','🌐 Онлайн: комнаты по коду, совместная езда и голосовой чат','👤 Аккаунты: прогресс сохраняется на сервере','🟥 Мифическая редкость и износ номеров','🗺️ Карта на E с маршрутом и стрелкой над машиной','📊 Счётчик FPS']};
+const CHANGES={'1.1.16':['⭐ Новые уровни: 1 — 10 генераций, 2 — 30, 3 — 200, 4 — 1 000, 5 — 10 000, 6 — 15 000, 7 — 20 000, 8 — 25 000, 9 — 30 000, 10 — 50 000, дальше каждые 10 000','📊 В профиле видно, сколько генераций осталось до следующего уровня','⚡ На экранах 90/120 Гц игра не рисует лишние кадры — меньше нагрев','🚀 Шейдеры готовятся заранее — без рывков в начале поездки','🧱 На слабых видеочипах текстуры домов вдвое легче, дороги посёлка проще'],'1.1.15':['⚡ Android-приложение: максимальная частота экрана (90/120 Гц), ровная производительность без провалов при нагреве','🎮 Приложение отмечено как игра — работают игровые режимы телефона','🔋 В фоне игра полностью замирает и не тратит батарею','🧠 При нехватке памяти игра снижает разрешение, а не вылетает','🚀 Быстрый запуск без белой вспышки'],'1.1.14':['🤖 Приложение для Android (APK) и 🍏 для iPhone (IPA) — кнопки в меню','🛠️ Админка: свой номер — страна, тип, буквы, цифры, регион, редкость, износ и цена','🔊 Звук выпадения мифического номера'],'1.1.13':['📲 Игру можно установить на телефон — работает без интернета','🔄 Установленная игра сама получает обновления','💬 Текстовый чат в онлайн-комнате','🏘️ Новая карта «Посёлок»: избы, кирпич, гаражи, неровные дороги','🌐 Онлайн: комнаты по коду, совместная езда и голосовой чат','👤 Аккаунты: прогресс сохраняется на сервере','🟥 Мифическая редкость и износ номеров','🗺️ Карта на E с маршрутом и стрелкой над машиной','📊 Счётчик FPS']};
 A.ver=()=>{$('mc').innerHTML='<div class="mb"><h3>Версия '+GAME_VER+'</h3><div class="hint" style="text-align:center;margin:4px 0 10px">Что нового</div>'+(CHANGES[GAME_VER]||[]).map(t=>'<div class="ml" style="justify-content:flex-start"><span>'+t+'</span></div>').join('')+'<button class="btn" data-a="mdclose" style="margin-top:12px">Отлично</button></div>';$('md').classList.remove('hidden')};
 try{const lv=localStorage.getItem('nomera_ver');if(lv&&lv!==GAME_VER)setTimeout(()=>{toast('🆕 Игра обновлена до версии '+GAME_VER);if(typeof A.ver==='function')A.ver()},1500);localStorage.setItem('nomera_ver',GAME_VER)}catch(e){}
 
@@ -1500,7 +1505,7 @@ function ptile(x,n,X,Y,W,H){const r=PT[n];if(PGTI)x.drawImage(PGTI,r[0],r[1],r[2
 function ptex(n){return mc('pt'+n,()=>{const r=PT[n];return ctex(cvs(r[2],r[3],x=>ptile(x,n,0,0,r[2],r[3])))})}
 /* атлас стен 4×4 «этажа-окна» по 256 px: фото-стена + окна (наличники у изб, решётки на первом этаже у каменных) */
 function patl(kind,mode){const lit=mode==='L';return mc('pa'+kind+(lit?'L':''),()=>{const rg=seeded(kind.length*131+7),rl=seeded(kind.length*17+3),C=256,S=1024;
-  const c=cvs(S,S,x=>{if(lit){x.fillStyle='#000';x.fillRect(0,0,S,S)}
+  const k=GPUT==='weak'?.5:1,c=cvs(S*k,S*k,x=>{x.scale(k,k);if(lit){x.fillStyle='#000';x.fillRect(0,0,S,S)}
     for(let j=0;j<4;j++)for(let i=0;i<4;i++){const X=i*C,Y=j*C,ground=j===3,has=kind!=='gate'&&rg()<(ground?.8:.88),blue=rg()<.4,shut=rg()<.5;
       const wx=X+80,wy=Y+66,ww=96,wh=118;
       if(lit){if(has&&rl()<.45){x.fillStyle=['#ffd27a','#ffe2a6','#ffc86a','#fff0c8'][Math.floor(rl()*4)];x.fillRect(wx,wy,ww,wh);x.fillStyle='rgba(0,0,0,.35)';x.fillRect(wx+46,wy,4,wh);x.fillRect(wx,wy+40,ww,4)}continue}
@@ -1605,7 +1610,7 @@ function pgRoadTex(dirt){return mc('pgRoad'+(dirt?'D':'A'),()=>{const W=256,H=10
       // стёртая разметка по центру
       x.fillStyle='rgba(225,220,200,.38)';for(let v=0;v<H;v+=128)if(rg()<.8)x.fillRect(W/2-3,v+10,6,70)}
   });return ctex(c)})}
-function pgtRoads(Wd,LR,an){const T=THREE,det=Wd.q.det,sa=det>=2?1.5:det>=1?2:3.2,sl=det>=1?10:4,L=HALF*2+RD,Lo=(LR-L)/2;
+function pgtRoads(Wd,LR,an){const T=THREE,det=Wd.q.det,weak=GPUT==='weak',sa=weak?(det>=1?2.8:3.6):det>=2?1.5:det>=1?2:3.2,sl=weak?(det>=1?6:4):det>=1?10:4,L=HALF*2+RD,Lo=(LR-L)/2;
   const mk=dirt=>{const P=[],N=[],U=[],C=[],I=[];return{P,N,U,C,I,dirt}},G={a:mk(false),d:mk(true)};
   const strip=(alongX,c,dirt,off)=>{const g=dirt?G.d:G.a,n=Math.ceil(L/sa),base=g.P.length/3;
     for(let i=0;i<=n;i++){const a=-L/2+i*L/n;for(let j=0;j<=sl;j++){const lat=-RD/2+j*RD/sl,x=alongX?a:c+lat,z=alongX?c+lat:a,pit=pgPit(x,z,dirt),h=pgH(x,z),k=1-pit*.55,wet=dirt?.8:1;
@@ -1953,7 +1958,7 @@ function kremlinDet(g,add){const T=THREE,wM=lamb(0xf2efe6),dk=lamb(0x2a2420),gol
 function geoB(B){const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(B.p,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(B.n,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(B.u,2));g.setAttribute('color',new THREE.Float32BufferAttribute(B.c,3));g.computeBoundingSphere();return g}
 function mergeGeos(list){const P=[],N=[];for(const g0 of list){const g=g0.index?g0.toNonIndexed():g0;P.push(...g.attributes.position.array);N.push(...g.attributes.normal.array)}const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(N,3));return g}
 /* ---------- фасады: атласы 4×4 окна + ночные (светящиеся) варианты ---------- */
-function atlas(kind,mode){const lit=mode===true||mode==='L',spec=mode==='S';return mc('atl'+kind+(lit?'L':spec?'S':''),()=>{const rg=seeded(kind.length*977+(lit?13:5)),rp=seeded(kind.length*31+1);const c=cvs(512,512,(x)=>{x.scale(2,2);
+function atlas(kind,mode){const lit=mode===true||mode==='L',spec=mode==='S';return mc('atl'+kind+(lit?'L':spec?'S':''),()=>{const rg=seeded(kind.length*977+(lit?13:5)),rp=seeded(kind.length*31+1);const AS=GPUT==='weak'?1:2,c=cvs(256*AS,256*AS,(x)=>{x.scale(AS,AS);
     if(lit||spec){x.fillStyle='#000';x.fillRect(0,0,256,256)}
     if(spec){x.fillStyle='#fff';for(let j=0;j<4;j++)for(let i=0;i<4;i++){const X=i*64,Y=j*64;if(kind==='win')x.fillRect(X+15,Y+12,34,36);else if(kind==='glass')for(const[px,py]of[[2,2],[34,2],[2,34],[34,34]])x.fillRect(X+px,Y+py,28,28);else x.fillRect(X+16,Y+12,32,38)}return}
     const warm=()=>['#ffd27a','#ffe2a6','#ffc86a','#fff0c8','#cfe0ff','#ffd9a0'][Math.floor(rg()*6)];
@@ -2586,7 +2591,7 @@ function startDrive(){if(!S.cars||!S.cars[S.car]){toast('Сначала купи
     R3.shadowMap.enabled=!!q.shadow;Wd.sun.castShadow=!!q.shadow;R3.shadowMap.type=q.shadow>1024?THREE.PCFSoftShadowMap:THREE.PCFShadowMap;R3.shadowMap.needsUpdate=true;
     DR={on:true,Wd,cam,car:null,cdef:tuned(carById(S.car)),nos:0,nosCap:0,dsc:0,debris:[],smoke:[],sp:[],shake:0,last:performance.now(),fpsN:0,fpsT:performance.now(),slow:0,pr:Math.min(devicePixelRatio||1,q.pr),ext:Wd.kind==='city'?HALF+RD:Wd.kind==='track'?420:Wd.lim+10,trip:0,hudT:0,todT:0,tlT:0,lap:{n:0,t0:performance.now(),cp:0},tilt0:0,tiltRaw:null,orb:{y:0,p:0,z:1},qd:null};
     DR.nosCap=DR.cdef.nit?2+DR.cdef.nit*1.5:0;DR.nos=DR.nosCap;/* Full HD/2K/4K на слабом видеочипе: чёткая картинка без теней и свечения, ровные 30 кадров */if(GPUT==='weak'&&S.res&&S.res!=='auto'&&+S.res>=1080){DR.qd=Object.assign({},q,{shadow:0,bloom:0});R3.shadowMap.enabled=false;Wd.sun.castShadow=false;DR.cap=31;DR.fhd=1}
-    DR.prMax=DR.pr;DR.rot=$('drive').classList.contains('drot');DR.car=makePlayerCar(Wd.sc);const sp=Wd.spawn||{x:-HALF,z:-HALF+PER*.5+3,h:0};
+    /* экраны 90/120 Гц: не рисуем больше ~95 кадров — меньше нагрев и ровнее */if(!DR.cap)DR.cap=10.5;DR.prMax=DR.pr;DR.rot=$('drive').classList.contains('drot');DR.car=makePlayerCar(Wd.sc);const sp=Wd.spawn||{x:-HALF,z:-HALF+PER*.5+3,h:0};
     if(Wd.kind==='city'){sp.x=-HALF+PER*3.5;sp.z=-HALF+4*PER+5.2;sp.h=0}
     DR.st={x:sp.x,z:sp.z,h:sp.h,vh:sp.h,v:0,y:Wd.kind==='city'?0:0,vy:0,gvy:0,air:false,steer:0,dmg:(S.dmg||{})[S.car]||0,pitch:0,roll:0};
     if(Wd.trk)Wd.trk.idx=0;
@@ -2594,7 +2599,7 @@ function startDrive(){if(!S.cars||!S.cars[S.car]){toast('Сначала купи
     const spm=new THREE.SpriteMaterial({map:texSmoke(),color:0xffb040,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false});for(let i=0;i<28;i++){const s=new THREE.Sprite(spm);s.scale.setScalar(.22);s.visible=false;Wd.sc.add(s);DR.sp.push({s,t:9,life:0,v:new THREE.Vector3()})}
     $('dcan').innerHTML='';$('dcan').appendChild(R3.domElement);fitR();
     mapBg();navInit();keysHint();bindCtl();bindOrbit();setCam(S.cam||'3');engineStart();if(Wd.missions)newMission();
-    DR.tod=curTod();DR.nw=applyTOD(Wd,DR.tod);radioAuto();
+    DR.tod=curTod();DR.nw=applyTOD(Wd,DR.tod);radioAuto();/* шейдеры готовим заранее — без рывков в первые секунды поездки */try{R3.compile(Wd.sc,cam)}catch(e){}
     $('dload').classList.add('hidden');const lid=++LOOPID;requestAnimationFrame(t=>loop(t,lid));dMsg((Wd.kind==='track'?'🏁 Проезжай круги на время!':Wd.kind==='stunt'?'🛹 Разгоняйся и прыгай с трамплинов!':'📦 Довези груз до жёлтой метки')+'<small>'+(DR.fhd?'Full HD на телефоне: без теней, ровные 30 кадров':'Проведи пальцем по экрану — осмотр машины')+'</small>',2800)},40))}
 function fitR(){if(!R3)return;const el=R3.domElement.parentElement;if(!el)return;const w=el.clientWidth||innerWidth,h=el.clientHeight||innerHeight;
   if(DR&&DR.on&&el.id==='dcan'){const pr=resPR(w,h,DR.pr);if(Math.abs(R3.getPixelRatio()-pr)>.001)R3.setPixelRatio(pr)}
