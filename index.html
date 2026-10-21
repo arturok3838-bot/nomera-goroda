@@ -1485,6 +1485,48 @@ function pgtCenter(Wd,M,cx,cz,bl,K){const col=h=>new THREE.Color(h),y0=CURB,H=17
   bl.rects.push([cx-r,cz-r,cx+r,cz+r]);
   // доска почёта и лавочки вокруг — простые объёмы
   const bc=col(0x7a5a3c);for(const[dx,dz]of[[-9,0],[9,0],[0,-9],[0,9]]){const hor=dz===0;pushBox(pgB(K,'PF'),cx+dx-(hor?.3:1.6),y0,cz+dz-(hor?1.6:.3),cx+dx+(hor?.3:1.6),y0+.5,cz+dz+(hor?1.6:.3),bc,1.6,1.6)}}
+/* ---------- дороги посёлка: старый асфальт и грунтовки, с ямами и колеями (неровности чувствует и машина) ---------- */
+const PGD={x:new Set([0,1,8,9]),z:new Set([0,2,7,9])};
+const hh2=(a,b)=>{let h=Math.imul(a|0,374761393)+Math.imul(b|0,668265263);h=Math.imul(h^(h>>>13),1274126177);return((h^(h>>>16))>>>0)/4294967296};
+function pgtRoadAt(x,z){if(Math.abs(x)>HALF+RD/2||Math.abs(z)>HALF+RD/2)return null;const kx=Math.round((x+HALF)/PER),kz=Math.round((z+HALF)/PER),dx=x-(-HALF+kx*PER),dz=z-(-HALF+kz*PER);
+  if(Math.abs(dz)<=RD/2&&kz>=0&&kz<=NB)return{dirt:PGD.z.has(kz),lat:dz,along:x};if(Math.abs(dx)<=RD/2&&kx>=0&&kx<=NB)return{dirt:PGD.x.has(kx),lat:dx,along:z};return null}
+// яма в клетке 5×5 м (общая для геометрии, цвета и физики)
+function pgPit(x,z,dirt){const cx=Math.floor(x/5),cz=Math.floor(z/5);if(hh2(cx,cz)>(dirt?.42:.2))return 0;const px=(cx+.2+.6*hh2(cx+7,cz))*5,pz=(cz+.2+.6*hh2(cx,cz+7))*5,rad=.7+.7*hh2(cx+3,cz+3),d2=((x-px)**2+(z-pz)**2)/(rad*rad);return d2<1?(1-d2)*(1-d2):0}
+function pgH(x,z){const r=pgtRoadAt(x,z);if(!r)return 0;const l=r.lat,a=r.along,wave=(Math.sin(x*.21+z*.13)+Math.sin(x*.07-z*.17+1.3))*.25+.5;
+  let h=-wave*(r.dirt?.05:.02);
+  if(r.dirt){for(const c of[-4.6,-2.6,2.6,4.6])h-=.05*Math.exp(-(((l-c)/.5)**2));const b=Math.sin(a*1.3+l*.4)*.5+.5;h-=.03*b*b*b;if(Math.abs(l)>RD/2-1)h+=.02}
+  return h-pgPit(x,z,r.dirt)*(r.dirt?.13:.09)}
+function pgRoadTex(dirt){return mc('pgRoad'+(dirt?'D':'A'),()=>{const W=256,H=1024,rg=seeded(dirt?77:33);const c=cvs(W,H,x=>{
+    if(dirt){x.fillStyle='#5a4936';x.fillRect(0,0,W,H);for(let i=0;i<9000;i++){const v=rg();x.fillStyle=v<.5?'rgba(40,31,22,.4)':v<.85?'rgba(120,104,82,.35)':'rgba(165,158,146,.55)';const s=.8+rg()*2.2;x.fillRect(rg()*W,rg()*H,s,s)}
+      // колеи: темнее и глаже
+      for(const c0 of[-4.6,-2.6,2.6,4.6]){const u=(c0+7)/14*W;const g=x.createLinearGradient(u-14,0,u+14,0);g.addColorStop(0,'rgba(70,56,40,0)');g.addColorStop(.5,'rgba(45,35,25,.6)');g.addColorStop(1,'rgba(70,56,40,0)');x.fillStyle=g;x.fillRect(u-14,0,28,H)}
+      // трава посередине и по краям
+      for(const[u0,u1]of[[0,18],[W-18,W],[W/2-14,W/2+14]])for(let i=0;i<700;i++){x.fillStyle=['rgba(88,120,58,.75)','rgba(110,140,70,.7)','rgba(70,98,46,.8)'][Math.floor(rg()*3)];x.fillRect(u0+rg()*(u1-u0),rg()*H,1.5,3+rg()*5)}
+      // лужи
+      for(let i=0;i<3;i++){const u=[(2.6+7)/14*W,(-2.6+7)/14*W][i%2],v=rg()*H,g=x.createRadialGradient(u,v,2,u,v,20);g.addColorStop(0,'rgba(120,135,150,.75)');g.addColorStop(.7,'rgba(90,100,110,.45)');g.addColorStop(1,'rgba(90,80,60,0)');x.fillStyle=g;x.save();x.translate(u,v);x.scale(1,2.2);x.beginPath();x.arc(0,0,20,0,7);x.fill();x.restore()}}
+    else{for(let v=0;v<H;v+=256)for(let u=0;u<W;u+=256)ptile(x,'conc',u,v,256,256);x.fillStyle='rgba(70,70,68,.35)';x.fillRect(0,0,W,H);
+      for(let i=0;i<5000;i++){x.fillStyle=rg()<.5?'rgba(0,0,0,.18)':'rgba(200,200,190,.16)';x.fillRect(rg()*W,rg()*H,1.4,1.4)}
+      // заплатки
+      for(let i=0;i<6;i++){const w=40+rg()*110,h=40+rg()*160,u=rg()*(W-w),v=rg()*(H-h);x.fillStyle=rg()<.5?'rgba(25,25,25,.55)':'rgba(120,118,112,.35)';x.fillRect(u,v,w,h);x.strokeStyle='rgba(0,0,0,.35)';x.lineWidth=1.5;x.strokeRect(u,v,w,h)}
+      // трещины
+      x.strokeStyle='rgba(15,15,15,.75)';for(let i=0;i<26;i++){let u=rg()*W,v=rg()*H;x.lineWidth=.8+rg()*1.4;x.beginPath();x.moveTo(u,v);for(let k=0;k<7;k++){u+=(rg()-.5)*26;v+=(rg()-.3)*30;x.lineTo(u,v)}x.stroke()}
+      // выщербленные края с щебнем и травой
+      for(const[u0,u1]of[[0,22],[W-22,W]]){for(let i=0;i<1400;i++){x.fillStyle=['rgba(120,110,95,.7)','rgba(80,75,68,.7)','rgba(160,150,135,.6)'][Math.floor(rg()*3)];x.fillRect(u0+rg()*(u1-u0),rg()*H,2,2)}for(let i=0;i<260;i++){x.fillStyle='rgba(90,125,60,.7)';x.fillRect(u0+rg()*(u1-u0),rg()*H,1.5,4+rg()*5)}}
+      // стёртая разметка по центру
+      x.fillStyle='rgba(225,220,200,.38)';for(let v=0;v<H;v+=128)if(rg()<.8)x.fillRect(W/2-3,v+10,6,70)}
+  });return ctex(c)})}
+function pgtRoads(Wd,LR,an){const T=THREE,det=Wd.q.det,sa=det>=2?1.5:det>=1?2:3.2,sl=det>=1?10:4,L=HALF*2+RD,Lo=(LR-L)/2;
+  const mk=dirt=>{const P=[],N=[],U=[],C=[],I=[];return{P,N,U,C,I,dirt}},G={a:mk(false),d:mk(true)};
+  const strip=(alongX,c,dirt,off)=>{const g=dirt?G.d:G.a,n=Math.ceil(L/sa),base=g.P.length/3;
+    for(let i=0;i<=n;i++){const a=-L/2+i*L/n;for(let j=0;j<=sl;j++){const lat=-RD/2+j*RD/sl,x=alongX?a:c+lat,z=alongX?c+lat:a,pit=pgPit(x,z,dirt),h=pgH(x,z),k=1-pit*.55,wet=dirt?.8:1;
+        g.P.push(x,off+h,z);g.N.push(0,1,0);g.U.push(j/sl,a/16);g.C.push(k*wet,k*wet,k*(dirt?1:1.02))}}
+    for(let i=0;i<n;i++)for(let j=0;j<sl;j++){const q=base+i*(sl+1)+j,r=q+sl+1;alongX?g.I.push(q,q+1,r,r,q+1,r+1):g.I.push(q,r,q+1,q+1,r,r+1)}
+    // ровные продолжения за городом (под декорациями)
+    for(const s of[-1,1]){const b2=g.P.length/3,a0=s*L/2,a1=s*(L/2+Lo);for(const a of[a0,a1])for(const lat of[-RD/2,RD/2]){const x=alongX?a:c+lat,z=alongX?c+lat:a;g.P.push(x,off,z);g.N.push(0,1,0);g.U.push(lat<0?0:1,a/16);g.C.push(1,1,1)}
+      s<0===alongX?g.I.push(b2,b2+1,b2+2,b2+2,b2+1,b2+3):g.I.push(b2,b2+2,b2+1,b2+1,b2+2,b2+3)}};
+  for(let k=0;k<=NB;k++){const c=-HALF+k*PER;strip(false,c,PGD.x.has(k),.02);strip(true,c,PGD.z.has(k),.026)}
+  for(const g of[G.a,G.d]){const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(g.P,3));geo.setAttribute('normal',new T.Float32BufferAttribute(g.N,3));geo.setAttribute('uv',new T.Float32BufferAttribute(g.U,2));geo.setAttribute('color',new T.Float32BufferAttribute(g.C,3));geo.setIndex(g.I);geo.computeVertexNormals();
+    const t=pgRoadTex(g.dirt).clone();t.needsUpdate=true;t.anisotropy=an;const m=new T.Mesh(geo,new T.MeshLambertMaterial({map:t,vertexColors:true}));m.userData.noCast=1;m.receiveShadow=true;Wd.sc.add(m)}}
 
 /* ---------- качество графики: 5 уровней ---------- */
 const QP={
@@ -1981,7 +2023,7 @@ function addObj(Wd,o){o.c=Math.cos(o.a||0);o.s=Math.sin(o.a||0);o.y0=o.y0||0;con
   m.rotation.y=o.a||0;Wd.sc.add(m);Wd.objs.push(o);return o}
 function objH(o,x,z){const dx=x-o.x,dz=z-o.z,u=dx*o.c-dz*o.s,v=dx*o.s+dz*o.c;if(Math.abs(u)>o.len/2||Math.abs(v)>o.w/2)return -1;return o.y0+(o.k==='ramp'?o.h*(o.curve?rampF(o,(u+o.len/2)/o.len):(u+o.len/2)/o.len):o.h)}
 function rampF(o,t){t=Math.max(0,Math.min(1,t));return o.curve==='hump'?Math.sin(Math.PI*t):Math.pow(t,o.curve)}
-function groundH(Wd,x,z){let h=0,ob=null;if(Wd.kind==='city'){const lx=((x+HALF)%PER+PER)%PER,lz=((z+HALF)%PER+PER)%PER;if(lx>RD/2&&lx<RD/2+BLK&&lz>RD/2&&lz<RD/2+BLK&&Math.abs(x)<HALF&&Math.abs(z)<HALF)h=CURB}
+function groundH(Wd,x,z){let h=0,ob=null;if(Wd.kind==='city'){const lx=((x+HALF)%PER+PER)%PER,lz=((z+HALF)%PER+PER)%PER;if(lx>RD/2&&lx<RD/2+BLK&&lz>RD/2&&lz<RD/2+BLK&&Math.abs(x)<HALF&&Math.abs(z)<HALF)h=CURB;else if(Wd.pgt)h=pgH(x,z)}
   for(const o of Wd.objs){const q=objH(o,x,z);if(q>h){h=q;ob=o}}return{h,o:ob}}
 
 function buildWorld(M){
@@ -2002,11 +2044,11 @@ function mergeUV(list){const P=[],N=[],U=[];for(const it of list){const g=(it.g.
 function buildCity(Wd,M){
   const T=THREE,sc=Wd.sc,rg=seeded(hashStr(M.id)),R=n=>Math.floor(rg()*n),RR=(a,b)=>a+rg()*(b-a),PK=a=>a[R(a.length)],q=Wd.q,det=q.det,col=h=>new T.Color(h),an=R3?Math.min(q.aniso,R3.capabilities.getMaxAnisotropy()):1;
   Wd.lim=HALF+RD/2;Wd.blocks=[];
-  const gm=lamb(M.ground);if(det){gm.map=texNoise().clone();gm.map.needsUpdate=true;gm.map.repeat.set(140,140)}sc.add(plane(HALF*2+400,HALF*2+400,gm,0,0,0));
+  const gm=lamb(M.ground);if(det){gm.map=texNoise().clone();gm.map.needsUpdate=true;gm.map.repeat.set(140,140)}sc.add(plane(HALF*2+400,HALF*2+400,gm,0,M.id==='pgt'?-.4:0,0));
   // дороги: одна геометрия
   const LEN=HALF*2+RD,LR=LEN+4*PER,rt=texRoad().clone();rt.needsUpdate=true;rt.repeat.set(1,LR/16);rt.anisotropy=an;const rl=[];
   for(let k=0;k<=NB;k++){const c=-HALF+k*PER;rl.push({g:new T.PlaneGeometry(RD,LR),m:M4(c,.02,0,-Math.PI/2,0,0)});rl.push({g:new T.PlaneGeometry(RD,LR),m:M4(0,.025,c,-Math.PI/2,0,Math.PI/2)})}
-  const roads=new T.Mesh(mergeUV(rl),new T.MeshLambertMaterial({map:rt}));roads.userData.noCast=1;sc.add(roads);
+  if(M.id==='pgt'){Wd.pgt=1;pgtRoads(Wd,LR,an)}else{const roads=new T.Mesh(mergeUV(rl),new T.MeshLambertMaterial({map:rt}));roads.userData.noCast=1;sc.add(roads)}
   // ограждение по краю города
   const btx=ctex(cvs(64,32,(c2,w,h)=>{c2.fillStyle='#bdbcb6';c2.fillRect(0,0,w,h);for(let i=0;i<220;i++){c2.fillStyle='rgba(0,0,0,'+Math.random()*.09+')';c2.fillRect(Math.random()*w,Math.random()*h,2,2)}c2.fillStyle='#d32b20';c2.fillRect(0,5,w/2,6);c2.fillStyle='#f4f4f4';c2.fillRect(w/2,5,w/2,6);c2.fillStyle='rgba(0,0,0,.18)';c2.fillRect(0,h-3,w,3)}),(LEN+8)/3,1),bm=new T.MeshLambertMaterial({map:btx});
   for(const s of[-1,1]){const a=new T.Mesh(new T.BoxGeometry(LEN+8,.95,.7),bm);a.position.set(0,.475,s*(Wd.lim+.5));sc.add(a);const b=new T.Mesh(new T.BoxGeometry(.7,.95,LEN+8),bm);b.position.set(s*(Wd.lim+.5),.475,0);sc.add(b)}
@@ -2017,11 +2059,11 @@ function buildCity(Wd,M){
   const pt=(M.id==='pgt'?ptex('cobble'):texPave()).clone();pt.needsUpdate=true;pt.anisotropy=an;const swM=new T.Mesh(geoB(SB),new T.MeshLambertMaterial({map:pt,vertexColors:true}));swM.userData.noCast=1;sc.add(swM);
   sc.add(new T.Mesh(geoB(CB),mc('vcL',()=>new T.MeshLambertMaterial({vertexColors:true}))));
   for(let a=0;a<=NB;a++)for(let b=0;b<=NB;b++){const cx=ixC(a),cz=ixC(b);quadXZ(IB,cx-RD/2,cz-RD/2,cx+RD/2,cz+RD/2,.032,white,RD/9,RD/9);
-    if(det>=1)for(const h of HD4){const na=a+h[0],nb=b+h[1];if(na<0||nb<0||na>NB||nb>NB)continue;const r=rightV(h),P=(d,s)=>[cx+h[0]*d+r[0]*s,cz+h[1]*d+r[1]*s];
+    if(det>=1&&M.id!=='pgt')for(const h of HD4){const na=a+h[0],nb=b+h[1];if(na<0||nb<0||na>NB||nb>NB)continue;const r=rightV(h),P=(d,s)=>[cx+h[0]*d+r[0]*s,cz+h[1]*d+r[1]*s];
       for(let s=-RD/2+.7;s<RD/2-.6;s+=1.15)quadP(ZB,[P(RD/2+.7,s),P(RD/2+3.4,s),P(RD/2+3.4,s+.58),P(RD/2+.7,s+.58)],.036,wc);
       quadP(ZB,[P(RD/2+3.9,-RD/2+.4),P(RD/2+4.35,-RD/2+.4),P(RD/2+4.35,-.25),P(RD/2+3.9,-.25)],.036,wc);
       if(det>=2)for(const s of[-1.9,-5.2]){quadP(ZB,[P(RD/2+9,s-.12),P(RD/2+12.5,s-.12),P(RD/2+12.5,s+.12),P(RD/2+9,s+.12)],.036,wc);quadP(ZB,[P(RD/2+7.4,s),P(RD/2+9,s-.55),P(RD/2+9,s+.55),P(RD/2+7.4,s)],.036,wc)}}}
-  const at=texAsphalt().clone();at.needsUpdate=true;const iM=new T.Mesh(geoB(IB),new T.MeshLambertMaterial({map:at}));iM.userData.noCast=1;sc.add(iM);
+  const at=texAsphalt().clone();at.needsUpdate=true;const iM=new T.Mesh(geoB(IB),new T.MeshLambertMaterial({map:at}));iM.userData.noCast=1;if(M.id!=='pgt')sc.add(iM);
   if(ZB.p.length){const zm=new T.Mesh(geoB(ZB),new T.MeshLambertMaterial({color:0xffffff,vertexColors:true,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2}));zm.userData.noCast=1;sc.add(zm)}
   // здания
   Wd.nm=Wd.nm||[];const mkM=kind=>{const m=new T.MeshLambertMaterial({map:atlas(kind),vertexColors:true});if(det>=1){m.emissiveMap=atlas(kind,true);m.emissive=new T.Color(0xffffff);m.emissiveIntensity=0;Wd.nm.push({m,k:'win'})}
