@@ -12,3 +12,13 @@
 Прогресс сохраняется в браузере; в настройках можно скопировать код или скачать файл сохранения и перенести прогресс на другое устройство.
 
 Запуск локально: открыть `index.html` в браузере. 3D — three.js r149 (MIT), встроен в файл.
+
+
+## Приложения
+
+- **Android (APK):** https://github.com/arturok3838-bot/nomera-goroda/releases/latest/download/nomera-goroda.apk
+- **iPhone (IPA, без подписи):** https://github.com/arturok3838-bot/nomera-goroda/releases/latest/download/nomera-goroda.ipa — ставится через Sideloadly или AltStore со своим Apple ID.
+
+Приложения собирает GitHub Actions (`.github/workflows/apps.yml`) при каждом изменении `index.html`: номер версии берётся из `GAME_VER`, готовые файлы выкладываются в Releases. Приложение само проверяет `version.json` и предлагает скачать новую версию.
+
+Подпись Android берётся из секретов репозитория `ANDROID_KEYSTORE_B64` и `ANDROID_KEYSTORE_PASS` (сам ключ в репозитории не хранится).
