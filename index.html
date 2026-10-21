@@ -1269,11 +1269,12 @@ try{const lv=localStorage.getItem('nomera_ver');if(lv&&lv!==GAME_VER)setTimeout(
 /* ---------- установка на телефон (PWA) и работа без интернета ---------- */
 let instEvt=null;const isStand=()=>matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true;
 const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+const IN_APP=/NomeraApp\//.test(navigator.userAgent),APP_OS=/NomeraApp\/iOS/.test(navigator.userAgent)?'ios':IN_APP?'android':'',REL='https://github.com/arturok3838-bot/nomera-goroda/releases/latest',VER_URL='https://arturok3838-bot.github.io/nomera-goroda/version.json';
+if(!IN_APP&&'serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',e=>{if(!e.data||e.data.t!=='upd'||$('updb'))return;const b=document.createElement('button');b.id='updb';b.className='updb';b.innerHTML='🔄 Вышло обновление'+(e.data.v?' '+e.data.v:'')+'<small>Сейчас '+GAME_VER+' · нажми, чтобы обновить</small>';b.onclick=()=>{try{saveNow()}catch(x){}location.reload()};document.body.appendChild(b)});
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();instEvt=e;if(view==='menu')try{renderMenu()}catch(x){}});
 addEventListener('appinstalled',()=>{instEvt=null;toast('📲 Игра установлена — ищи иконку «Номера» на экране');if(view==='menu')try{renderMenu()}catch(x){}});
-function instBanner(){if(isStand()||location.protocol==='file:')return '';return '<button class="instb" data-a="install" style="grid-column:1/-1"><span>📲</span><div><b>Установить игру на телефон</b><small>Иконка на экране, весь экран и игра без интернета</small></div></button>'}
+function instBanner(){if(IN_APP||isStand()||location.protocol==='file:')return '';return '<button class="instb" data-a="install" style="grid-column:1/-1"><span>📲</span><div><b>Установить игру на телефон</b><small>Иконка на экране, весь экран и игра без интернета</small></div></button>'}
 Object.assign(A,{async install(){
   if(instEvt){instEvt.prompt();try{await instEvt.userChoice}catch(e){}instEvt=null;return}
   const step=(n,t)=>'<div class="ist"><i>'+n+'</i><div>'+t+'</div></div>';
@@ -1282,7 +1283,11 @@ Object.assign(A,{async install(){
      +step(1,'Нажми кнопку <b>«Поделиться»</b> — квадрат со стрелкой вверх внизу экрана')+step(2,'Пролистай и выбери <b>«На экран „Домой“»</b>')+step(3,'Нажми <b>«Добавить»</b> — иконка появится на экране')
     :'<div class="hint" style="text-align:center;margin:6px 0 10px">В браузере Chrome или Яндекс:</div>'+step(1,'Открой меню браузера <b>⋮</b> (три точки)')+step(2,'Выбери <b>«Установить приложение»</b> или <b>«Добавить на главный экран»</b>')+step(3,'Подтверди — иконка появится на экране'))
    +'<div class="hint" style="margin-top:12px">После установки игра открывается на весь экран и работает <b>без интернета</b>. Интернет нужен только для онлайна, чата и сохранения в аккаунт. Прогресс в установленной игре и в браузере хранится отдельно — чтобы перенести его, войди в аккаунт (Меню → профиль).</div>'
-   +'<button class="btn" data-a="mdclose" style="margin-top:12px">Понятно</button></div>';$('md').classList.remove('hidden')}});
+   +'<div class="hint" style="margin-top:14px;text-align:center"><b>Или скачай приложение файлом:</b></div>'+'<a class="btn" href="'+REL+'/download/nomera-goroda.apk" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:8px">🤖 Android — APK</a>'+'<a class="btn gray" href="'+REL+'/download/nomera-goroda.ipa" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:8px">🍏 iPhone — IPA</a>'+'<div class="hint" style="margin-top:6px">APK: открой скачанный файл и разреши установку из этого источника. IPA ставится через Sideloadly или AltStore с твоим Apple ID.</div>'+'<button class="btn" data-a="mdclose" style="margin-top:12px">Понятно</button></div>';$('md').classList.remove('hidden')}});
+/* приложение: кнопка «Назад» на Android и проверка новой версии */
+window.appBack=()=>{try{if(!$('md').classList.contains('hidden')){A.mdclose();return true}if(typeof DR!=='undefined'&&DR&&DR.on){if(DR.big){bigMap(false);return true}stopDrive();return true}if(view!=='home'){go(view==='menu'?'home':'menu');return true}}catch(e){}return false};
+const verNum=v=>String(v||'0').split('.').reduce((a,x)=>a*1000+(+x||0),0);
+if(IN_APP)setTimeout(()=>{fetch(VER_URL+'?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(!j||verNum(j.v)<=verNum(GAME_VER)||$('updb'))return;const b=document.createElement('button');b.id='updb';b.className='updb';b.innerHTML='🔄 Вышла версия '+j.v+'<small>Сейчас '+GAME_VER+' · нажми, чтобы скачать</small>';b.onclick=()=>{const u=APP_OS==='ios'?(j.page||REL):(j.apk||REL);try{window.open(u,'_blank')}catch(e){location.href=u}};document.body.appendChild(b)}).catch(()=>{})},2500);
 
 /* ---------- аккаунт и облачное сохранение (сервер на Netlify, как у сайта АРТурок) ---------- */
 const GAPI='https://arturok-studio.netlify.app/game/api',AK='nomera_acct';
