@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - index.html
+      - sandbox.html
       - android/**
       - ios/**
       - .github/workflows/apps.yml
@@ -49,6 +50,7 @@ jobs:
         run: |
           mkdir -p android/app/src/main/assets
           cp index.html android/app/src/main/assets/index.html
+          cp sandbox.html android/app/src/main/assets/sandbox.html
       - name: Свой ключ подписи (если добавлен в секреты репозитория)
         env:
           KS: ${{ secrets.ANDROID_KEYSTORE_B64 }}
@@ -85,6 +87,7 @@ jobs:
         run: |
           mkdir -p Web
           cp ../index.html Web/index.html
+          cp ../sandbox.html Web/sandbox.html
           xcodegen generate 2>&1 | tee gen.log || { tail -5 gen.log | while read -r l; do echo "::error::xcodegen: $l"; done; exit 1; }
           xcodebuild -version
           set -o pipefail
