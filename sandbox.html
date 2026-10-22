@@ -268,7 +268,22 @@ function createDetailedCar(color,o){o=o||{};const C=createDetailedCar.c||(create
     const hub=new T.Mesh(C.rimG,C.dark);hub.scale.set(wr*.42,.275,wr*.42);hub.rotation.z=Math.PI/2;spin.add(hub);
     for(let k=0;k<5;k++){const sp=new T.Mesh(C.spokeG,C.chrome);sp.scale.set(.03,wr*.6,.05);const a=k/5*Math.PI*2;sp.position.set(sx*.14,Math.cos(a)*wr*.32,Math.sin(a)*wr*.32);sp.rotation.x=-a;spin.add(sp)}
     spin.traverse(q=>{if(q.isMesh)q.castShadow=true});wheels.push({piv,spin,front:sz>0,r:wr})}
-  g.userData.wheels=wheels;g.userData.len=l;g.userData.wid=w;return g}
+  g.userData.wheels=wheels;g.userData.len=l;g.userData.wid=w;g.userData.type=type;bakeCar(g);return g}
+/* слияние деталей машины по материалам: ~10 мешей вместо ~60 (колёса остаются отдельными и крутятся) */
+function bakeCar(g){g.updateMatrixWorld(true);const spins=g.userData.wheels.map(w=>w.spin),inv=new T.Matrix4().copy(g.matrixWorld).invert(),B=new Map(),rm=[];
+  const bucket=(M,k,m,geo)=>{if(!M.has(k))M.set(k,{m,g:[]});M.get(k).g.push(geo)};
+  g.traverse(o=>{if(!o.isMesh)return;let p=o.parent;while(p&&p!==g){if(spins.includes(p))return;p=p.parent}const geo=o.geometry.clone();geo.applyMatrix4(new T.Matrix4().multiplyMatrices(inv,o.matrixWorld));bucket(B,o.material.uuid,o.material,geo);rm.push(o)});
+  rm.forEach(o=>o.parent.remove(o));let body=null;for(const{m,g:gs}of B.values()){const mesh=new T.Mesh(mergeG(gs),m);mesh.castShadow=mesh.receiveShadow=true;g.add(mesh);if(!body||m.isMeshPhysicalMaterial)body=body&&body.material.isMeshPhysicalMaterial?body:mesh}
+  for(const s of spins){const si=new T.Matrix4().copy(s.matrixWorld).invert(),SB=new Map(),r2=[];s.traverse(o=>{if(!o.isMesh)return;const geo=o.geometry.clone();geo.applyMatrix4(new T.Matrix4().multiplyMatrices(si,o.matrixWorld));bucket(SB,o.material.uuid,o.material,geo);r2.push(o)});
+    r2.forEach(o=>o.parent.remove(o));for(const{m,g:gs}of SB.values()){const mesh=new T.Mesh(mergeG(gs),m);mesh.castShadow=true;s.add(mesh)}}
+  g.userData.body=body;return g}
+/* скутер */
+function createScooter(color){const g=new T.Group(),pt=new T.MeshPhysicalMaterial({color,metalness:.4,roughness:.3,clearcoat:1}),dk=new T.MeshStandardMaterial({color:0x1b1d21,roughness:.6}),ch=new T.MeshStandardMaterial({color:0xe8ebef,metalness:1,roughness:.2});
+  const b=(w,h,d,x,y,z,m,rx)=>{const q=new T.Mesh(new T.BoxGeometry(w,h,d),m);q.position.set(x,y,z);if(rx)q.rotation.x=rx;q.castShadow=true;g.add(q);return q};
+  b(.36,.12,1.1,0,.32,0,dk);b(.42,.42,.7,0,.55,-.35,pt);b(.36,.12,.62,0,.82,-.35,dk);b(.38,.62,.14,0,.62,.42,pt,-.25);b(.08,.6,.08,0,.95,.5,ch,-.3);b(.62,.05,.05,0,1.24,.6,ch);
+  const hl=new T.Mesh(new T.BoxGeometry(.16,.1,.05),new T.MeshStandardMaterial({color:0xfff6dc,emissive:0xfff0c8,emissiveIntensity:1.3}));hl.position.set(0,1.05,.66);g.add(hl);
+  const wheels=[];for(const z of[.55,-.55]){const piv=new T.Group();piv.position.set(0,.24,z);g.add(piv);const spin=new T.Group();piv.add(spin);const t=new T.Mesh(new T.CylinderGeometry(.24,.24,.12,16),dk);t.rotation.z=Math.PI/2;spin.add(t);const r=new T.Mesh(new T.CylinderGeometry(.13,.13,.13,12),ch);r.rotation.z=Math.PI/2;spin.add(r);wheels.push({piv,spin,front:z>0,r:.24})}
+  g.userData.wheels=wheels;g.userData.len=1.8;g.userData.wid=.7;g.userData.type='scooter';bakeCar(g);return g}
 function car(col){return createDetailedCar(col,{type:'sport'})}
 function spinWheels(g,v,dt,steer){for(const w of g.userData.wheels){w.spin.rotation.x+=v*dt/w.r;if(w.front)w.piv.rotation.y=steer||0}}
 shopBuild('m247',-30,-28,0);shopBuild('auto',34,-32,0);shopBuild('cafe',-28,30,Math.PI);shopBuild('gun',27,150,-Math.PI/2);
@@ -431,6 +446,7 @@ const zoneOf=(x,z)=>Math.abs(x)<=90&&Math.abs(z)<=90?'dt':z>90||z<-90?(Math.abs(
   // дальние небоскрёбы даунтауна — «силуэт»
   for(let i=0;i<(MOB?10:18);i++){const x=rnd(-85,85),z=rnd(-85,85);if(Math.abs(x)<off+30||Math.abs(z)<off+30)continue;const w=rnd(16,26),d=rnd(16,26),h=rnd(40,95);if(SOLID.some(o=>o.hx>1&&Math.abs(x-o.x)<o.hx+w/2+3&&Math.abs(z-o.z)<o.hz+d/2+3))continue;createTower(x,z,w,d,h,0)}
   createGasStation(-150,-(off+12),0);}
+let TLPH=0;
 /* ---------- улица: фонари, светофоры, знаки, остановки, лавки, урны, будки, пальмы/деревья ---------- */
 {const cu=RW/2+.45,edge=RW/2+SW-.55,zn=zoneOf;
   const freeAt=(x,z,r)=>!SOLID.some(o=>Math.abs(x-o.x)<o.hx+r&&Math.abs(z-o.z)<o.hz+r);
@@ -445,7 +461,7 @@ const zoneOf=(x,z)=>Math.abs(x)<=90&&Math.abs(z)<=90?'dt':z>90||z<-90?(Math.abs(
   const TL=[];for(const[sx,sz,ry]of[[1,1,0],[-1,-1,Math.PI],[1,-1,Math.PI/2],[-1,1,-Math.PI/2]]){const g=new T.Group(),x=sx*(RW/2+1.2),z=sz*(RW/2+1.2);g.position.set(x,0,z);g.rotation.y=ry;sc.add(g);SOLID.push({x,z,hx:.25,hz:.25});
     const pm=L(0x2b2f36,{metalness:.5,roughness:.5});const p=new T.Mesh(new T.CylinderGeometry(.1,.13,6,8),pm);p.position.y=3;p.castShadow=true;g.add(p);const arm=new T.Mesh(new T.BoxGeometry(.12,.12,4.5),pm);arm.position.set(0,5.8,-2.2);g.add(arm);
     const hd=new T.Mesh(new T.BoxGeometry(.45,1.25,.4),L(0x1b1d21));hd.position.set(0,5.2,-4.2);g.add(hd);const ls=[0xff2a2a,0xffc21a,0x2aff6a].map((c,i)=>{const m=new T.Mesh(new T.CircleGeometry(.14,14),new T.MeshBasicMaterial({color:c,toneMapped:false}));m.position.set(0,5.6-i*.38,-4.41);m.rotation.y=Math.PI;g.add(m);return m});TL.push({ls,ax:Math.abs(Math.sin(ry))>.5})}
-  let ph=0;const setTL=()=>{ph=(ph+1)%4;for(const t of TL){const green=(ph<2)!==t.ax,yel=ph%2===1;t.ls[0].visible=!green&&!yel||(yel&&!green);t.ls[1].visible=yel;t.ls[2].visible=green&&!yel}};setTL();setInterval(setTL,3500);
+  const setTL=()=>{TLPH=(TLPH+1)%4;const ph=TLPH;for(const t of TL){const green=(ph<2)!==t.ax,yel=ph%2===1;t.ls[0].visible=!green&&!yel||(yel&&!green);t.ls[1].visible=yel;t.ls[2].visible=green&&!yel}};setTL();setInterval(setTL,3500);
   // знаки
   for(const[sx,sz]of[[1,-1],[-1,1]]){const x=sx*(RW/2+SW-.8),z=sz*(RW/2+SW+2.2),p=new T.Mesh(new T.CylinderGeometry(.05,.05,2.6,6),L(0x8d939b,{metalness:.8}));p.position.set(x,1.3,z);sc.add(p);
     const[c,x2]=cv(128,128);x2.fillStyle='#fff';x2.beginPath();x2.arc(64,64,62,0,7);x2.fill();x2.lineWidth=14;x2.strokeStyle='#d8261c';x2.beginPath();x2.arc(64,64,52,0,7);x2.stroke();x2.fillStyle='#111';x2.font='900 52px system-ui';x2.textAlign='center';x2.textBaseline='middle';x2.fillText('60',64,68);
@@ -544,13 +560,13 @@ function setGunModel(m,type){if(m.gun)m.aR.j2.remove(m.gun);const G=gunModel(typ
 const VEH=[];
 function addVeh(g,x,z,h,parked){g.position.set(x,0,z);g.rotation.y=h;sc.add(g);const v={g,x,z,h};VEH.push(v);if(parked)vehSolid(v,true);return v}
 function vehSolid(v,on){if(v.sol){const i=SOLID.indexOf(v.sol);if(i>=0)SOLID.splice(i,1);v.sol=null}if(!on)return;const a=Math.abs(Math.sin(v.h))>.7,L2=v.g.userData.len/2+.15,W2=v.g.userData.wid/2+.1;v.sol={x:v.x,z:v.z,hx:a?L2:W2,hz:a?W2:L2,car:1};SOLID.push(v.sol)}
-const P={g:null,x:0,z:60,h:Math.PI,v:0,sv:0,veh:null};
-P.veh=addVeh(createDetailedCar(0xb3161b,{type:'sport'}),0,60,Math.PI,false);P.g=P.veh.g;
+const P={g:null,x:3.5,z:60,h:Math.PI,v:0,sv:0,veh:null};
+P.veh=addVeh(createDetailedCar(0xb3161b,{type:'sport'}),3.5,60,Math.PI,false);P.g=P.veh.g;
 {const COLS=[0xe9e9e9,0x1a1c20,0x1f3a63,0x6e1d22,0x8a9099,0x34503a,0xa77d2a,0x3c3f46,0xc9bfa6],TYPES=['sedan','suv','sport','sedan','suv'];let n=0;
   for(let t=0;t<80&&n<(MOB?4:6);t++){const ax=Math.random()<.5,s=Math.random()<.5?1:-1,u=(Math.random()<.5?-1:1)*rnd(26,170),off=RW/2-1.3,x=ax?u:s*off,z=ax?s*off:u;
-    if(Math.hypot(x,z-60)<14)continue;if(VEH.some(o=>Math.hypot(o.x-x,o.z-z)<8))continue;const c=createDetailedCar(pick(COLS),{type:TYPES[n%TYPES.length]});addVeh(c,x,z,ax?(s>0?Math.PI/2:-Math.PI/2):(s>0?Math.PI:0),true);OCC.push(c.children[0]);n++}}
+    if(Math.hypot(x,z-60)<14)continue;if(VEH.some(o=>Math.hypot(o.x-x,o.z-z)<8))continue;const c=createDetailedCar(pick(COLS),{type:TYPES[n%TYPES.length]});addVeh(c,x,z,ax?(s>0?Math.PI/2:-Math.PI/2):(s>0?Math.PI:0),true);OCC.push(c.userData.body);n++}}
 
-for(const p of PARKED){const v=addVeh(p.g,p.x,p.z,p.h,true);OCC.push(p.g.children[0])}
+for(const p of PARKED){const v=addVeh(p.g,p.x,p.z,p.h,true);OCC.push(p.g.userData.body)}
 /* ---------- игрок ---------- */
 const F={m:person(outfit({tee:0xd9d6cf,jacket:0x22324a,pants:0x2a2c33,shoes:0xe6e6e6,skin:0x8d5a3b,hair:0x1e1712}),'pistol'),x:0,z:0,y:0,vy:0,h:0,ph:0,aimT:0};F.m.g.visible=false;setShadow(F.m,true);sc.add(F.m.g);
 const ST={hp:100,arm:40,money:50000,inv:['g17'],cur:'g17',mags:{g17:17},reload:0,cd:0,dead:0,mode:'car',wanted:0,crimeT:99,lostT:0};
@@ -569,11 +585,46 @@ function mkNpc(kind,extra){let lk,gun=null;
   else if(kind==='gang'){const G=GANGS[extra];lk=outfit({tee:G.col,jacket:Math.random()<.4?0x1c1d20:null,pants:pick([0x2a2c33,0x24324a,0x4b4e55]),band:Math.random()<.6?G.col:null,cap:Math.random()<.4?G.col:null});gun=pick(['pistol','pistol','smg'])}
   else{lk=outfit({tee:0x6e1d22,jacket:0x1c1d20,band:0x9b1b1b,pants:0x1e2430});gun=pick(['pistol','smg'])}
   const m=person(lk,gun),n={kind,gang:extra,m,ph:Math.random()*6,cd:rnd(.6,1.6),hp:100,state:'walk',t:0,x:0,z:0,dir:1,u:0,sp:1.3,run:0};m.hb.userData.npc=n;sc.add(m.g);NPC.push(n);return n}
-function laneSpawn(n,far){n.lane=pick(LANES);for(let k=0;k<30;k++){n.u=(Math.random()<.5?-1:1)*rnd(RW/2+3,150);const[x,z]=lanePos(n);if(!far||Math.hypot(x-px(),z-pz())>55)break}
+function laneSpawn(n,far,near){for(let k=0;k<40;k++){n.lane=pick(LANES);n.u=(Math.random()<.5?-1:1)*rnd(RW/2+3,224);const[x,z]=lanePos(n),d=Math.hypot(x-px(),z-pz());if(near?(d>45&&d<130):(!far||d>55))break}
   n.dir=Math.random()<.5?1:-1;n.sp=n.kind==='cop'?rnd(1.1,1.3):rnd(1.1,1.6);n.hp=n.kind==='cop'?120:100;n.state='walk';n.run=0;n.t=0;n.angry=0;n.gone=0;n.m.g.visible=true;n.m.g.rotation.set(0,0,0);const[x,z]=lanePos(n);n.x=x;n.z=z}
-for(let i=0;i<(MOB?11:15);i++)laneSpawn(mkNpc('civ'),false);
+for(let i=0;i<(MOB?36:64);i++)laneSpawn(mkNpc('civ'),false);
 for(const g in GANGS){const G=GANGS[g];for(let i=0;i<3;i++){const n=mkNpc('gang',g),a=i/3*Math.PI*2;n.hp=90;n.state='idle';n.home=[G.at[0]+Math.cos(a)*1.1,G.at[1]+Math.sin(a)*1.1];n.x=n.home[0];n.z=n.home[1]}}
 const COPS=[];for(let i=0;i<2;i++){const n=mkNpc('cop');laneSpawn(n,false);COPS.push(n)}
+
+/* ---------- ТРАФИК: машины с водителями по правой полосе, дистанция, светофоры, сигналы; циклический спавн (пул) ---------- */
+const TRAF=[],TCOL=[0xe9e9e9,0x1a1c20,0x1f3a63,0x6e1d22,0x8a9099,0x34503a,0xa77d2a,0x3c3f46,0xc9bfa6,0xb3161b,0x2a6f8f,0xf2c31b];
+function seatDriver(g){const m=person(outfit()),t=g.userData.type,sc2=t==='scooter';m.lL.j1.rotation.x=sc2?-1.1:-1.45;m.lR.j1.rotation.x=sc2?-1.1:-1.45;m.lL.j2.rotation.x=sc2?.9:1.4;m.lR.j2.rotation.x=sc2?.9:1.4;
+  m.aL.j1.rotation.x=sc2?-1.1:-.95;m.aR.j1.rotation.x=sc2?-1.1:-.95;m.aL.j2.rotation.x=-.5;m.aR.j2.rotation.x=-.5;m.hb.visible=false;
+  m.g.position.set(sc2?0:.38,sc2?-.05:t==='suv'?-.22:t==='sedan'?-.38:-.44,sc2?-.3:-.25);g.add(m.g);return m}
+function trafMake(){const r=Math.random(),ty=r<.12?'scooter':r<.4?'sedan':r<.65?'suv':'sport',g=ty==='scooter'?createScooter(pick(TCOL)):createDetailedCar(pick(TCOL),{type:ty});sc.add(g);
+  const t={g,ty,drv:seatDriver(g),v:0,u:0,dir:1,ax:0,cruise:0,honkT:0,stopT:0,panic:0};TRAF.push(t);return t}
+const tLat=t=>t.ax?t.dir*3.5:-t.dir*3.5,tPos=t=>t.ax?[t.u,tLat(t)]:[tLat(t),t.u];
+function trafSpawn(t,init){const X=px(),Z=pz(),fx=ST.mode==='car'?Math.sin(P.h):Math.sin(camY),fz=ST.mode==='car'?Math.cos(P.h):Math.cos(camY);let best=null,bs=-1e9;
+  for(let k=0;k<24;k++){const ax=Math.random()<.5?1:0,dir=Math.random()<.5?1:-1,u=rnd(-224,224);if(Math.abs(u)<RW/2+8)continue;const tt={ax,dir,u},[x,z]=tPos(tt),d=Math.hypot(x-X,z-Z);
+    if(TRAF.some(o=>o!==t&&o.ax===ax&&o.dir===dir&&Math.abs(o.u-u)<16))continue;let sc3=init?(d>18?1:-9):(d>60&&d<140?2+((x-X)*fx+(z-Z)*fz)/d:-Math.abs(d-100)/50);sc3+=Math.random()*.5;if(sc3>bs){bs=sc3;best=tt}}
+  if(!best)best={ax:0,dir:1,u:-200};Object.assign(t,best);t.cruise=t.ty==='scooter'?rnd(8,10):rnd(10,15);t.v=t.cruise*.7;t.panic=0;t.stopT=0;t.g.visible=true;trafPlace(t,0)}
+function trafPlace(t,dt){const[x,z]=tPos(t),h=t.ax?(t.dir>0?Math.PI/2:-Math.PI/2):(t.dir>0?0:Math.PI);t.x=x;t.z=z;t.h=h;t.g.position.set(x,0,z);t.g.rotation.y=h;if(dt)spinWheels(t.g,t.v,dt,0)}
+for(let i=0;i<(MOB?14:24);i++)trafSpawn(trafMake(),true);
+function stepTraffic(dt){const X=px(),Z=pz(),xGreen=TLPH===0,zGreen=TLPH===2;
+  for(const t of TRAF){let want=t.cruise*(t.panic>0?1.6:1);if(t.panic>0)t.panic-=dt;
+    // дистанция до машины впереди
+    for(const o of TRAF){if(o===t||o.ax!==t.ax||o.dir!==t.dir)continue;const du=(o.u-t.u)*t.dir;if(du>0&&du<24)want=Math.min(want,Math.max(0,(du-7.5)*1.3))}
+    // игрок/машина игрока на полосе
+    {const lat=tLat(t),pl=t.ax?Z:X,pu=t.ax?X:Z,du=(pu-t.u)*t.dir;if(Math.abs(pl-lat)<2.6&&du>0&&du<16){want=Math.min(want,Math.max(0,(du-6)*1.2));if(t.v<1){t.stopT+=dt;t.honkT-=dt;if(t.stopT>1.2&&t.honkT<=0){t.honkT=rnd(2.5,5);sfx(t.ty==='scooter'?620:380,.35,'square',.05);sfx(t.ty==='scooter'?740:470,.35,'square',.04)}}}else t.stopT=0}
+    // светофор и перекрёсток
+    if(t.panic<=0){const s=t.u*t.dir,stop=-(RW/2+3),green=t.ax?xGreen:zGreen;if(s<stop&&s>stop-30&&!green)want=Math.min(want,Math.max(0,(stop-s-1)*1.1));
+      if(s>stop-12&&s<RW/2)for(const o of TRAF)if(o.ax!==t.ax&&Math.abs(o.u)<RW/2+2){want=Math.min(want,s<stop?Math.max(0,(stop-s-1)):want);break}}
+    t.v+=clamp(want-t.v,-14*dt,4.5*dt);t.u+=t.dir*t.v*dt;if(Math.abs(t.u)>232)trafSpawn(t,false);
+    const far=Math.abs(t.x-X)+Math.abs(t.z-Z);t.g.visible=far<200;if(t.g.visible)trafPlace(t,dt);else{const[x,z]=tPos(t);t.x=x;t.z=z}t.drv.g.visible=far<60}}
+function recycleTraffic(){const X=px(),Z=pz();for(const t of TRAF)if(Math.hypot(t.x-X,t.z-Z)>150)trafSpawn(t,false)}
+function trafPanic(x,z,r){for(const t of TRAF)if(Math.hypot(t.x-x,t.z-z)<r){t.panic=6;t.honkT=0}}
+/* угон машины с водителем: водитель выскакивает и убегает (или лезет драться) */
+function jackTraffic(t){TRAF.splice(TRAF.indexOf(t),1);t.g.remove(t.drv.g);const n=NPC.filter(q=>q.kind==='civ'&&q.state==='walk').sort((a,b)=>Math.hypot(b.x-px(),b.z-pz())-Math.hypot(a.x-px(),a.z-pz()))[0];
+  if(n){n.lane=pick(LANES.filter(L2=>L2.ax===(t.ax?'x':'z')))||n.lane;n.u=t.u;const side=t.ax?Math.sign(tLat(t))||1:Math.sign(tLat(t))||1;n.lane=LANES.find(L2=>L2.ax===(t.ax?'x':'z')&&Math.sign(L2.c)===side)||n.lane;n.x=t.x+(t.ax?0:side*2);n.z=t.z+(t.ax?side*2:0);
+    if(Math.random()<.3){n.fight=12;floatText('😠',n.x,2,n.z)}else{n.run=9;n.dir=Math.random()<.5?1:-1;floatText('😱',n.x,2,n.z)}}
+  const v={g:t.g,x:t.x,z:t.z,h:t.h};VEH.push(v);if(COPS.some(c=>c.state!=='dead'&&!c.gone&&Math.hypot(c.x-t.x,c.z-t.z)<40))crime(1);
+  // на место угнанной — новая машина в пуле
+  trafSpawn(trafMake(),false);return v}
 
 /* ---------- лут: деньги и аптечки, летящие цифры ---------- */
 const LOOT=[],cashG=new T.BoxGeometry(.5,.16,.28),cashM=new T.MeshStandardMaterial({color:0x3fae45,emissive:0x123f15,roughness:.6}),kitM=new T.MeshStandardMaterial({color:0xf2f2f2,emissive:0x333333,roughness:.5}),crossM=new T.MeshStandardMaterial({color:0xd8261c,emissive:0x5a0a0a});
@@ -610,7 +661,7 @@ function hostile(n,dt,agg){const tx=px(),tz=pz(),dx=tx-n.x,dz=tz-n.z,d=Math.hypo
   else animPerson(n.m,0,0,1,n.m.two);
   if(d<agg&&n.cd<=0&&!ST.dead){n.cd=rnd(1.0,1.7);const a=new T.Vector3();n.m.mz.getWorldPosition(a);const miss=Math.random()<(ST.mode==='car'?.6:.45)+d/100,b=new T.Vector3(tx+(miss?rnd(-2,2):0),1.2,tz+(miss?rnd(-2,2):0));
     tracer(a,b,n.kind==='cop'?0x8fb6ff:0xff8a3a);sfx(1400,.1,'',.05,true);if(!miss)hurt(ST.mode==='car'?3:n.kind==='cop'?6:7)}}
-function walkLane(n,dt){const v=n.run>0?4.6:n.sp;if(n.run>0)n.run-=dt;n.u+=n.dir*v*dt;if(Math.abs(n.u)>150){n.dir*=-1;n.u=clamp(n.u,-150,150)}if(Math.abs(n.u)<RW/2+2.2){n.dir=Math.sign(n.u)||1;n.u=(RW/2+2.3)*n.dir}
+function walkLane(n,dt){const v=n.run>0?4.6:n.sp;if(n.run>0)n.run-=dt;n.u+=n.dir*v*dt;if(Math.abs(n.u)>226){n.dir*=-1;n.u=clamp(n.u,-226,226)}if(Math.abs(n.u)<RW/2+2.2){n.dir=Math.sign(n.u)||1;n.u=(RW/2+2.3)*n.dir}
   const[x,z]=lanePos(n),hx=n.lane.ax==='x'?n.dir:0,hz=n.lane.ax==='z'?n.dir:0;n.x+=(x-n.x)*Math.min(1,dt*4);n.z+=(z-n.z)*Math.min(1,dt*4);n.m.g.rotation.set(0,Math.atan2(hx,hz),0);n.ph+=dt*(n.run>0?11:6.2);animPerson(n.m,n.ph,n.run>0?.95:.42)}
 function goTo(n,x,z,dt){const dx=x-n.x,dz=z-n.z,d=Math.hypot(dx,dz);if(d<.3)return true;const v=1.6;n.x+=dx/d*v*dt;n.z+=dz/d*v*dt;n.m.g.rotation.set(0,Math.atan2(dx,dz),0);n.ph+=dt*6.5;animPerson(n.m,n.ph,.45);return false}
 function stepNpc(n,dt){n.t+=dt;const g=n.m.g;
@@ -619,6 +670,7 @@ function stepNpc(n,dt){n.t+=dt;const g=n.m.g;
     if(n.t>25){if(n.kind==='civ')laneSpawn(n,true);else if(n.kind==='gang'){n.state='idle';n.hp=90;n.angry=0;n.x=n.home[0];n.z=n.home[1];g.rotation.set(0,0,0)}else if(n.kind==='cop'&&COPS.filter(c=>c.state!=='dead'&&!c.gone).length<2)laneSpawn(n,true);else{g.visible=false;n.gone=1}}return}
   n.m.hb.visible=true;
   if(ST.mode==='car'&&Math.abs(P.v)>5&&Math.hypot(n.x-P.x,n.z-P.z)<1.8){damageNpc(n,999,Math.sin(P.h),Math.cos(P.h),true);return}
+  if(n.kind==='civ'&&n.fight>0){n.fight-=dt;n.cd-=dt;const dx=px()-n.x,dz=pz()-n.z,d=Math.hypot(dx,dz);g.rotation.set(0,Math.atan2(dx,dz),0);if(d>1.3){n.x+=dx/d*4*dt;n.z+=dz/d*4*dt;n.ph+=dt*11;animPerson(n.m,n.ph,.9)}else{animPerson(n.m,0,0);n.m.aR.j1.rotation.x=-1.4-Math.max(0,Math.sin(n.t*9))*.3;if(n.cd<=0&&ST.mode==='foot'){n.cd=1;hurt(5);sfx(180,.08,'square',.05)}}if(n.fight<=0||ST.mode==='car')n.run=6;g.position.set(n.x,.22,n.z);return}
   if(n.kind==='civ'){if(ST.mode==='car'&&Math.abs(P.v)>6&&Math.hypot(n.x-P.x,n.z-P.z)<9&&n.run<=0)n.run=2.5;walkLane(n,dt)}
   else if(n.kind==='cop'){if(ST.wanted>0&&!ST.dead)hostile(n,dt,ST.wanted>=2?32:22);else{const[x,z]=lanePos(n);if(Math.hypot(x-n.x,z-n.z)>1.5)goTo(n,x,z,dt);else walkLane(n,dt)}}
   else if(n.kind==='gang'){if(n.angry&&!ST.dead){hostile(n,dt,30);if(Math.hypot(n.x-px(),n.z-pz())>90){n.calm=(n.calm||0)+dt;if(n.calm>10){n.angry=0;n.calm=0}}}
@@ -642,6 +694,7 @@ function shoot(){if(ST.mode!=='foot'||ST.dead||paused||shop)return;const W=cw();
     const per=W.pellets?W.damage/3:W.damage;
     for(const h of hits){const n=h.object.userData.npc;if(!n){end=h.point;break}const head=h.point.y>1.58;damageNpc(n,per*(head?2:1),dir.x,dir.z);hitAny=true;if(!W.pierce){end=h.point;break}}
     if(p<3)tracer(a,end)}
+  trafPanic(F.x,F.z,40);
   if(hitAny){$('cross').classList.add('hit');setTimeout(()=>$('cross').classList.remove('hit'),110)}
   for(const n of NPC)if(n.kind==='civ'&&n.state==='walk'&&Math.hypot(n.x-F.x,n.z-F.z)<28)n.run=Math.max(n.run,5);
   if(!ST.wanted&&COPS.some(c=>c.state!=='dead'&&!c.gone&&Math.hypot(c.x-F.x,c.z-F.z)<25))crime(1);
@@ -706,12 +759,13 @@ function buy(i){const it=SH[shop.id].items[i];if(ST.money<it[3])return;ST.money-
 /* ---------- действия: E, F (сесть/угнать/выйти), прыжок ---------- */
 function interact(){if(shop||paused||ST.dead)return;const r=ST.mode==='car'?7:3.2;for(const m of MK)if(m.g.visible&&!MS&&Math.hypot(px()-m.x,pz()-m.z)<r){startMission(m.k);return}
   for(const s of SHOPS)if(Math.hypot(px()-s.x,pz()-s.z)<(ST.mode==='car'?14:6)){openShop(s);return}}
+function nearTraf(){let best=null,bd=3.6;for(const t of TRAF){const d=Math.hypot(F.x-t.x,F.z-t.z);if(d<bd&&t.v<6){bd=d;best=t}}return best}
 function nearVeh(){let best=null,bd=4;for(const v of VEH){if(v===P.veh&&ST.mode==='car')continue;const vx=v===P.veh?P.x:v.x,vz=v===P.veh?P.z:v.z,d=Math.hypot(F.x-vx,F.z-vz)-v.g.userData.len*.25;if(d<bd){bd=d;best=v}}return best}
 function toggleCar(){if(shop||paused||ST.dead)return;
   if(ST.mode==='car'){if(Math.abs(P.v)>4){toast('Сначала остановись');return}ST.mode='foot';const lx=Math.cos(P.h),lz=-Math.sin(P.h);F.x=P.x+lx*1.9;F.z=P.z+lz*1.9;if(hit(F.x,F.z,.4)){F.x=P.x-lx*1.9;F.z=P.z-lz*1.9}F.y=0;F.vy=0;F.h=P.h;camY=P.h;camP=.15;
     const v=P.veh;v.x=P.x;v.z=P.z;v.h=P.h;vehSolid(v,true);F.m.g.visible=true;$('cross').hidden=false;$('spd').hidden=true;sfx(300,.12,'square',.04);return}
-  const v=nearVeh();if(!v){toast('Подойди к машине');return}
-  if(v!==P.veh){toast('🚗 Угнал машину!');if(COPS.some(c=>c.state!=='dead'&&!c.gone&&Math.hypot(c.x-F.x,c.z-F.z)<30))crime(1)}
+  let v=nearVeh();if(!v){const t=nearTraf();if(t){v=jackTraffic(t);toast('🚗 Выкинул водителя и угнал машину!')}}if(!v){toast('Подойди к машине');return}
+  if(v!==P.veh&&!v.jacked){v.jacked=1;toast('🚗 Угнал машину!');if(COPS.some(c=>c.state!=='dead'&&!c.gone&&Math.hypot(c.x-F.x,c.z-F.z)<30))crime(1)}
   vehSolid(v,false);P.veh=v;P.g=v.g;P.x=v.x;P.z=v.z;P.h=v.h;P.v=0;P.sv=0;camH=P.h;ST.mode='car';F.m.g.visible=false;$('cross').hidden=true;$('spd').hidden=false;try{document.exitPointerLock()}catch(e){}sfx(200,.2,'sawtooth',.04)}
 function jump(){if(ST.mode==='foot'&&F.y<=.001&&!paused)F.vy=5.4}
 
@@ -766,6 +820,7 @@ function radar(t){const S=300,c=S/2,k=1.15,yaw=ST.mode==='foot'?camY:camH,X=px()
   for(const s of SHOPS)dot(s.x,s.z,{m247:'#38e07b',auto:'#3d7bff',cafe:'#e0a24a',gun:'#d8261c'}[s.id],7,1);
   for(const m of MK)if(m.g.visible)dot(m.x,m.z,'#ffd23f',8);
   for(const l of LOOT)dot(l.x,l.z,l.kind==='cash'?'#3fae45':'#ffffff',3.5);
+  for(const q of TRAF)if(Math.abs(q.x-X)<140&&Math.abs(q.z-Z)<140){const[a,b]=W(q.x,q.z);rx.fillStyle='#d9dde3';rx.fillRect(a-3,b-3,6,6)}
   const blink=Math.floor(t/250)%2;
   for(const n of NPC){if(n.state==='dead'||n.gone||Math.abs(n.x-X)>140||Math.abs(n.z-Z)>140)continue;
     if(n.kind==='cop')dot(n.x,n.z,blink?'#2f6bff':'#d8261c',5);else if(n.kind==='bandit'||n.angry)dot(n.x,n.z,'#e3262b',5);else if(n.kind==='gang')dot(n.x,n.z,GANGS[n.gang].css,4)}
@@ -783,11 +838,13 @@ function stepCar(dt){const on=ST.mode==='car'&&!shop&&!ST.dead,f=on&&(keys.KeyW|
   // руль поворачивает кузов только на ходу (|скорость|>1); на малой скорости резко, на большой — плавно
   if(sp>1){const k=2.7/(1+sp*.075);P.h+=P.sv*dt*k*(P.v<0?-1:1)}
   const nx=P.x+Math.sin(P.h)*P.v*dt,nz=P.z+Math.cos(P.h)*P.v*dt;if(hit(nx,nz)){if(Math.abs(P.v)>12&&ST.mode==='car')hurt(Math.abs(P.v)*.6);P.v*=-.25}else{P.x=nx;P.z=nz}
+  if(ST.mode==='car')for(const t of TRAF){const d=Math.hypot(t.x-P.x,t.z-P.z),r=(t.ty==='scooter'?1.4:2.3);if(d<r){const sp=Math.abs(P.v);P.x+=(P.x-t.x)/(d||1)*(r-d);P.z+=(P.z-t.z)/(d||1)*(r-d);if(sp>6){sfx(140,.3,'',.15,true);shake=.3;t.panic=5;if(sp>14)hurt(sp*.4);if(COPS.some(c=>c.state!=='dead'&&!c.gone&&Math.hypot(c.x-t.x,c.z-t.z)<40))crime(1)}P.v*=-.3;t.v=0}}
   P.g.position.set(P.x,0,P.z);P.g.rotation.y=P.h;spinWheels(P.g,P.v,dt,P.sv*.45)}
 function stepFoot(dt){const fw=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0),sd=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0);
   const mv=Math.hypot(fw,sd)>0&&!shop&&!ST.dead,sp=4.4;let vx=0,vz=0;if(mv){const a=camY+Math.atan2(-sd,fw);vx=Math.sin(a)*sp;vz=Math.cos(a)*sp;if(F.aimT<=0)F.h+=angD(a,F.h)*Math.min(1,dt*12)}
   if(F.aimT>0){F.aimT-=dt;F.h+=angD(camY,F.h)*Math.min(1,dt*20)}
   const nx=F.x+vx*dt,nz=F.z+vz*dt;if(!hit(nx,F.z,.35))F.x=nx;if(!hit(F.x,nz,.35))F.z=nz;if(Math.hypot(F.x-P.x,F.z-P.z)<2.2){const d=Math.hypot(F.x-P.x,F.z-P.z)||1;F.x=P.x+(F.x-P.x)/d*2.2;F.z=P.z+(F.z-P.z)/d*2.2}
+  for(const t of TRAF){const d=Math.hypot(F.x-t.x,F.z-t.z),r=t.ty==='scooter'?.9:1.6;if(d<r){F.x=t.x+(F.x-t.x)/(d||1)*r;F.z=t.z+(F.z-t.z)/(d||1)*r;if(t.v>5&&!ST.dead){hurt(t.v*1.2);t.v=0;t.panic=4}}}
   F.vy-=15*dt;F.y=Math.max(0,F.y+F.vy*dt);if(F.y===0)F.vy=0;const g=F.m.g;g.position.set(F.x,F.y+.22,F.z);g.rotation.y=F.h;F.ph+=dt*(mv?10.5:0);animPerson(F.m,F.ph,mv?(F.y>0?.2:.8):0,F.aimT>0,F.m.two)}
 function camera(dt){if(ST.mode==='car'){camH+=angD(P.h,camH)*Math.min(1,dt*3);if(!look)camOff*=Math.exp(-dt*1.5);const a=camH+camOff,tx=P.x-Math.sin(a)*12,tz=P.z-Math.cos(a)*12;cp.lerp(tmpV.set(tx,6.5,tz),Math.min(1,dt*5));cam.position.copy(cp);cam.lookAt(P.x,1.4,P.z)}
   else{const zoom=cw().modelType==='sniper'&&F.aimT>0?.55:1,dist=4.4*zoom,hgt=1.7,sx=Math.cos(camY)*.7,sz=-Math.sin(camY)*.7,cx=F.x-Math.sin(camY)*Math.cos(camP)*dist+sx,cz=F.z-Math.cos(camY)*Math.cos(camP)*dist+sz,cy=F.y+hgt+Math.sin(camP)*dist;
@@ -799,12 +856,14 @@ function hud(){$('hpf').style.transform=`scaleX(${Math.max(0,ST.hp)/100})`;$('ar
   const h=Math.floor(clockM/60)%24,m=Math.floor(clockM%60);$('clock').textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');$('sval').textContent=Math.round(Math.abs(P.v)*3.6)}
 function hints(t){let txt='';const r=ST.mode==='car'?7:3.2;for(const m of MK){m.g.userData.arrow.position.y=3.9+Math.sin(t/300)*.25;m.g.userData.arrow.rotation.y+=.03;if(!MS&&m.g.visible&&Math.hypot(px()-m.x,pz()-m.z)<r)txt=`Нажми <kbd>E</kbd> — миссия «${MS_DEF[m.k].n}»: ${MS_DEF[m.k].d}`}
   if(!txt)for(const s of SHOPS){s.ring.material.opacity=.55+.35*Math.sin(t/250);if(Math.hypot(px()-s.x,pz()-s.z)<(ST.mode==='car'?14:6))txt=`Нажми <kbd>E</kbd>, чтобы войти · ${SH[s.id].e} ${SH[s.id].n.replace(/ «.*»/,'')}`}
-  if(!txt&&ST.mode==='foot'){const v=nearVeh();if(v)txt=v===P.veh?'Нажми <kbd>F</kbd>, чтобы сесть в машину':'Нажми <kbd>F</kbd>, чтобы угнать машину'}
+  if(!txt&&ST.mode==='foot'){const v=nearVeh();if(v)txt=v===P.veh?'Нажми <kbd>F</kbd>, чтобы сесть в машину':'Нажми <kbd>F</kbd>, чтобы угнать машину';else if(nearTraf())txt='Нажми <kbd>F</kbd>, чтобы выкинуть водителя и угнать'}
   const show=!!txt&&!shop&&!paused&&!ST.dead;$('hint').hidden=!show;if(show&&$('hint').innerHTML!==txt)$('hint').innerHTML=txt;EL.use.classList.toggle('dim',!txt||txt.includes('<kbd>F'))}
 function loop(t){const dt=Math.min(.05,(t-last)/1000);last=t;
   if(!paused){clockM+=dt*2;if(ST.cd>0)ST.cd-=dt;if(ST.reload>0){ST.reload-=dt;if(ST.reload<=0)ST.mags[ST.cur]=cw().mag}
     if((keys.Space||mouseFire)&&ST.mode==='foot')shoot();
     stepCar(dt);if(ST.mode==='foot')stepFoot(dt);const X=px(),Z=pz();for(const n of NPC)if(!n.gone){const dd=Math.abs(n.x-X)+Math.abs(n.z-Z),far=dd>160;if(!far||FR%4===0)stepNpc(n,far?dt*4:dt);if(FR%30===0)setShadow(n.m,dd<45)}
+    stepTraffic(dt);if(FR%20===0){recycleTraffic();for(const n of NPC)if(n.kind==='civ'&&n.state==='walk'&&!n.fight&&Math.hypot(n.x-X,n.z-Z)>150)laneSpawn(n,false,true)}
+    for(const n of NPC)if(n.kind==='civ'&&n.state!=='dead'){n.m.g.visible=Math.abs(n.x-X)+Math.abs(n.z-Z)<130}
     stepLoot(dt);stepMission(dt);stepWanted(dt);stepRockets(dt);stepFx(dt);
     for(let i=TR.length-1;i>=0;i--){const o=TR[i];o.t+=dt;o.o.material.opacity=Math.max(0,1-o.t/o.life);if(o.t>o.life){sc.remove(o.o);o.o.geometry.dispose();TR.splice(i,1)}}}
   camera(dt);hints(t);hud();if(FR%2===0)radar(t);
@@ -812,7 +871,7 @@ function loop(t){const dt=Math.min(.05,(t-last)/1000);last=t;
   fpsN++;if(t-fpsT>1500){const fps=fpsN*1000/(t-fpsT);fpsN=0;fpsT=t;if(fps<42&&PR>.75){PR=Math.max(.75,PR-.25);R.setPixelRatio(PR);resize()}}
   R.render(sc,cam);requestAnimationFrame(loop)}
 drawWeapIcon();requestAnimationFrame(loop);
-window.__G={ST,P,F,NPC,MK,VEH,COPS,shoot,toggleCar,interact,setEdit,selectWeapon,openShop,SHOPS,damageNpc,get MS(){return MS},keys,cam,get camY(){return camY},set camY(v){camY=v}};
+window.__G={TRAF,jackTraffic,nearTraf,ST,P,F,NPC,MK,VEH,COPS,shoot,toggleCar,interact,setEdit,selectWeapon,openShop,SHOPS,damageNpc,get MS(){return MS},keys,cam,get camY(){return camY},set camY(v){camY=v}};
 })();
 </script>
 
