@@ -835,8 +835,9 @@ function hit(x,z,r){r=r==null?1.1:r;for(const o of SOLID)if(Math.abs(x-o.x)<o.hx
 function stepCar(dt){const on=ST.mode==='car'&&!shop&&!ST.dead,f=on&&(keys.KeyW||keys.ArrowUp),b=on&&(keys.KeyS||keys.ArrowDown||keys.Space),l=on&&(keys.KeyA||keys.ArrowLeft),r=on&&(keys.KeyD||keys.ArrowRight);
   if(f)P.v+=(P.v<0?40:P.v<10?30:20)*dt;else if(b)P.v-=(P.v>0?42:18)*dt;else P.v*=Math.exp(-dt*(on?.9:3));P.v=clamp(P.v,-8,30);if(shop)P.v*=Math.exp(-dt*12);
   const st=(l?1:0)-(r?1:0),sp=Math.abs(P.v);P.sv+=(st-P.sv)*Math.min(1,dt*8);
-  // руль поворачивает кузов только на ходу (|скорость|>1); на малой скорости резко, на большой — плавно
-  if(sp>1){const k=2.7/(1+sp*.075);P.h+=P.sv*dt*k*(P.v<0?-1:1)}
+  // поворот как в первой версии: руль работает на ходу, сила растёт с разгоном до ~22 км/ч
+  P.h+=st*dt*1.9*Math.min(1,sp/6)*Math.sign(P.v||1);
+  if(P.g.userData.type==='scooter'){P.g.rotation.order='YXZ';P.g.rotation.z+=(-P.sv*Math.min(1,sp/10)*.16-P.g.rotation.z)*Math.min(1,dt*6)}
   const nx=P.x+Math.sin(P.h)*P.v*dt,nz=P.z+Math.cos(P.h)*P.v*dt;if(hit(nx,nz)){if(Math.abs(P.v)>12&&ST.mode==='car')hurt(Math.abs(P.v)*.6);P.v*=-.25}else{P.x=nx;P.z=nz}
   if(ST.mode==='car')for(const t of TRAF){const d=Math.hypot(t.x-P.x,t.z-P.z),r=(t.ty==='scooter'?1.4:2.3);if(d<r){const sp=Math.abs(P.v);P.x+=(P.x-t.x)/(d||1)*(r-d);P.z+=(P.z-t.z)/(d||1)*(r-d);if(sp>6){sfx(140,.3,'',.15,true);shake=.3;t.panic=5;if(sp>14)hurt(sp*.4);if(COPS.some(c=>c.state!=='dead'&&!c.gone&&Math.hypot(c.x-t.x,c.z-t.z)<40))crime(1)}P.v*=-.3;t.v=0}}
   P.g.position.set(P.x,0,P.z);P.g.rotation.y=P.h;spinWheels(P.g,P.v,dt,P.sv*.45)}
